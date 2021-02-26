@@ -22,7 +22,7 @@ class Network:
 		self.port = port_no
 		self.username = "Hrishi"
 
-	def connect_to_server(self,msg_buffer,msg_grapgical_buffer):
+	def connect_to_server(self,msg_buffer,msg_graphical_buffer):
 		try:  
 		    self.sock = socket(AF_INET,SOCK_STREAM)  
 		    print ("Socket successfully created") 
@@ -30,7 +30,7 @@ class Network:
 		    print ("socket creation failed with error %s" %(err))
 	
 		self.socket.connect((server,port))
-		self.receive_thread = Thread(target=self.receive_messages,args=(msg_buffer,msg_grapgical_buffer,))
+		self.receive_thread = Thread(target=self.receive_messages,args=(msg_buffer,msg_graphical_buffer,))
 		self.receive_thread.start()
 	
 	def get_username_and_message(self,message):
@@ -42,7 +42,7 @@ class Network:
 	    msg = message[len(username)+1:]
 	    return username,msg
 	
-	def receive_messages(self,msg_buffer,msg_grapgical_buffer):
+	def receive_messages(self,msg_buffer,msg_graphical_buffer):
 		while True:
 			try:
 				message = sock.recv(1024).decode()
@@ -52,7 +52,7 @@ class Network:
 				uname_rect = username.get_rect()
 				message = FONT.render(message,True,BLACK)
 				message_rect = message.get_rect()
-				msg_grapgical_buffer.append([username,uname_rect],[message,message_rect])
+				msg_graphical_buffer.append([username,uname_rect],[message,message_rect])
 			except:
 				print("Error receiving!!")
 				self.sock.close()
