@@ -61,7 +61,7 @@ def recieve_messages():
         username.append(user)
         clients.append(client)
 
-        print("{} joined the chatroom".format(user))
+        print("{} connected".format(user))
         message = "Welcome to the chatroom"
         client.send(message.encode())
 
