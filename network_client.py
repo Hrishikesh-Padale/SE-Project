@@ -29,7 +29,7 @@ class Network:
 		except error as err:  
 		    print ("socket creation failed with error %s" %(err))
 	
-		self.socket.connect((server,port))
+		self.sock.connect((self.server,self.port))
 		self.receive_thread = Thread(target=self.receive_messages,args=(msg_buffer,msg_graphical_buffer,))
 		self.receive_thread.start()
 	

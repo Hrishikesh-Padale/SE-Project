@@ -48,8 +48,8 @@ class interface:
         self.old_messages = []
         self.first_msg = 0
         self.last_msg = 0
-        #self.network_manager = Network('65.0.204.13',)
-        #self.network_manager.connect_to_the_server(self.chat_buffer_text,self.chat_buffer_graphic)
+        self.network_manager = Network('65.0.204.13',12000)
+        self.network_manager.connect_to_server(self.chat_buffer_text,self.chat_buffer_graphic)
 
     def generate_board_coordinates(self):
         self.xstart = self.width-(self.width*99.5)//100
@@ -127,8 +127,8 @@ class interface:
    				elif event.key == pygame.K_RETURN and len(self.message)>0:
    					self.last_message_done = False
    					self.chat_buffer_text.append("Me:"+self.message)
-            #msg = "Hrishi"+self.message
-            #self.network_manager.send_message(msg)
+   					msg = "Hrishi"+self.message
+   					self.network_manager.send_message(msg)
    					text = FONT.render(self.message,True,BLACK)
    					rect = text.get_rect()
    					username = FONT.render("Me:",True,random.choice([RED,GREEN,LIGHTBLUE,LIGHTNAVY]))
