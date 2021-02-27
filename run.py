@@ -6,7 +6,10 @@ from threading import Thread
 import time
 import random
 from functions import *
+import warnings
 #from network_client import *
+
+warnings.filterwarnings("ignore")
 
 pygame.init()
 BLACK = (0, 0, 0)
@@ -30,9 +33,8 @@ clock = pygame.time.Clock()
 #else:
 #    width,height = 1536,801
 #    screen = pygame.display.set_mode((width,height))
-
-screen = pygame.display.set_mode((1536,801))
 width,height = 1536,801
+screen = pygame.display.set_mode((width,height))
 Interface = interface(width,height)
 Interface.screen = screen
 running = True
@@ -43,6 +45,7 @@ Interface.generate_killed_pieces_box()
 Interface.generate_chatbox()
 Interface.generate_message_input_box()
 Interface.generate_other_functionalities()
+
 
 W_king_image = pygame.image.load('Media/WKing.png')
 W_king_image = pygame.transform.scale(W_king_image,(100,100))

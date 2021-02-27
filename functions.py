@@ -109,7 +109,7 @@ class interface:
     def get_chat_input(self,events):
    		for event in events:
    			if event.type == pygame.KEYDOWN:
-   				if bool(event.unicode) and len(self.message)<self.max_message_length:
+   				if bool(event.unicode) and len(self.message)<self.max_message_length and event.key!=pygame.K_RETURN:
    					self.message = self.message[:self.cursor_position] + event.unicode + self.message[self.cursor_position:]
    					self.cursor_position += 1
    					self.message_text = FONT.render(self.message,True,BLACK)
