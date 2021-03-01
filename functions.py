@@ -19,6 +19,7 @@ COLOR2 = (118,196,112)
 LIGHTGREEN = (102,255,102)
 LIGHTNAVY = (153,153,255)
 RED = (255,0,0)
+
 FONT = pygame.font.SysFont('freesansbold.ttf', 25)
  
 class box:
@@ -131,7 +132,7 @@ class interface:
               self.cursor_coord[0][0] = self.messsage_input_xstart+self.messsage_input_width-5
               self.cursor_coord[1][0] = self.cursor_coord[0][0]
 
-          elif event.key == pygame.K_RETURN and len(self.message)>0:
+          elif event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER and len(self.message)>0:
             self.last_message_done = False
             self.chat_buffer_text.append("Me:"+self.message)
             msg = self.username+":"+self.message
@@ -168,6 +169,7 @@ class interface:
 
           elif event.key == pygame.K_BACKSPACE and self.cursor_position>0:
             self.cursor_position -= 1
+            print(event.unicode,type(event.key))
             deleted_letter = self.message[self.cursor_position]
             temp = ""
             for i in range(len(self.message)):
