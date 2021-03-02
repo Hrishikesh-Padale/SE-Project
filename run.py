@@ -12,14 +12,10 @@ warnings.filterwarnings("ignore")
 
 clock = pygame.time.Clock()
 
-#fullscreen = int(input("Run in fullscreen?(1/0):"))
-#if fullscreen:
-#    WSIZE = (0,0)
-#    screen = pygame.display.set_mode((0,0))
-#    width,height = screen.get_size()
-#else:
-#    width,height = 1536,801
-#    screen = pygame.display.set_mode((width,height))
+#WSIZE = (0,0)
+#screen = pygame.display.set_mode((0,0))
+#width,height = screen.get_size()
+
 
 width,height = 1536,801
 screen = pygame.display.set_mode((width,height))
