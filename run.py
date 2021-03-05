@@ -23,10 +23,14 @@ clock = pygame.time.Clock()
 
 width,height = 1536,801
 screen = pygame.display.set_mode((width,height))
-pygame.display.set_caption("Chess")
 Interface = interface(width,height)
 Interface.screen = screen
 running = True
+
+icon = pygame.image.load('Media/icon_5.png')
+#pygame.display.set_icon(icon)
+pygame.display.set_caption("Chess",'Media/icon_5.png')
+
 
 Interface.generate_board_coordinates()
 Interface.generate_settings_panel()
@@ -65,14 +69,14 @@ while running:
     Game.highlight_selected_box()
     Game.update_pieces(screen)
 
-    # _____________________Moving piece animation test__________________________
-    #|if start[0]>=stop[0] and start[1]>=stop[1]:								|
-    #|	start[0]-=3																|
-    #|	start[1]-=3																|
-    #|	screen.blit(Game.white_pieces_images['Bishop'],(start[0],start[1]))		|
-    #|else:																		|
-    #|	screen.blit(Game.white_pieces_images['Bishop'],(stop[0],stop[1]))		|
-    #|__________________________________________________________________________|
+    '''_____________________Moving piece animation test__________________________'''
+    #if start[0]>=stop[0] and start[1]>=stop[1]:								
+    #	start[0]-=3																
+    #	start[1]-=3																
+    #	screen.blit(Game.white_pieces_images['Bishop'],(start[0],start[1]))		
+    #else:																		
+    #	screen.blit(Game.white_pieces_images['Bishop'],(stop[0],stop[1]))		
+    '''___________________________________________________________________________'''
 
 
     clock.tick(60)

@@ -429,7 +429,7 @@ class game:
 
 
 def update(Interface,screen,events):
-	#Board - Border
+	  #Board - Border
     pygame.draw.rect(screen,BLACK,[Interface.xstart,Interface.ystart,Interface.boardwidth,Interface.boardheight],3)
     #Settings Panel - Border 
     pygame.draw.rect(screen,BLACK,[Interface.panel_xstart,Interface.panel_ystart,Interface.panelwidth,Interface.panelheight],2)
