@@ -28,8 +28,8 @@ Interface.screen = screen
 running = True
 
 icon = pygame.image.load('Media/icon_5.png')
-#pygame.display.set_icon(icon)
-pygame.display.set_caption("Chess",'Media/icon_5.png')
+pygame.display.set_icon(icon)
+#pygame.display.set_caption("Chess",'Media/icon_5.png')
 
 
 Interface.generate_board_coordinates()
@@ -69,7 +69,7 @@ while running:
     Game.highlight_selected_box()
     Game.update_pieces(screen)
 
-    '''_____________________Moving piece animation test__________________________'''
+    '''_____________________Moving piece animation test___________________________'''
     #if start[0]>=stop[0] and start[1]>=stop[1]:								
     #	start[0]-=3																
     #	start[1]-=3																
@@ -77,7 +77,6 @@ while running:
     #else:																		
     #	screen.blit(Game.white_pieces_images['Bishop'],(stop[0],stop[1]))		
     '''___________________________________________________________________________'''
-
 
     clock.tick(60)
     pygame.display.flip()
