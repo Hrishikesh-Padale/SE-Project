@@ -7,6 +7,7 @@ import time
 import random
 from functions import *
 import warnings
+from main_menu import *
 
 warnings.filterwarnings("ignore")
 
@@ -31,6 +32,8 @@ icon = pygame.image.load('Media/icon_5.png')
 pygame.display.set_icon(icon)
 #pygame.display.set_caption("Chess",'Media/icon_5.png')
 
+#Main_menu = Main_menu(screen)
+#Main_menu.update(clock)  
 
 Interface.generate_board_coordinates()
 Interface.generate_settings_panel()

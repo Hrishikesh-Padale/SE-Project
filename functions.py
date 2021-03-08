@@ -19,6 +19,13 @@ COLOR2 = (118,196,112)
 
 COLOR3 = (153,77,0)
 COLOR4 = (255,155,51)
+
+COLOR5 = (71,144,192)
+COLOR6 = (185,214,232)
+
+COLOR7 = (105,105,105)
+COLOR8 = (166,166,166)
+
 LIGHTGREEN = (153,255,153)
 LIGHTNAVY = (153,153,255)
 RED = (255,0,0)
@@ -102,9 +109,9 @@ class interface:
    		for i in range(8):
    			for j in range(8):
    				if (i+j)%2 == 1:
-   					pygame.draw.rect(self.screen,COLOR3,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
+   					pygame.draw.rect(self.screen,COLOR7,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
    				else:
-   					pygame.draw.rect(self.screen,COLOR4,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
+   					pygame.draw.rect(self.screen,COLOR8,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
 
     def generate_message_input_box(self):
    		self.messsage_input_xstart = self.chatbox_xstart + 15
@@ -425,7 +432,7 @@ class game:
 
 	def highlight_selected_box(self):
 		if self.selected_box:
-			pygame.draw.rect(self.screen,(204,204,0),[self.selected_box.xstart,self.selected_box.ystart,self.selected_box.width,self.selected_box.height])
+			pygame.draw.rect(self.screen,(204,204,0),[self.selected_box.xstart,self.selected_box.ystart,self.selected_box.width,self.selected_box.height],2)
 
 
 def update(Interface,screen,events):
