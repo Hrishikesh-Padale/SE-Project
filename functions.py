@@ -309,21 +309,21 @@ class game:
 		self.screen = screen
 
 	def load_pieces(self):
-		self.white_pieces_images['Rook'] = pygame.image.load('Media/WRook.png')
-		self.white_pieces_images['Bishop'] = pygame.image.load('Media/W_Bishop.png')
-		self.white_pieces_images['Knight'] = pygame.image.load('Media/WKnight.png')
-		self.white_pieces_images['Queen']	= pygame.image.load('Media/WQueen.png')
-		self.white_pieces_images['King'] = pygame.image.load('Media/WKing.png')
-		self.white_pieces_images['Pawn'] = pygame.image.load('Media/WPawn.png')
+		self.white_pieces_images['Rook'] = pygame.image.load('Media/pieces type 1/WRook.png')
+		self.white_pieces_images['Bishop'] = pygame.image.load('Media/pieces type 1/W_Bishop.png')
+		self.white_pieces_images['Knight'] = pygame.image.load('Media/pieces type 1/WKnight.png')
+		self.white_pieces_images['Queen']	= pygame.image.load('Media/pieces type 1/WQueen.png')
+		self.white_pieces_images['King'] = pygame.image.load('Media/pieces type 1/WKing.png')
+		self.white_pieces_images['Pawn'] = pygame.image.load('Media/pieces type 1/WPawn.png')
 		for piece in self.white_pieces_images:
 			self.white_pieces_images[piece] = pygame.transform.scale(self.white_pieces_images[piece],(100,100))
 
-		self.black_pieces_images['Rook'] = pygame.image.load('Media/BRook.png')
-		self.black_pieces_images['Bishop'] = pygame.image.load('Media/B_Bishop.png')
-		self.black_pieces_images['Knight'] = pygame.image.load('Media/BKnight.png')
-		self.black_pieces_images['Queen']	= pygame.image.load('Media/BQueen.png')
-		self.black_pieces_images['King'] = pygame.image.load('Media/BKing.png')
-		self.black_pieces_images['Pawn'] = pygame.image.load('Media/BPawn.png')
+		self.black_pieces_images['Rook'] = pygame.image.load('Media/pieces type 1/BRook.png')
+		self.black_pieces_images['Bishop'] = pygame.image.load('Media/pieces type 1/B_Bishop.png')
+		self.black_pieces_images['Knight'] = pygame.image.load('Media/pieces type 1/BKnight.png')
+		self.black_pieces_images['Queen']	= pygame.image.load('Media/pieces type 1/BQueen.png')
+		self.black_pieces_images['King'] = pygame.image.load('Media/pieces type 1/BKing.png')
+		self.black_pieces_images['Pawn'] = pygame.image.load('Media/pieces type 1/BPawn.png')
 		for piece in self.black_pieces_images:
 			self.black_pieces_images[piece] = pygame.transform.scale(self.black_pieces_images[piece],(100,100))
 

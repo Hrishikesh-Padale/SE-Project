@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
 pygame.init()
-FONT1 = pygame.font.SysFont('arial.ttf',40,True)
-FONT2 = pygame.font.SysFont('arial.ttf',30)
+FONT1 = pygame.font.SysFont('calibri',35,True)
+FONT2 = pygame.font.SysFont('calibri',22,True)
 
 class Option:
 	def __init__(self,name,x,y):
@@ -44,7 +44,7 @@ class Main_menu:
 		self.profile.title = FONT1.render(self.profile.name,True,(255,255,255))
 		self.profile.rect = self.profile.title.get_rect()
 		self.profile.rect.center = (self.profile.xstart+10+(self.profile.rect.width/2),self.profile.ystart+250)
-		self.profile.description = [FONT2.render("Edit profile,see statistics,",True,(255,255,255)),FONT2.render("manage friends.",True,(255,255,255))]
+		self.profile.description = [FONT2.render("Edit profile,See statistics,",True,(255,255,255)),FONT2.render("Manage friends.",True,(255,255,255))]
 		self.profile.d_rect = [self.profile.description[0].get_rect(),self.profile.description[1].get_rect()]
 		self.profile.d_rect[0].center = (self.profile.xstart+10+(self.profile.d_rect[0].width/2),self.profile.ystart+300)
 		self.profile.d_rect[1].center = (self.profile.xstart+10+(self.profile.d_rect[1].width/2),self.profile.ystart+325)
@@ -53,8 +53,11 @@ class Main_menu:
 		self.settings.title = FONT1.render(self.settings.name,True,(255,255,255))
 		self.settings.rect = self.settings.title.get_rect()
 		self.settings.rect.center = (self.settings.xstart+10+(self.settings.rect.width/2),self.settings.ystart+250)
-		#self.settings.description = [FONT2.render("Adjust volume,theme,enable/disable music.")]
-
+		self.settings.description = [FONT2.render("Board/Pieces appearance,",True,(255,255,255)),FONT2.render("Adjust volume,theme,",True,(255,255,255)),FONT2.render("Enable/Disable music.",True,(255,255,255))]
+		self.settings.d_rect = [self.settings.description[0].get_rect(),self.settings.description[1].get_rect(),self.settings.description[2].get_rect()]
+		self.settings.d_rect[0].center = (self.settings.xstart+10+(self.settings.d_rect[0].width/2),self.settings.ystart+300)
+		self.settings.d_rect[1].center = (self.settings.xstart+10+(self.settings.d_rect[1].width/2),self.settings.ystart+325)
+		self.settings.d_rect[2].center = (self.settings.xstart+10+(self.settings.d_rect[2].width/2),self.settings.ystart+350)
 
 		self.quickplay_image = pygame.image.load('Media/quickplay.png')
 		self.quickplay_image = pygame.transform.scale(self.quickplay_image,(250,250))
@@ -70,8 +73,8 @@ class Main_menu:
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					print(pygame.mouse.get_pos())
 					return
+
 			self.screen.fill(self.background_color)
 			pygame.draw.rect(self.screen,self.options_color,[self.quickplay.xstart,self.quickplay.ystart,self.quickplay.width,self.quickplay.height],border_radius=20)
 			pygame.draw.rect(self.screen,self.options_color,[self.play_with_friend.xstart,self.play_with_friend.ystart,self.play_with_friend.width,self.play_with_friend.height],border_radius=20)
@@ -98,9 +101,15 @@ class Main_menu:
 			self.screen.blit(self.play_with_friend.description[1],self.play_with_friend.d_rect[1])
 			self.screen.blit(self.profile.description[0],self.profile.d_rect[0])
 			self.screen.blit(self.profile.description[1],self.profile.d_rect[1])
+			self.screen.blit(self.settings.description[0],self.settings.d_rect[0])
+			self.screen.blit(self.settings.description[1],self.settings.d_rect[1])
+			self.screen.blit(self.settings.description[2],self.settings.d_rect[2])
 
+			#self.focus_option_on_pointer(pygame.mouse.get_pos())
 			pygame.display.flip()
 			clock.tick(60)
+
+	#def focus_option_on_pointer(self,pos):
 
 width,height = 1536,801
 clock = pygame.time.Clock()
