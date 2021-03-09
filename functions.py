@@ -43,10 +43,6 @@ class box:
 		self.height = height
 		self.piece = None
 
-Cursor_image = pygame.image.load('Media/Cursor_type_2.png')
-Cursor_image = pygame.transform.scale(Cursor_image,(33,33))
-
-
 class interface:
     
     def __init__(self,width,height,screen=None):
@@ -466,13 +462,6 @@ def update(Interface,screen,events):
     
     Interface.get_chat_input(events)
     Interface.print_messages()
-
-    pos = pygame.mouse.get_pos()
-    if pos[0]>1106 and pos[0]<1506 and pos[1]>730 and pos[1]<770:
-    	pygame.mouse.set_visible(False)
-    	screen.blit(Cursor_image,(pos[0]-15,pos[1]-15))
-    else :
-    	pygame.mouse.set_visible(True)
 
 
 

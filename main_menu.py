@@ -103,7 +103,6 @@ class Main_menu:
 
 			self.screen.fill(self.background_color)
 			pos = pygame.mouse.get_pos()
-
 			#mouse pointer on quickplay
 			if pos[0]>=138 and pos[0]<=438 and pos[1]>=150.5 and pos[1]<=650.5:
 				pygame.draw.rect(self.screen,self.options_color,[self.quickplay.xstart-12.5,self.quickplay.ystart-40,self.quickplay.width+25,self.quickplay.height+80],border_radius=20)
@@ -325,13 +324,14 @@ class Main_menu:
 			self.screen.blit(self.settings.description[0],self.settings.d_rect[0])
 			self.screen.blit(self.settings.description[1],self.settings.d_rect[1])
 			self.screen.blit(self.settings.description[2],self.settings.d_rect[2])
+			self.screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
 
 			pygame.display.flip()
 			clock.tick(60)
 
 
-width,height = 1536,801
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((width,height))
-Main_menu = Main_menu(screen)
-Main_menu.update(clock)
+#width,height = 1536,801
+#clock = pygame.time.Clock()
+#screen = pygame.display.set_mode((width,height))
+#Main_menu = Main_menu(screen)
+#Main_menu.update(clock)
