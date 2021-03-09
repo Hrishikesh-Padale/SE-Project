@@ -7,7 +7,7 @@ import time
 import random
 from functions import *
 import warnings
-from main_menu import *
+#from main_menu import *
 
 warnings.filterwarnings("ignore")
 
@@ -30,7 +30,7 @@ running = True
 
 icon = pygame.image.load('Media/icon_5.png')
 pygame.display.set_icon(icon)
-#pygame.display.set_caption("Chess",'Media/icon_5.png')
+pygame.display.set_caption("Chess")
 
 #Main_menu = Main_menu(screen)
 #Main_menu.update(clock)  
@@ -68,9 +68,9 @@ while running:
 
     #update the screen based on events
     update(Interface,screen,events)
-    screen.blit(Game.white_pieces_images['Bishop'],(495,689))
     Game.highlight_selected_box()
     Game.update_pieces(screen)
+    #screen.blit(pygame.image.load('Media/pieces type 1/WPawn.png'),(1000,100))
 
     '''_____________________Moving piece animation test___________________________'''
     #if start[0]>=stop[0] and start[1]>=stop[1]:								
