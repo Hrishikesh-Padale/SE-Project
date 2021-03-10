@@ -324,14 +324,14 @@ class Main_menu:
 			self.screen.blit(self.settings.description[0],self.settings.d_rect[0])
 			self.screen.blit(self.settings.description[1],self.settings.d_rect[1])
 			self.screen.blit(self.settings.description[2],self.settings.d_rect[2])
-			self.screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
+			self.screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_6.png'),(70,70)),(pos[0]-27,pos[1]-23))
 
 			pygame.display.flip()
 			clock.tick(60)
 
 
-#width,height = 1536,801
-#clock = pygame.time.Clock()
-#screen = pygame.display.set_mode((width,height))
-#Main_menu = Main_menu(screen)
-#Main_menu.update(clock)
+width,height = 1536,801
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((width,height))
+Main_menu = Main_menu(screen)
+Main_menu.update(clock)

@@ -7,7 +7,7 @@ import time
 import random
 from functions import *
 import warnings
-from main_menu import *
+#from main_menu import *
 
 warnings.filterwarnings("ignore")
 
@@ -22,7 +22,6 @@ clock = pygame.time.Clock()
 #    width,height = 1536,801
 #    screen = pygame.display.set_mode((width,height))
 
-pygame.mouse.set_visible(False)
 
 width,height = 1536,801
 screen = pygame.display.set_mode((width,height))
@@ -30,12 +29,12 @@ Interface = interface(width,height)
 Interface.screen = screen
 running = True
 
-icon = pygame.image.load('Media/icon_5.png')
+icon = pygame.image.load('Media/icon_3.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Chess")
 
-Main_menu = Main_menu(screen)
-Main_menu.update(clock)  
+#Main_menu = Main_menu(screen)
+#Main_menu.update(clock)  
 
 Interface.generate_board_coordinates()
 Interface.generate_settings_panel()
@@ -44,7 +43,7 @@ Interface.generate_chatbox()
 Interface.generate_message_input_box()
 Interface.generate_other_functionalities()
 
-Game = game(Interface.grid,screen)
+Game = game(Interface.grid,screen,0)
 Game.load_pieces()
 Game.init_my_pieces()
 Game.init_opponent_pieces()
@@ -72,8 +71,12 @@ while running:
     update(Interface,screen,events)
     Game.highlight_selected_box()
     Game.update_pieces(screen)
-    pos = pygame.mouse.get_pos()
-    screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
+
+    #collinearity line
+    #pygame.draw.line(screen,RED,(10,777),(7+Interface.boardwidth,777),2)
+
+    #pos = pygame.mouse.get_pos()
+    #screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
     #screen.blit(pygame.image.load('Media/pieces type 1/WPawn.png'),(1000,100))
 
     '''_____________________Moving piece animation test___________________________'''

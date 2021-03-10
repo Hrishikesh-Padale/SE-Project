@@ -105,9 +105,9 @@ class interface:
    		for i in range(8):
    			for j in range(8):
    				if (i+j)%2 == 1:
-   					pygame.draw.rect(self.screen,COLOR1,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
+   					pygame.draw.rect(self.screen,COLOR3,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
    				else:
-   					pygame.draw.rect(self.screen,COLOR2,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
+   					pygame.draw.rect(self.screen,COLOR4,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
 
     def generate_message_input_box(self):
    		self.messsage_input_xstart = self.chatbox_xstart + 15
@@ -292,12 +292,12 @@ class piece:
     self.position = position
     self.image = None
     self.color = color
-    self.position_adjustment = {}
+    self.pos_adjustment = None
     self.is_alive = True
 
 class game:
 
-  def __init__(self,grid,screen):
+  def __init__(self,grid,screen,sfac):
     self.white_pieces_images = {}
     self.black_pieces_images = {}
     self.grid = grid
@@ -305,30 +305,34 @@ class game:
     self.enemy_pieces = {}
     self.selected_box = None
     self.screen = screen
+    self.scale_transform_flag = 0
+    self.pieces_scaling_factor = sfac
+    self.position_adjustment = {'type3':{'WPawn':(16,5),'WRook':(15,7),'WKnight':(15,4),'W_Bishop':(15,6),'WQueen':(5,6),'WKing':(13,7)}}
 
   def load_pieces(self):
-    self.white_pieces_images['Rook'] = pygame.image.load('Media/pieces type 1/WRook.png')
-    self.white_pieces_images['Bishop'] = pygame.image.load('Media/pieces type 1/W_Bishop.png')
-    self.white_pieces_images['Knight'] = pygame.image.load('Media/pieces type 1/WKnight.png')
-    self.white_pieces_images['Queen']	= pygame.image.load('Media/pieces type 1/WQueen.png')
-    self.white_pieces_images['King'] = pygame.image.load('Media/pieces type 1/WKing.png')
-    self.white_pieces_images['Pawn'] = pygame.image.load('Media/pieces type 1/WPawn.png')
-    for piece in self.white_pieces_images:
-      self.white_pieces_images[piece] = pygame.transform.scale(self.white_pieces_images[piece],(100,100))
+    self.white_pieces_images['Rook'] = pygame.image.load('Media/pieces type 3/WRook.png')
+    self.white_pieces_images['Bishop'] = pygame.image.load('Media/pieces type 3/W_Bishop.png')
+    self.white_pieces_images['Knight'] = pygame.image.load('Media/pieces type 3/WKnight.png')
+    self.white_pieces_images['Queen']	= pygame.image.load('Media/pieces type 3/WQueen.png')
+    self.white_pieces_images['King'] = pygame.image.load('Media/pieces type 3/WKing.png')
+    self.white_pieces_images['Pawn'] = pygame.image.load('Media/pieces type 3/WPawn.png')
+    #for piece in self.white_pieces_images:
+    #  self.white_pieces_images[piece] = pygame.transform.scale(self.white_pieces_images[piece],(100,100))
 
-    self.black_pieces_images['Rook'] = pygame.image.load('Media/pieces type 1/BRook.png')
-    self.black_pieces_images['Bishop'] = pygame.image.load('Media/pieces type 1/B_Bishop.png')
-    self.black_pieces_images['Knight'] = pygame.image.load('Media/pieces type 1/BKnight.png')
-    self.black_pieces_images['Queen']	= pygame.image.load('Media/pieces type 1/BQueen.png')
-    self.black_pieces_images['King'] = pygame.image.load('Media/pieces type 1/BKing.png')
-    self.black_pieces_images['Pawn'] = pygame.image.load('Media/pieces type 1/BPawn.png')
-    for piece in self.black_pieces_images:
-      self.black_pieces_images[piece] = pygame.transform.scale(self.black_pieces_images[piece],(100,100))
+    self.black_pieces_images['Rook'] = pygame.image.load('Media/pieces type 3/BRook.png')
+    self.black_pieces_images['Bishop'] = pygame.image.load('Media/pieces type 3/B_Bishop.png')
+    self.black_pieces_images['Knight'] = pygame.image.load('Media/pieces type 3/BKnight.png')
+    self.black_pieces_images['Queen']	= pygame.image.load('Media/pieces type 3/BQueen.png')
+    self.black_pieces_images['King'] = pygame.image.load('Media/pieces type 3/BKing.png')
+    self.black_pieces_images['Pawn'] = pygame.image.load('Media/pieces type 3/BPawn.png')
+    #for piece in self.black_pieces_images:
+    #  self.black_pieces_images[piece] = pygame.transform.scale(self.black_pieces_images[piece],(100,100))
 
   def init_my_pieces(self):
     pawns = [piece('pawn',[6,0],"white"),piece('pawn',[6,1],"white"),piece('pawn',[6,2],"white"),piece('pawn',[6,3],"white"),piece('pawn',[6,4],"white"),piece('pawn',[6,5],"white"),piece('pawn',[6,6],"white"),piece('pawn',[6,7],"white")]
     for pawn in pawns:
       pawn.image = self.white_pieces_images['Pawn']
+      pawn.pos_adjustment = self.position_adjustment['type3']['WPawn']
     self.mypieces['pawns'] = pawns
     for i in range(8):
       self.grid[6][i].piece = "white pawn"
@@ -336,31 +340,36 @@ class game:
     rooks = [piece('rook',[7,0],"white"),piece('rook',[7,7],"white")]
     for rook in rooks:
       rook.image = self.white_pieces_images['Rook']
-      self.mypieces['rooks'] = rooks
-      self.grid[7][0].piece = "white rook"
-      self.grid[7][7].piece = "white rook"
+      rook.pos_adjustment = self.position_adjustment['type3']['WRook']
+    self.mypieces['rooks'] = rooks
+    self.grid[7][0].piece = "white rook"
+    self.grid[7][7].piece = "white rook"
 
     bishops = [piece('bishop',[7,2],"white"),piece('bisop',[7,5],"white")]
     for bishop in bishops:
       bishop.image = self.white_pieces_images['Bishop']
-      self.mypieces['bishops'] = bishops
-      self.grid[7][2].piece = "white bishop"
-      self.grid[7][5].piece = "white bishop"
+      bishop.pos_adjustment = self.position_adjustment['type3']['W_Bishop']
+    self.mypieces['bishops'] = bishops
+    self.grid[7][2].piece = "white bishop"
+    self.grid[7][5].piece = "white bishop"
 
     knights = [piece('knight',[7,1],"white"),piece('knight',[7,6],"white")]
     for knight in knights:
       knight.image = self.white_pieces_images['Knight']
+      knight.pos_adjustment = self.position_adjustment['type3']['WKnight']
     self.mypieces['knights'] = knights
     self.grid[7][1].piece = "white knight"
     self.grid[7][6].piece = "white knight"
 
     king = piece('king',[7,4],"white")
     king.image = self.white_pieces_images['King']
+    king.pos_adjustment = self.position_adjustment['type3']['WKing']
     self.mypieces['king'] = [king]
     self.grid[7][4].piece = "white king"
 
-    queen = piece('Queen',[7,3],"white")
+    queen = piece('queen',[7,3],"white")
     queen.image = self.white_pieces_images['Queen']
+    queen.pos_adjustment = self.position_adjustment['type3']['WQueen']
     self.mypieces['queen'] = [queen]
     self.grid[7][3].piece = "white queen"
 
@@ -402,7 +411,7 @@ class game:
     self.enemy_pieces['king'] = [king]
     self.grid[0][4].piece = "black king"
 
-    queen = piece('Queen',[0,3],"black")
+    queen = piece('queen',[0,3],"black")
     queen.image = self.black_pieces_images['Queen']
     self.enemy_pieces['queen'] = [queen]
     self.grid[0][3].piece = "black queen"
@@ -413,12 +422,16 @@ class game:
 
 
   def update_pieces(self,screen):
-  	for pieces in self.mypieces:
-  		for piece in self.mypieces[pieces]:
-  			screen.blit(piece.image,(self.grid[piece.position[0]][piece.position[1]].xstart,self.grid[piece.position[0]][piece.position[1]].ystart))
-  	for pieces in self.enemy_pieces:
-  		for piece in self.enemy_pieces[pieces]:
-  			screen.blit(piece.image,(self.grid[piece.position[0]][piece.position[1]].xstart,self.grid[piece.position[0]][piece.position[1]].ystart))
+    for pieces in self.mypieces:
+      for piece in self.mypieces[pieces]:
+        try:
+          screen.blit(piece.image,(self.grid[piece.position[0]][piece.position[1]].xstart+piece.pos_adjustment[0],self.grid[piece.position[0]][piece.position[1]].ystart+piece.pos_adjustment[1]))
+        except:
+          screen.blit(piece.image,(self.grid[piece.position[0]][piece.position[1]].xstart,self.grid[piece.position[0]][piece.position[1]].ystart))
+
+    for pieces in self.enemy_pieces:
+    	for piece in self.enemy_pieces[pieces]:
+    		screen.blit(piece.image,(self.grid[piece.position[0]][piece.position[1]].xstart,self.grid[piece.position[0]][piece.position[1]].ystart))
 
   def handle_click_event(self,coords):
   	if not self.grid[coords[0]][coords[1]].is_empty and "white" in self.grid[coords[0]][coords[1]].piece:
