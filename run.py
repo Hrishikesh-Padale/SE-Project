@@ -44,7 +44,7 @@ Interface.generate_message_input_box()
 Interface.generate_other_functionalities()
 
 #Parameters -> [game grid created earlier,screen,scale for piece images,piece type]
-Game = game(Interface.grid,screen,None,3)
+Game = game(Interface.grid,screen,None,2)
 Game.load_pieces()
 Game.init_my_pieces()
 Game.init_opponent_pieces()
@@ -78,7 +78,6 @@ while running:
 
     #pos = pygame.mouse.get_pos()
     #screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
-    #screen.blit(pygame.image.load('Media/pieces type 1/WPawn.png'),(1000,100))
 
     '''_____________________Moving piece animation test___________________________'''
     #if start[0]>=stop[0] and start[1]>=stop[1]:								

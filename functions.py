@@ -309,8 +309,18 @@ class game:
     self.pieces_scaling_factor = sfac
     self.position_adjustment = {'type1':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
                                          'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},
+
+                                #yet to be modified
+                                'type2':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
+                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},
                                 'type3':{'WPawn':(16,5),'WRook':(15,7),'WKnight':(15,4),'W_Bishop':(15,6),'WQueen':(5,6),'WKing':(13,7),
-                                         'BPawn':(15,5),'BRook':(15,5),'BKnight':(16,2),'B_Bishop':(16,1),'BQueen':(5,0),'BKing':(13,4)}
+                                         'BPawn':(15,5),'BRook':(15,5),'BKnight':(16,2),'B_Bishop':(16,1),'BQueen':(5,0),'BKing':(13,4)},
+
+                                #yet to be modified
+                                'type4':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
+                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},
+                                'type5':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
+                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)}
                                }
 
   def load_pieces(self):
@@ -484,27 +494,4 @@ def update(Interface,screen,events):
     
     Interface.get_chat_input(events)
     Interface.print_messages()
-
-
-
-#font = pygame.font.SysFont('freesansbold.ttf', 100)
-#start_text = font.render("PRESS ANY KEY",True,(255,0,0))
-#text_rect = start_text.get_rect()
-#text_rect.center = (Interface.width//2,Interface.height//2)
-#
-#while True:
-#	screen.fill(LIGHTGREEN)
-#	screen.blit(start_text,text_rect)
-#	pygame.draw.rect(screen,RED,[50,50,1425,680],5)
-#	pygame.display.flip()
-#	pygame.event.pump()
-#	event = pygame.event.wait()
-#	if event.type == pygame.MOUSEBUTTONDOWN:
-#		break
-#	elif event.type == pygame.KEYDOWN:
-#		break
-#	elif event.type == QUIT:
-#		sys.exit()
-
-#print(Interface.messsage_input_xstart,Interface.messsage_input_ystart,Interface.messsage_input_xstart+Interface.messsage_input_width,Interface.messsage_input_ystart+Interface.messsage_input_height)
 
