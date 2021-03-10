@@ -1,4 +1,5 @@
 import pygame
+import sys
 from pygame.locals import *
 
 pygame.init()
@@ -6,6 +7,24 @@ FONT1 = pygame.font.SysFont('calibri',35,True)
 FONT2 = pygame.font.SysFont('calibri',22,True)
 FONT3 = pygame.font.SysFont('calibri',40,True)
 FONT4 = pygame.font.SysFont('calibri',25,True)
+
+class Button:
+	def __init__(self,name,x,y):
+		self.name = name
+		self.xstart = x
+		self.ystart = y
+		self.color = (0,255,0)
+		self.text = FONT1.render(self.name,True,self.color)
+		self.rect = self.text.get_rect()
+		self.rect.center = (x+100,y+50)
+		self.xlim = (self.xstart+50,self.xstart+150)
+		self.ylim = (self.ystart+25,self.ystart+75)
+
+	def draw(self,screen,pos):
+		if (pos[0]>=self.xlim[0] and pos[0]<=self.xlim[1]) and (pos[1]>=self.ylim[0] and pos[1]<= self.ylim[1]):
+			pygame.draw.rect(screen,(186,103,35),[self.xstart+51,self.ystart+27,98,48],border_radius=10)
+		screen.blit(self.text,self.rect)
+		pygame.draw.rect(screen,(255,255,255),[self.xstart+50,self.ystart+25,100,50],2,10)
 
 class Option:
 	def __init__(self,name,x,y):
@@ -18,6 +37,8 @@ class Option:
 		self.rect = self.title.get_rect()
 		self.description = ""
 		self.d_rect = None
+
+	
 
 class Main_menu:
 	def __init__(self,screen):
@@ -93,12 +114,16 @@ class Main_menu:
 											,self.settings.d_rect[2].center,(self.settings.d_rect[2].center[0]+7.5,self.settings.d_rect[2].center[1])]
 							}
 
+		self.quit_button = Button('Quit',1350,0)
+
 	def update(self,clock):
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					return
 				elif event.type == pygame.MOUSEBUTTONDOWN:
+					if (pos[0]>=self.quit_button.xlim[0] and pos[0]<=self.quit_button.xlim[1]) and (pos[1]>=self.quit_button.ylim[0] and pos[1]<= self.quit_button.ylim[1]):
+						return
 					print(pygame.mouse.get_pos())
 
 			self.screen.fill(self.background_color)
@@ -324,8 +349,9 @@ class Main_menu:
 			self.screen.blit(self.settings.description[0],self.settings.d_rect[0])
 			self.screen.blit(self.settings.description[1],self.settings.d_rect[1])
 			self.screen.blit(self.settings.description[2],self.settings.d_rect[2])
-			self.screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_6.png'),(70,70)),(pos[0]-27,pos[1]-23))
-
+			#self.screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_6.png'),(70,70)),(pos[0]-27,pos[1]-23))
+			
+			self.quit_button.draw(self.screen,pygame.mouse.get_pos())
 			pygame.display.flip()
 			clock.tick(60)
 
@@ -335,3 +361,4 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((width,height))
 Main_menu = Main_menu(screen)
 Main_menu.update(clock)
+pygame.quit()

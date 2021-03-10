@@ -43,7 +43,8 @@ Interface.generate_chatbox()
 Interface.generate_message_input_box()
 Interface.generate_other_functionalities()
 
-Game = game(Interface.grid,screen,0)
+#Parameters -> [game grid created earlier,screen,scale for piece images,piece type]
+Game = game(Interface.grid,screen,None,3)
 Game.load_pieces()
 Game.init_my_pieces()
 Game.init_opponent_pieces()
@@ -73,7 +74,7 @@ while running:
     Game.update_pieces(screen)
 
     #collinearity line
-    #pygame.draw.line(screen,RED,(10,777),(7+Interface.boardwidth,777),2)
+    #pygame.draw.line(screen,RED,(10,95),(7+Interface.boardwidth,95),2)
 
     #pos = pygame.mouse.get_pos()
     #screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
