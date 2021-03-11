@@ -307,20 +307,18 @@ class game:
     self.selected_box = None
     self.screen = screen
     self.pieces_scaling_factor = sfac
-    self.position_adjustment = {'type1':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
+    self.position_adjustment = {
+                                'type1':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
                                          'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},
 
-                                #yet to be modified
-                                'type2':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
-                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},
+                                'type2':{'WPawn':(3,0),'WRook':(6,5),'WKnight':(15,3),'W_Bishop':(8,4),'WQueen':(17,-3),'WKing':(15,3),
+                                         'BPawn':(0,0),'BRook':(6,3),'BKnight':(16,1),'B_Bishop':(10,9),'BQueen':(17,0),'BKing':(15,3)},
+
                                 'type3':{'WPawn':(16,5),'WRook':(15,7),'WKnight':(15,4),'W_Bishop':(15,6),'WQueen':(5,6),'WKing':(13,7),
                                          'BPawn':(15,5),'BRook':(15,5),'BKnight':(16,2),'B_Bishop':(16,1),'BQueen':(5,0),'BKing':(13,4)},
 
-                                #yet to be modified
                                 'type4':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
-                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},
-                                'type5':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
-                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)}
+                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},               
                                }
 
   def load_pieces(self):

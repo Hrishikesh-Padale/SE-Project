@@ -74,7 +74,7 @@ while running:
     Game.update_pieces(screen)
 
     #collinearity line
-    #pygame.draw.line(screen,RED,(10,95),(7+Interface.boardwidth,95),2)
+    #pygame.draw.line(screen,RED,(10,775),(7+Interface.boardwidth,775),2)
 
     #pos = pygame.mouse.get_pos()
     #screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
