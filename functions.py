@@ -295,6 +295,40 @@ class piece:
     self.pos_adjustment = None
     self.is_alive = True
 
+
+class Move:
+    def __init__(self, startsq, endsq, grid):   #startsq and endsq are tuples of coordinates.
+        self.startrow = startsq[0]
+        self.startcol = startsq[1]
+        self.endrow = endsq[0]
+        self.endcol = endsq[1]
+        self.piecemoved = grid[self.startrow, self.startcol]
+        self.piececaptured = grid[self.endrow, self.endcol]
+
+    rankToRows = {str(i): 8 - i for i in range(1, 9)}
+    rowsToRanks = {v:k for k, v in rankToRows.items()}      #reversing dictionary "rankToRows"
+    filesToCols = {"a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7}
+    colsToFiles = {v:k for k, v in filesToCols.items()}     ##reversing dictionary "filesToCols"
+
+    def getPawnmoves(self, r, c, moves):
+        if self.whitetomove:
+            if self.grid[r-1][c].is_empty:
+                moves.append(Move((r,c), (r-1, c), self.grid))
+
+                if r == 6 and self.grid[r-2][c].is_empty:
+                    moves.append(Move((r, c), (r-2, c), self.grid))
+
+
+            if c - 1 >= 0:
+                if self.grid[r-1][c-1].piece[0] == "B" and self.grid[r-1][c-1].piece[1] != "K":
+                    moves.append(Move((r, c), (r-1, c-1), self.grid))
+
+            if c + 1 <= 7:
+                if self.grid[r-1][c+1].piece[0] == "B" and self.grid[r-1][c+1].piece[1] != "K":
+                    moves.append(Move((r,c),(r-1,c+1), self.grid))         
+            #Enpassant remaining
+
+
 class game:
 
   def __init__(self,grid,screen,sfac,piece_type):
@@ -343,53 +377,55 @@ class game:
         self.black_pieces_images[piece] = pygame.transform.scale(self.black_pieces_images[piece],self.pieces_scaling_factor)
 
   def init_my_pieces(self):
-    pawns = [piece('pawn',[6,0],"white"),piece('pawn',[6,1],"white"),piece('pawn',[6,2],"white"),piece('pawn',[6,3],"white"),piece('pawn',[6,4],"white"),piece('pawn',[6,5],"white"),piece('pawn',[6,6],"white"),piece('pawn',[6,7],"white")]
+    pawns = [piece('pawn', [6, i], "white") for i in range(8)]
     for pawn in pawns:
       pawn.image = self.white_pieces_images['Pawn']
       pawn.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WPawn']
     self.mypieces['pawns'] = pawns
     for i in range(8):
-      self.grid[6][i].piece = "white pawn"
+      self.grid[6][i].piece = "WP"  #white pawn
 
     rooks = [piece('rook',[7,0],"white"),piece('rook',[7,7],"white")]
     for rook in rooks:
       rook.image = self.white_pieces_images['Rook']
       rook.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WRook']
     self.mypieces['rooks'] = rooks
-    self.grid[7][0].piece = "white rook"
-    self.grid[7][7].piece = "white rook"
+    self.grid[7][0].piece = "WR"    #white rook  
+    self.grid[7][7].piece = "WR"
 
-    bishops = [piece('bishop',[7,2],"white"),piece('bisop',[7,5],"white")]
+    bishops = [piece('bishop',[7,2],"white"),piece('bishop',[7,5],"white")]
     for bishop in bishops:
       bishop.image = self.white_pieces_images['Bishop']
       bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['W_Bishop']
     self.mypieces['bishops'] = bishops
-    self.grid[7][2].piece = "white bishop"
-    self.grid[7][5].piece = "white bishop"
+    self.grid[7][2].piece = "WB"    #white bishop
+    self.grid[7][5].piece = "WB"
 
     knights = [piece('knight',[7,1],"white"),piece('knight',[7,6],"white")]
     for knight in knights:
       knight.image = self.white_pieces_images['Knight']
       knight.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WKnight']
     self.mypieces['knights'] = knights
-    self.grid[7][1].piece = "white knight"
-    self.grid[7][6].piece = "white knight"
+    self.grid[7][1].piece = "WN"    #white knight
+    self.grid[7][6].piece = "WN"
 
     king = piece('king',[7,4],"white")
     king.image = self.white_pieces_images['King']
     king.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WKing']
     self.mypieces['king'] = [king]
-    self.grid[7][4].piece = "white king"
+    self.grid[7][4].piece = "WK"    #white king
 
     queen = piece('queen',[7,3],"white")
     queen.image = self.white_pieces_images['Queen']
     queen.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WQueen']
     self.mypieces['queen'] = [queen]
-    self.grid[7][3].piece = "white queen"
+    self.grid[7][3].piece = "WQ"    #white queen
 
-    for i in range(6,8):
-      for j in range(0,8):
-        self.grid[i][j].is_empty = False
+
+    ###########################################
+    for i in range(6,8):                      #
+      for j in range(0,8):                    #
+        self.grid[i][j].is_empty = False      # 
 
   def init_opponent_pieces(self):
     pawns = [piece('pawn',[1,0],"black"),piece('pawn',[1,1],"black"),piece('pawn',[1,2],"black"),piece('pawn',[1,3],"black"),piece('pawn',[1,4],"black"),piece('pawn',[1,5],"black"),piece('pawn',[1,6],"black"),piece('pawn',[1,7],"black")]
@@ -398,43 +434,43 @@ class game:
       pawn.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BPawn']
     self.enemy_pieces['pawns'] = pawns
     for i in range(8):
-      self.grid[1][i].piece = "black pawn"
+      self.grid[1][i].piece = "BP"
 
     rooks = [piece('rook',[0,0],"black"),piece('rook',[0,7],"black")]
     for rook in rooks:
       rook.image = self.black_pieces_images['Rook']
       rook.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BRook']
     self.enemy_pieces['rooks'] = rooks
-    self.grid[0][0].piece = "black rook"
-    self.grid[0][7].piece = "black rook"
+    self.grid[0][0].piece = "BR"
+    self.grid[0][7].piece = "BR"
 
     bishops = [piece('bishop',[0,2],"black"),piece('bisop',[0,5],"black")]
     for bishop in bishops:
       bishop.image = self.black_pieces_images['Bishop']
       bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['B_Bishop']
     self.enemy_pieces['bishops'] = bishops
-    self.grid[0][2].piece = "black bishop"
-    self.grid[0][5].piece = "black bishop"
+    self.grid[0][2].piece = "BB"
+    self.grid[0][5].piece = "BB"
 
     knights = [piece('knight',[0,1],"black"),piece('knight',[0,6],"black")]
     for knight in knights:
       knight.image = self.black_pieces_images['Knight']
       knight.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BKnight']
     self.enemy_pieces['knights'] = knights
-    self.grid[0][1].piece = "black knight"
-    self.grid[0][6].piece = "black knight"
+    self.grid[0][1].piece = "BN"
+    self.grid[0][6].piece = "BN"
 
     king = piece('king',[0,4],"black")
     king.image = self.black_pieces_images['King']
     king.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BKing']
     self.enemy_pieces['king'] = [king]
-    self.grid[0][4].piece = "black king"
+    self.grid[0][4].piece = "BK"
 
     queen = piece('queen',[0,3],"black")
     queen.image = self.black_pieces_images['Queen']
     queen.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BQueen']
     self.enemy_pieces['queen'] = [queen]
-    self.grid[0][3].piece = "black queen"
+    self.grid[0][3].piece = "BQ"
 
     for i in range(0,2):
     	for j in range(0,8):
