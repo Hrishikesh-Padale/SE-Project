@@ -304,6 +304,7 @@ class Move:
         self.endcol = endsq[1]
         self.piecemoved = grid[self.startrow, self.startcol]
         self.piececaptured = grid[self.endrow, self.endcol]
+        self.whitetomove = True
 
     rankToRows = {str(i): 8 - i for i in range(1, 9)}
     rowsToRanks = {v:k for k, v in rankToRows.items()}      #reversing dictionary "rankToRows"
@@ -327,6 +328,57 @@ class Move:
                 if self.grid[r-1][c+1].piece[0] == "B" and self.grid[r-1][c+1].piece[1] != "K":
                     moves.append(Move((r,c),(r-1,c+1), self.grid))         
             #Enpassant remaining
+
+    def getKnightmoves(self, r, c, moves):
+        if self.whitetomove:
+            if r-1 >= 0 and c+2 <= 7:
+                if self.grid[r-1][c+2].is_empty:
+                    moves.append(Move((r,c), (r-1, c+2), self.grid))
+                if self.grid[r-1][c+2].piece[0] == "B" and self.grid[r-1][c+2].piece[1] != "K":
+                    moves.append(Move((r,c), (r-1, c+2), self.grid))
+
+            if r-1 >= 0 and c-2 >= 0:
+                if self.grid[r-1][c-2].is_empty:
+                    moves.append(Move((r,c), (r-1, c-2), self.grid))
+                if self.grid[r-1][c-2].piece[0] == "B" and self.grid[r-1][c-2].piece[1] != "K":
+                    moves.append(Move((r,c), (r-1, c-2), self.grid))
+
+            if r+1 <= 7 and c+2 <= 7:
+                if self.grid[r+1][c+2].is_empty:
+                    moves.append(Move((r,c), (r+1, c+2), self.grid))
+                if self.grid[r+1][c+2].piece[0] == "B" and self.grid[r+1][c+2].piece[1] != "K":
+                    moves.append(Move((r,c), (r+1, c+2), self.grid))
+
+            if r+1 <= 7 and c-2 >= 0:
+                if self.grid[r+1][c-2].is_empty:
+                    moves.append(Move((r,c), (r+1, c-2), self.grid))
+                if self.grid[r+1][c-2].piece[0] == "B" and self.grid[r+1][c-2].piece[1] != "K":
+                    moves.append(Move((r,c), (r+1, c-2), self.grid))
+
+            if r+2 <= 7 and c+1 <= 7:
+                if self.grid[r+2][c+1].is_empty:
+                    moves.append(Move((r,c), (r+2, c+1), self.grid))
+                if self.grid[r+2][c+1].piece[0] == "B" and self.grid[r+2][c+1].piece[1] != "K":
+                    moves.append(Move((r,c), (r+2, c+1), self.grid))
+
+            if r+2 <= 7 and c-1 >= 0:
+                if self.grid[r+2][c-1].is_empty:
+                    moves.append(Move((r,c), (r+2, c-1), self.grid))
+                if self.grid[r+2][c-1].piece[0] == "B" and self.grid[r+2][c-1].piece[1] != "K":
+                    moves.append(Move((r,c), (r+2, c-1), self.grid))
+
+            if r-2 >= 0 and c+1 <= 7:
+                if self.grid[r-2][c+1].is_empty:
+                    moves.append(Move((r,c), (r-2, c+1), self.grid))
+                if self.grid[r-2][c+1].piece[0] == "B" and self.grid[r-2][c+1].piece[1] != "K":
+                    moves.append(Move((r,c), (r-2, c+1), self.grid))
+
+            if r-2 >= 0 and c-1 >= 0:
+                if self.grid[r-2][c-1].is_empty:
+                    moves.append(Move((r,c), (r-2, c-1), self.grid))
+                if self.grid[r-2][c-1].piece[0] == "B" and self.grid[r-2][c-1].piece[1] != "K":
+                    moves.append(Move((r,c), (r-2, c-1), self.grid))
+
 
 
 class game:
