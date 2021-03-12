@@ -71,9 +71,9 @@ class interface:
         #self.receive_thread.start()
 
     def generate_board_coordinates(self):
-        self.xstart = self.width-(self.width*99.5)//100
-        self.xend = self.width-(self.width*30)//100
-        self.ystart = self.xstart
+        self.xstart = self.width*(18.94/100)
+        self.xend = self.xstart+(self.width*(50.78/100))
+        self.ystart = self.height*(0.998/100)
         self.boardheight = self.height-2*self.ystart-5
         self.boardwidth = self.boardheight
         self.boxwidth = self.boardwidth//8
@@ -84,20 +84,20 @@ class interface:
         		self.grid[row].append(box(row,column,int(self.xstart+2+(column*self.boxwidth)),self.ystart+2+(row*self.boxheight),self.boxwidth,self.boxheight))
 
     def generate_settings_panel(self):
-    	self.panel_xstart = self.xend + 15
+    	self.panel_xstart = self.xend + self.width*(0.97/100)
     	self.panel_ystart = self.ystart
-    	self.panelwidth = (self.width-15) - self.panel_xstart
-    	self.panelheight = 80
+    	self.panelwidth = (self.width-self.width*(0.97/100)) - self.panel_xstart
+    	self.panelheight = self.height*(9.9/100)
 
     def generate_killed_pieces_box(self):
-    	self.killed_xstart = self.xend + 15
-    	self.killed_ystart = self.panel_ystart + self.panelheight + 15
+    	self.killed_xstart = self.xend + self.width*(0.97/100)
+    	self.killed_ystart = self.panel_ystart + self.panelheight + self.width*(0.97/100)
     	self.killed_box_width = self.panelwidth
-    	self.killed_box_height = 250
+    	self.killed_box_height = self.height*(31/100)
 
     def generate_chatbox(self):
-    	self.chatbox_xstart = self.xend + 15
-    	self.chatbox_ystart = self.killed_ystart + self.killed_box_height + 15
+    	self.chatbox_xstart = self.xend + self.width*(0.97/100)
+    	self.chatbox_ystart = self.killed_ystart + self.killed_box_height + self.width*(0.97/100) 
     	self.chatbox_width = self.panelwidth
     	self.chatbox_height = self.boardheight + self.ystart - self.chatbox_ystart
 
@@ -110,13 +110,13 @@ class interface:
    					pygame.draw.rect(self.screen,COLOR4,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
 
     def generate_message_input_box(self):
-   		self.messsage_input_xstart = self.chatbox_xstart + 15
-   		self.messsage_input_ystart = self.chatbox_ystart+self.chatbox_height-50
-   		self.messsage_input_width = self.chatbox_width - 30
-   		self.messsage_input_height = 40
-   		self.message_text_xstart = self.messsage_input_xstart+5
-   		self.message_text_ystart = self.messsage_input_ystart+5
-   		self.cursor_coord=[[self.messsage_input_xstart+5,self.messsage_input_ystart+5],[self.messsage_input_xstart+5,self.messsage_input_ystart+35]]
+   		self.messsage_input_xstart = self.chatbox_xstart + self.width*(0.97/100)
+   		self.messsage_input_ystart = self.chatbox_ystart+self.chatbox_height-(self.height*(6/100))
+   		self.messsage_input_width = self.chatbox_width - self.width*(1.9/100)
+   		self.messsage_input_height = self.width*(2.6/100)
+   		self.message_text_xstart = self.messsage_input_xstart+self.width*(0.3/100)
+   		self.message_text_ystart = self.messsage_input_ystart+self.height*(0.6/100)
+   		self.cursor_coord=[[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(0.6/100)],[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(4.4/100)]]
 
     def cursor_blink(self):
    		self.current_time = pygame.time.get_ticks()
@@ -133,13 +133,13 @@ class interface:
             self.cursor_position += 1
             self.message_text = FONT.render(self.message,True,BLACK)
             self.message_rect = self.message_text.get_rect()
-            self.message_rect.center = (self.messsage_input_xstart+5+(self.message_rect.width//2),self.messsage_input_ystart+20)
+            self.message_rect.center = (self.messsage_input_xstart+self.width*(0.3/100)+(self.message_rect.width//2),self.messsage_input_ystart+self.height*(2.5/100))
             text = FONT.render(self.message[self.cursor_position:],True,BLACK)
             rect = text.get_rect()
-            self.cursor_coord[0][0] = self.messsage_input_xstart+5+self.message_rect.width-rect.width
+            self.cursor_coord[0][0] = self.messsage_input_xstart+self.width*(0.3/100)+self.message_rect.width-rect.width
             self.cursor_coord[1][0] = self.cursor_coord[0][0]
-            if self.cursor_coord[0][0] >= self.messsage_input_xstart+self.messsage_input_width-5:
-              self.cursor_coord[0][0] = self.messsage_input_xstart+self.messsage_input_width-5
+            if self.cursor_coord[0][0] >= self.messsage_input_xstart+self.messsage_input_width-self.width*(0.3/100):
+              self.cursor_coord[0][0] = self.messsage_input_xstart+self.messsage_input_width-self.width*(0.3/100)
               self.cursor_coord[1][0] = self.cursor_coord[0][0]
 
           elif (event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and len(self.message)>0:
@@ -154,7 +154,7 @@ class interface:
             self.chat_buffer_graphic.append(([username,uname_rect],[text,rect]))
             self.message = ""
             self.cursor_position = 0
-            self.cursor_coord=[[self.messsage_input_xstart+5,self.messsage_input_ystart+5],[self.messsage_input_xstart+5,self.messsage_input_ystart+35]]
+            self.cursor_coord=[[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(0.6/100)],[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(4.4/100)]]
             self.last_msg += 1
             if self.last_msg>=12:
               self.first_msg +=1
@@ -165,7 +165,7 @@ class interface:
             text = FONT.render(string_right_to_cursor,True,BLACK)
             rect = text.get_rect()
             #change cursor coordinates 
-            self.cursor_coord[0][0] = self.messsage_input_xstart+5+self.message_rect.width-rect.width
+            self.cursor_coord[0][0] = self.messsage_input_xstart+self.width*(0.3/100)+self.message_rect.width-rect.width
             self.cursor_coord[1][0] = self.cursor_coord[0][0]
 
    				
@@ -174,12 +174,11 @@ class interface:
             string_left_to_cursor = self.message[:self.cursor_position]
             text = FONT.render(string_left_to_cursor,True,BLACK)
             rect = text.get_rect()
-            self.cursor_coord[0][0] = self.messsage_input_xstart+5+rect.width
+            self.cursor_coord[0][0] = self.messsage_input_xstart+self.width*(0.3/100)+rect.width
             self.cursor_coord[1][0] = self.cursor_coord[0][0]
 
           elif event.key == pygame.K_BACKSPACE and self.cursor_position>0:
             self.cursor_position -= 1
-            print(event.unicode,type(event.key))
             deleted_letter = self.message[self.cursor_position]
             temp = ""
             for i in range(len(self.message)):
@@ -188,7 +187,7 @@ class interface:
             self.message = temp
             self.message_text = FONT.render(self.message,True,BLACK)
             self.message_rect = self.message_text.get_rect()
-            self.message_rect.center = (self.messsage_input_xstart+5+(self.message_rect.width//2),self.messsage_input_ystart+20)
+            self.message_rect.center = (self.messsage_input_xstart+self.width*(0.3/100)+(self.message_rect.width//2),self.messsage_input_ystart+self.height*(2.5/100))
             deleted_letter = FONT.render(deleted_letter,True,BLACK)
             rect = deleted_letter.get_rect()
             self.cursor_coord[0][0] -= rect.width
@@ -198,23 +197,23 @@ class interface:
         self.screen.blit(self.message_text,self.message_rect)
 
       if len(self.message) == 0:
-        self.cursor_coord=[[self.messsage_input_xstart+5,self.messsage_input_ystart+5],[self.messsage_input_xstart+5,self.messsage_input_ystart+35]]
+        self.cursor_coord=[[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(0.6/100)],[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(4.4/100)]]
 
     def print_messages(self):
-    	free_space_start = [self.messsage_input_xstart,self.messsage_input_ystart-30]
+    	free_space_start = [self.messsage_input_xstart,self.messsage_input_ystart-self.height*(3.7/100)]
     	for i in reversed(self.chat_buffer_graphic[self.first_msg:self.last_msg]):
     		i[0][1].center = (free_space_start[0]+i[0][1].width//2,free_space_start[1])
     		i[1][1].center = (free_space_start[0]+i[0][1].width+(i[1][1].width//2)+3,free_space_start[1])
     		self.screen.blit(i[0][0],i[0][1])
     		self.screen.blit(i[1][0],i[1][1])
-    		free_space_start[1] -= 30
+    		free_space_start[1] -= self.height*(3.7/100)
 
     def generate_other_functionalities(self):
-    	self.game_info_box1_coords = (self.xstart+self.boardwidth+10,self.ystart)
-    	self.game_info_box1_width = (self.panel_xstart-10)-self.game_info_box1_coords[0]
-    	self.game_info_box1_height = (self.boardheight//2)-10
+    	self.game_info_box1_coords = (self.width*(0.65/100),self.ystart)
+    	self.game_info_box1_width = (self.height*(33.7/100))
+    	self.game_info_box1_height = (self.boardheight//2)-(self.height*(1.2/100))
 
-    	self.game_info_box2_coords = (self.xstart+self.boardwidth+10,self.ystart+self.game_info_box1_height+10)
+    	self.game_info_box2_coords = (self.width*(0.65/100),self.ystart+self.game_info_box1_height+(self.height*(1.2/100)))
     	self.game_info_box2_width = self.game_info_box1_width
     	self.game_info_box2_height = (self.boardheight//2)
 
@@ -297,28 +296,37 @@ class piece:
 
 class game:
 
-  def __init__(self,grid,screen,sfac,piece_type):
+  def __init__(self,Interface,screen,sfac,piece_type):
     self.white_pieces_images = {}
     self.black_pieces_images = {}
     self.piece_type = piece_type
-    self.grid = grid
+    self.grid = Interface.grid
     self.mypieces = {}
     self.enemy_pieces = {}
     self.selected_box = None
     self.screen = screen
     self.pieces_scaling_factor = sfac
     self.position_adjustment = {
-                                'type1':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
-                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},
+                                'type1':{'WPawn':(0,0),'WRook':(0,0),
+                                         'WKnight':(0,0),'W_Bishop':(0,0),
+                                         'WQueen':(0,0),'WKing':(0,0),
+                                         'BPawn':(0,0),'BRook':(0,0),
+                                         'BKnight':(0,0),'B_Bishop':(0,0),
+                                         'BQueen':(0,0),'BKing':(0,0)},
 
-                                'type2':{'WPawn':(3,0),'WRook':(6,5),'WKnight':(15,3),'W_Bishop':(8,4),'WQueen':(17,-3),'WKing':(15,3),
-                                         'BPawn':(0,0),'BRook':(6,3),'BKnight':(16,1),'B_Bishop':(10,9),'BQueen':(17,0),'BKing':(15,3)},
+                                'type2':{'WPawn':(Interface.width*(0.19/100),0),'WRook':(6,5),
+                                         'WKnight':(15,3),'W_Bishop':(8,4),
+                                         'WQueen':(17,-3),'WKing':(15,3),
+                                         'BPawn':(0,0),'BRook':(6,3),
+                                         'BKnight':(16,1),'B_Bishop':(10,9),
+                                         'BQueen':(17,0),'BKing':(15,3)},
 
-                                'type3':{'WPawn':(16,5),'WRook':(15,7),'WKnight':(15,4),'W_Bishop':(15,6),'WQueen':(5,6),'WKing':(13,7),
-                                         'BPawn':(15,5),'BRook':(15,5),'BKnight':(16,2),'B_Bishop':(16,1),'BQueen':(5,0),'BKing':(13,4)},
-
-                                'type4':{'WPawn':(0,0),'WRook':(0,0),'WKnight':(0,0),'W_Bishop':(0,0),'WQueen':(0,0),'WKing':(0,0),
-                                         'BPawn':(0,0),'BRook':(0,0),'BKnight':(0,0),'B_Bishop':(0,0),'BQueen':(0,0),'BKing':(0,0)},               
+                                'type3':{'WPawn':(16,5),'WRook':(15,7),
+                                         'WKnight':(15,4),'W_Bishop':(15,6),
+                                         'WQueen':(5,6),'WKing':(13,7),
+                                         'BPawn':(15,5),'BRook':(15,5),
+                                         'BKnight':(16,2),'B_Bishop':(16,1),
+                                         'BQueen':(5,0),'BKing':(13,4)},          
                                }
 
   def load_pieces(self):
@@ -477,16 +485,15 @@ def update(Interface,screen,events):
     #Board
     Interface.draw_chess_board()
     #Settings Panel
-    pygame.draw.rect(screen,LIGHTBLUE,[Interface.panel_xstart+2.5,Interface.panel_ystart+2.5,Interface.panelwidth-2.5,Interface.panelheight-2.5])
+    pygame.draw.rect(screen,LIGHTBLUE,[Interface.panel_xstart+2,Interface.panel_ystart+2,Interface.panelwidth-2.5,Interface.panelheight-2.5])
     #Captured Pieces
-    pygame.draw.rect(screen,GREEN,[Interface.killed_xstart+2.5,Interface.killed_ystart+2.5,Interface.killed_box_width-2.5,Interface.killed_box_height-2.5])
+    pygame.draw.rect(screen,GREEN,[Interface.killed_xstart+2,Interface.killed_ystart+2,Interface.killed_box_width-2.5,Interface.killed_box_height-2.5])
     #Chat box
-    pygame.draw.rect(screen,LIGHTGREEN,[Interface.chatbox_xstart+2.5,Interface.chatbox_ystart+2.5,Interface.chatbox_width-2.5,Interface.chatbox_height-2.5])
+    pygame.draw.rect(screen,LIGHTGREEN,[Interface.chatbox_xstart+2,Interface.chatbox_ystart+2,Interface.chatbox_width-2.5,Interface.chatbox_height-3])
     #Chat box text bar
-    pygame.draw.rect(screen,WHITE,[Interface.messsage_input_xstart+2.5,Interface.messsage_input_ystart+2.5,Interface.messsage_input_width-2.5,Interface.messsage_input_height-2.5])
+    pygame.draw.rect(screen,WHITE,[Interface.messsage_input_xstart+2,Interface.messsage_input_ystart+2,Interface.messsage_input_width-2.5,Interface.messsage_input_height-2.5])
     #Chat box text bar - Border
     pygame.draw.rect(screen,BLACK,[Interface.messsage_input_xstart,Interface.messsage_input_ystart,Interface.messsage_input_width,Interface.messsage_input_height],2)
-    #screen.blit(W_king_image,(300,690))
     if Interface.cursor_blink():
     	pygame.draw.line(screen,BLACK,(Interface.cursor_coord[0][0],Interface.cursor_coord[0][1]),(Interface.cursor_coord[1][0],Interface.cursor_coord[1][1]),2)
     

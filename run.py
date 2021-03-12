@@ -44,7 +44,7 @@ Interface.generate_message_input_box()
 Interface.generate_other_functionalities()
 
 #Parameters -> [game grid created earlier,screen,scale for piece images,piece type]
-Game = game(Interface.grid,screen,None,2)
+Game = game(Interface,screen,None,3)
 Game.load_pieces()
 Game.init_my_pieces()
 Game.init_opponent_pieces()

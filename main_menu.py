@@ -31,8 +31,8 @@ class Option:
 		self.name = name
 		self.xstart = x
 		self.ystart = y
-		self.width = 300
-		self.height = 500
+		self.width = width*(19.53/100)
+		self.height = height*(62.42/100)
 		self.title = FONT1.render(self.name,True,(255,255,255))
 		self.rect = self.title.get_rect()
 		self.description = ""
