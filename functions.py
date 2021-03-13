@@ -281,8 +281,6 @@ class interface:
         print("Error sending message!!")
         self.sock.close()
 
-    def __str__(self):
-        return "screen-width:{} screen-height:{}\nboard-width:{} board-height:{}".format(self.width,self.height,self.boardwidth,self.boardheight)
 
 
 class piece:
@@ -293,6 +291,9 @@ class piece:
     self.color = color
     self.pos_adjustment = None
     self.is_alive = True
+
+  def __str__(self):
+    return "Name:{}\nPosition:{}\nColor:{}\nAlive:{}".format(self.name,self.position,self.color,self.is_alive)
 
 class game:
 
@@ -314,19 +315,19 @@ class game:
                                          'BKnight':(0,0),'B_Bishop':(0,0),
                                          'BQueen':(0,0),'BKing':(0,0)},
 
-                                'type2':{'WPawn':(Interface.width*(0.19/100),0),'WRook':(6,5),
-                                         'WKnight':(15,3),'W_Bishop':(8,4),
-                                         'WQueen':(17,-3),'WKing':(15,3),
-                                         'BPawn':(0,0),'BRook':(6,3),
-                                         'BKnight':(16,1),'B_Bishop':(10,9),
-                                         'BQueen':(17,0),'BKing':(15,3)},
+                                'type2':{'WPawn':(Interface.width*(0.19/100),0),'WRook':(Interface.width*(0.4/100),Interface.height*(0.62/100)),
+                                         'WKnight':(Interface.width*(0.97/100),Interface.height*(0.4/100)),'W_Bishop':(Interface.width*(0.5/100),Interface.height*(0.5/100)),
+                                         'WQueen':(Interface.width*(1.1/100),-Interface.height*(0.4/100)),'WKing':(Interface.width*(0.97/100),Interface.height*(0.4/100)),
+                                         'BPawn':(0,0),'BRook':(Interface.width*(0.4/100),Interface.height*(0.4/100)),
+                                         'BKnight':(Interface.width*(1/100),Interface.height*(0.12/100)),'B_Bishop':(Interface.width*(0.65/100),Interface.height*(1.1/100)),
+                                         'BQueen':(Interface.width*(1.1/100),0),'BKing':(Interface.width*(0.97/100),Interface.height*(0.4/100))},
 
-                                'type3':{'WPawn':(16,5),'WRook':(15,7),
-                                         'WKnight':(15,4),'W_Bishop':(15,6),
-                                         'WQueen':(5,6),'WKing':(13,7),
-                                         'BPawn':(15,5),'BRook':(15,5),
-                                         'BKnight':(16,2),'B_Bishop':(16,1),
-                                         'BQueen':(5,0),'BKing':(13,4)},          
+                                'type3':{'WPawn':(Interface.width*(1/100),Interface.height*(0.62/100)),'WRook':(Interface.width*(0.97/100),Interface.height*(0.9/100)),
+                                         'WKnight':(Interface.width*(0.97/100),Interface.height*(0.5/100)),'W_Bishop':(Interface.width*(0.97/100),Interface.height*(0.7/100)),
+                                         'WQueen':(Interface.width*(0.32/100),Interface.height*(0.7/100)),'WKing':(Interface.width*(0.8/100),Interface.height*(0.9/100)),
+                                         'BPawn':(Interface.width*(0.97/100),Interface.height*(0.6/100)),'BRook':(Interface.width*(0.97/100),Interface.height*(0.6/100)),
+                                         'BKnight':(Interface.width*(1/100),Interface.height*(0.24/100)),'B_Bishop':(Interface.width*(1/100),Interface.height*(0.12/100)),
+                                         'BQueen':(Interface.width*(0.32/100),0),'BKing':(Interface.width*(0.84/100),Interface.height*(0.5/100))},          
                                }
 
   def load_pieces(self):
@@ -466,7 +467,7 @@ class game:
 
   def highlight_selected_box(self):
   	if self.selected_box:
-  		pygame.draw.rect(self.screen,(204,204,0),[self.selected_box.xstart,self.selected_box.ystart,self.selected_box.width,self.selected_box.height],2)
+  		pygame.draw.rect(self.screen,(255,0,0),[self.selected_box.xstart,self.selected_box.ystart,self.selected_box.width,self.selected_box.height],3)
 
 
 def update(Interface,screen,events):
