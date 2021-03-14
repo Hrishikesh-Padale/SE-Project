@@ -72,10 +72,10 @@ class interface:
 
     def generate_board_coordinates(self):
         self.xstart = self.width*(18.94/100)
-        self.xend = self.xstart+(self.width*(50.78/100))
         self.ystart = self.height*(0.998/100)
         self.boardheight = self.height-2*self.ystart-5
         self.boardwidth = self.boardheight
+        self.xend = self.xstart+self.boardwidth
         self.boxwidth = self.boardwidth//8
         self.boxheight = self.boardheight//8
         for row in range(8):
