@@ -7,6 +7,7 @@ import time
 import random
 from functions import *
 import warnings
+from move_functions import *
 #from main_menu import *
 
 warnings.filterwarnings("ignore")
@@ -46,32 +47,37 @@ Interface.generate_other_functionalities()
 #Parameters -> [game grid created earlier,screen,scale for piece images,piece type]
 Game = game(Interface,screen,None,3)
 Game.load_pieces()
+Game.moves_manager = Moves_manager()
 Game.init_my_pieces()
 Game.init_opponent_pieces()
 
 
-#start = [495,689]
-#stop = [204,398]
+
+#start = [501.36, 596.9601799999999] 
+#stop = [501.36, 403.96018000000004]
 
 #main loop of the game
 while running:
     screen.fill(WHITE)
     events = pygame.event.get()
     for event in events:
-    	if event.type == QUIT or event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
+    	if event.type == QUIT or (event.type == pygame.KEYDOWN and event.key == K_ESCAPE):
             running = False
     	elif event.type == pygame.MOUSEBUTTONDOWN:
     		pos = pygame.mouse.get_pos()
     		col = int((pos[0]-Interface.xstart)//(Interface.boardwidth//8))
     		row = int((pos[1]-Interface.ystart)//(Interface.boardheight//8))
     		#print(row,col,pos)
-    		if row <= 7 and col <= 7:
-    			Game.handle_click_event((row,col))
+    		if row <= 7 and col <= 7 and row >= 0 and col >= 0:
+    			Game.handle_click_event([row,col])
 
     #update the screen based on events
-    update(Interface,screen,events)
+    Game.update()
     Game.highlight_selected_box()
-    Game.update_pieces(screen)
+    Game.highlight_legal_moves()
+    Game.update_pieces()
+    Interface.get_chat_input(events)
+    Interface.print_messages()
 
     #collinearity line
     #pygame.draw.line(screen,RED,(10,775),(7+Interface.boardwidth,775),2)
