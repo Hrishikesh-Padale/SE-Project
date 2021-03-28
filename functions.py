@@ -302,6 +302,8 @@ class game:
   def __init__(self,Interface,screen,sfac,piece_type):
     self.white_pieces_images = {}
     self.black_pieces_images = {}
+    self.captured_pieces = {'WPawn':0,'WRook':0,'WKnight':0,'W_Bishop':0,'WQueen':0,
+    						'BPawn':0,'BRook':0,'BKnight':0,'B_Bishop':0,'BQueen':0}
     self.piece_type = piece_type
     self.grid = Interface.grid
     self.Interface = Interface
@@ -310,6 +312,7 @@ class game:
     self.screen = screen
     self.pieces_scaling_factor = sfac
     self.moves_manager = None
+    self.get_captured_pieces_numbers()
     self.position_adjustment = {
                                 'type1':{'WPawn':(0,0),'WRook':(0,0),
                                          'WKnight':(0,0),'W_Bishop':(0,0),
@@ -478,7 +481,7 @@ class game:
 
   def highlight_selected_box(self):
   	if self.selected_box:
-  		pygame.draw.rect(self.screen,(255,0,0),[self.selected_box.xstart,self.selected_box.ystart,self.selected_box.width,self.selected_box.height],3)
+  		pygame.draw.rect(self.screen,(0,255,0),[self.selected_box.xstart,self.selected_box.ystart,self.selected_box.width,self.selected_box.height],3)
 
   def highlight_legal_moves(self):
     if self.moves_manager.legal_moves:
@@ -493,6 +496,9 @@ class game:
 
     stop  = [board[destination[0]][destination[1]].xstart+adjustment[0],
              board[destination[0]][destination[1]].ystart+adjustment[1]+1]
+
+    #set the current box of grid to empty
+    self.grid[piece.position[0]][piece.position[1]].is_empty = True
 
     #unlock the piece so that update_pieces function does not show it on screen when it is moving
     piece.locked = False
@@ -516,6 +522,19 @@ class game:
     self.selected_box = None
     self.grid[destination[0]][destination[1]].is_empty = False
     self.grid[destination[0]][destination[1]].piece = piece
+
+  #graphical
+  def get_captured_pieces_numbers(self):
+    num = FONT.render("0",True,RED)
+    rects = [num.get_rect() for i in range(10)]
+    rects[5].center = (1160,320)
+    rects[6].center = (1245,320)
+    rects[7].center = (1327,320)
+    rects[8].center = (1410,320)
+    rects[9].center = (1493,320)
+    self.captured_pieces_count = {'BPawn':[num,rects[5]],'BRook':[num,rects[6]],'B_Bishop':[num,rects[7]],
+                                  'BKnight':[num,rects[8]],'BQueen':[num,rects[9]]
+                                 }
 
 
   def update(self):
@@ -545,5 +564,42 @@ class game:
     pygame.draw.rect(self.screen,BLACK,[self.Interface.messsage_input_xstart,self.Interface.messsage_input_ystart,self.Interface.messsage_input_width,self.Interface.messsage_input_height],2)
     if self.Interface.cursor_blink():
       pygame.draw.line(self.screen,BLACK,(self.Interface.cursor_coord[0][0],self.Interface.cursor_coord[0][1]),(self.Interface.cursor_coord[1][0],self.Interface.cursor_coord[1][1]),2)
+
+    #Captured pieces
+    self.screen.blit(self.white_pieces_images['Pawn'],(1100,117))
+    self.screen.blit(self.white_pieces_images['Rook'],(1180,115))
+    self.screen.blit(self.white_pieces_images['Bishop'],(1265,114))
+    self.screen.blit(self.white_pieces_images['Knight'],(1345,112))
+    self.screen.blit(self.white_pieces_images['Queen'],(1420,113))
+
+    self.screen.blit(self.black_pieces_images['Pawn'],(1100,247))
+    self.screen.blit(self.black_pieces_images['Rook'],(1180,245))
+    self.screen.blit(self.black_pieces_images['Bishop'],(1265,242))
+    self.screen.blit(self.black_pieces_images['Knight'],(1345,242))
+    self.screen.blit(self.black_pieces_images['Queen'],(1420,240))
+
+    pygame.draw.circle(self.screen,RED,(1160,320),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1160,320),10)
+    pygame.draw.circle(self.screen,RED,(1245,320),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1245,320),10)
+    pygame.draw.circle(self.screen,RED,(1327,320),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1327,320),10)
+    pygame.draw.circle(self.screen,RED,(1410,320),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1410,320),10)
+    pygame.draw.circle(self.screen,RED,(1493,320),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1493,320),10)
+
+    pygame.draw.circle(self.screen,RED,(1160,190),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1160,190),10)
+
+
+    self.screen.blit(self.captured_pieces_count['BPawn'][0],self.captured_pieces_count['BPawn'][1])
+    self.screen.blit(self.captured_pieces_count['BRook'][0],self.captured_pieces_count['BRook'][1])
+    self.screen.blit(self.captured_pieces_count['B_Bishop'][0],self.captured_pieces_count['B_Bishop'][1])
+    self.screen.blit(self.captured_pieces_count['BKnight'][0],self.captured_pieces_count['BKnight'][1])
+    self.screen.blit(self.captured_pieces_count['BQueen'][0],self.captured_pieces_count['BQueen'][1])
+
     
+
+  #def update_captured_pieces(self):
 
