@@ -51,10 +51,9 @@ Game.moves_manager = Moves_manager()
 Game.init_my_pieces()
 Game.init_opponent_pieces()
 
-
-
-#start = [501.36, 596.9601799999999] 
-#stop = [501.36, 403.96018000000004]
+#start = [Game.grid[7][6].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[7][6].ystart+Game.position_adjustment['type3']['WKnight'][1]] 
+#stop = [Game.grid[5][5].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[5][5].ystart+Game.position_adjustment['type3']['WKnight'][1]]
+#print(start,stop)
 
 #main loop of the game
 while running:
@@ -76,8 +75,9 @@ while running:
     Game.highlight_selected_box()
     Game.highlight_legal_moves()
     Game.update_pieces()
-    Interface.get_chat_input(events)
-    Interface.print_messages()
+    if Interface.chat_panel.selected == "chat":
+    	Interface.get_chat_input(events)
+    	Interface.print_messages()
 
     #collinearity line
     #pygame.draw.line(screen,RED,(10,775),(7+Interface.boardwidth,775),2)
@@ -87,11 +87,11 @@ while running:
 
     '''_____________________Moving piece animation test___________________________'''
     #if start[0]>=stop[0] and start[1]>=stop[1]:								
-    #	start[0]-=3																
-    #	start[1]-=3																
-    #	screen.blit(Game.white_pieces_images['Bishop'],(start[0],start[1]))		
+    #	start[0]-=1														
+    #	start[1]-=2															
+    #	screen.blit(Game.white_pieces_images['Knight'],(start[0],start[1]))		
     #else:																		
-    #	screen.blit(Game.white_pieces_images['Bishop'],(stop[0],stop[1]))		
+    #	screen.blit(Game.white_pieces_images['Knight'],(stop[0],stop[1]))		
     '''___________________________________________________________________________'''
 
     clock.tick(60)

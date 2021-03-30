@@ -6,6 +6,7 @@ from threading import Thread
 from socket import *
 import time
 import random
+from chat_panel import *
 
 
 pygame.init()
@@ -46,6 +47,7 @@ class box:
 class interface:
     
     def __init__(self,width,height,screen=None):
+
         self.width = width
         self.height = height
         self.screen = screen  
@@ -71,6 +73,7 @@ class interface:
         #self.receive_thread.start()
 
     def generate_board_coordinates(self):
+
         self.xstart = self.width*(18.94/100)
         self.ystart = self.height*(0.998/100)
         self.boardheight = self.height-2*self.ystart-5
@@ -84,24 +87,29 @@ class interface:
         		self.grid[row].append(box(row,column,int(self.xstart+2+(column*self.boxwidth)),self.ystart+2+(row*self.boxheight),self.boxwidth,self.boxheight))
 
     def generate_settings_panel(self):
+
     	self.panel_xstart = self.xend + self.width*(0.97/100)
     	self.panel_ystart = self.ystart
     	self.panelwidth = (self.width-self.width*(0.97/100)) - self.panel_xstart
     	self.panelheight = self.height*(9.9/100)
 
     def generate_killed_pieces_box(self):
+
     	self.killed_xstart = self.xend + self.width*(0.97/100)
     	self.killed_ystart = self.panel_ystart + self.panelheight + self.width*(0.97/100)
     	self.killed_box_width = self.panelwidth
     	self.killed_box_height = self.height*(31/100)
 
     def generate_chatbox(self):
-    	self.chatbox_xstart = self.xend + self.width*(0.97/100)
-    	self.chatbox_ystart = self.killed_ystart + self.killed_box_height + self.width*(0.97/100) 
-    	self.chatbox_width = self.panelwidth
-    	self.chatbox_height = self.boardheight + self.ystart - self.chatbox_ystart
+
+      self.chatbox_xstart = self.xend + self.width*(0.97/100)
+      self.chatbox_ystart = self.killed_ystart + self.killed_box_height + self.width*(0.97/100) 
+      self.chatbox_width = self.panelwidth
+      self.chatbox_height = self.boardheight + self.ystart - self.chatbox_ystart
+      self.chat_panel = Chat_panel(self.screen,[self.chatbox_xstart,self.chatbox_ystart,self.chatbox_width,self.chatbox_height])
 
     def draw_chess_board(self):
+
    		for i in range(8):
    			for j in range(8):
    				if (i+j)%2 == 1:
@@ -110,6 +118,7 @@ class interface:
    					pygame.draw.rect(self.screen,COLOR4,[self.grid[i][j].xstart,self.grid[i][j].ystart,self.boxwidth,self.boxheight])
 
     def generate_message_input_box(self):
+
    		self.messsage_input_xstart = self.chatbox_xstart + self.width*(0.97/100)
    		self.messsage_input_ystart = self.chatbox_ystart+self.chatbox_height-(self.height*(6/100))
    		self.messsage_input_width = self.chatbox_width - self.width*(1.9/100)
@@ -119,6 +128,7 @@ class interface:
    		self.cursor_coord=[[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(0.6/100)],[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(4.4/100)]]
 
     def cursor_blink(self):
+
    		self.current_time = pygame.time.get_ticks()
    		if self.current_time >= self.change_time:
    			self.change_time = self.current_time + self.delay
@@ -126,6 +136,7 @@ class interface:
    		return self.cursor_visible
 
     def get_chat_input(self,events):
+
       for event in events:
         if event.type == pygame.KEYDOWN:
           if bool(event.unicode) and len(self.message)<self.max_message_length and event.key!=pygame.K_RETURN:
@@ -156,7 +167,7 @@ class interface:
             self.cursor_position = 0
             self.cursor_coord=[[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(0.6/100)],[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(4.4/100)]]
             self.last_msg += 1
-            if self.last_msg>=12:
+            if self.last_msg>=11:
               self.first_msg +=1
 
           elif event.key == pygame.K_LEFT and self.cursor_position > 0:
@@ -200,6 +211,7 @@ class interface:
         self.cursor_coord=[[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(0.6/100)],[self.messsage_input_xstart+self.width*(0.3/100),self.messsage_input_ystart+self.height*(4.4/100)]]
 
     def print_messages(self):
+
     	free_space_start = [self.messsage_input_xstart,self.messsage_input_ystart-self.height*(3.7/100)]
     	for i in reversed(self.chat_buffer_graphic[self.first_msg:self.last_msg]):
     		i[0][1].center = (free_space_start[0]+i[0][1].width//2,free_space_start[1])
@@ -209,6 +221,7 @@ class interface:
     		free_space_start[1] -= self.height*(3.7/100)
 
     def generate_other_functionalities(self):
+
     	self.game_info_box1_coords = (self.width*(0.65/100),self.ystart)
     	self.game_info_box1_width = (self.height*(33.7/100))
     	self.game_info_box1_height = (self.boardheight//2)-(self.height*(1.2/100))
@@ -221,6 +234,7 @@ class interface:
 
     #Networking part
     def connect_to_server(self):
+
       try:  
         self.sock = socket(AF_INET,SOCK_STREAM)  
         print ("Socket successfully created") 
@@ -230,6 +244,7 @@ class interface:
       self.sock.send(self.username.encode())
 
     def get_username_and_message(self,message):
+
       username = ""
       msg = ""
       if ":" not in message:
@@ -243,6 +258,7 @@ class interface:
       return username,msg
 
     def receive_messages(self):
+
       while True:
         try:
           message = self.sock.recv(1024).decode()
@@ -275,6 +291,7 @@ class interface:
           break
 
     def send_message(self,message):
+
       try:
         self.sock.send(message.encode())
       except:
@@ -284,6 +301,7 @@ class interface:
 
 
 class piece:
+
   def __init__(self,name,position,color):
     self.name = name
     self.position = position
@@ -300,6 +318,7 @@ class piece:
 class game:
 
   def __init__(self,Interface,screen,sfac,piece_type):
+
     self.white_pieces_images = {}
     self.black_pieces_images = {}
     self.captured_pieces = {'WPawn':0,'WRook':0,'WKnight':0,'W_Bishop':0,'WQueen':0,
@@ -337,6 +356,7 @@ class game:
                                }
 
   def load_pieces(self):
+
     self.white_pieces_images['Rook'] = pygame.image.load('Media/pieces type {}/WRook.png'.format(self.piece_type))
     self.white_pieces_images['Bishop'] = pygame.image.load('Media/pieces type {}/W_Bishop.png'.format(self.piece_type))
     self.white_pieces_images['Knight'] = pygame.image.load('Media/pieces type {}/WKnight.png'.format(self.piece_type))
@@ -358,6 +378,7 @@ class game:
         self.black_pieces_images[piece] = pygame.transform.scale(self.black_pieces_images[piece],self.pieces_scaling_factor)
 
   def init_my_pieces(self):
+
     pawns = [piece('pawn',[6,0],"white"),piece('pawn',[6,1],"white"),piece('pawn',[6,2],"white"),piece('pawn',[6,3],"white"),piece('pawn',[6,4],"white"),piece('pawn',[6,5],"white"),piece('pawn',[6,6],"white"),piece('pawn',[6,7],"white")]
     for pawn in pawns:
       pawn.image = self.white_pieces_images['Pawn']
@@ -407,6 +428,7 @@ class game:
         self.grid[i][j].is_empty = False
 
   def init_opponent_pieces(self):
+
     pawns = [piece('pawn',[1,0],"black"),piece('pawn',[1,1],"black"),piece('pawn',[1,2],"black"),piece('pawn',[1,3],"black"),piece('pawn',[1,4],"black"),piece('pawn',[1,5],"black"),piece('pawn',[1,6],"black"),piece('pawn',[1,7],"black")]
     for pawn in pawns:
       pawn.image = self.black_pieces_images['Pawn']
@@ -457,6 +479,7 @@ class game:
 
 
   def update_pieces(self):
+
     for pieces in self.moves_manager.pieces:
       for piece in self.moves_manager.pieces[pieces]:
         if piece.locked:
@@ -467,11 +490,13 @@ class game:
     		self.screen.blit(piece.image,(self.grid[piece.position[0]][piece.position[1]].xstart+piece.pos_adjustment[0],self.grid[piece.position[0]][piece.position[1]].ystart+piece.pos_adjustment[1]))
 
   def handle_click_event(self,coords):
+
     if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == "white":
       self.selected_box = self.grid[coords[0]][coords[1]]
       self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece,self.grid)
 
     elif (self.grid[coords[0]][coords[1]].is_empty or self.grid[coords[0]][coords[1]].piece.color == "black") and coords in [[i.x,i.y] for i in self.moves_manager.legal_moves]:
+      self.moves_manager.selected_piece.is_at_start = False
       self.move(self.moves_manager.selected_piece,coords,self.grid,self.position_adjustment['type{}'.format(self.piece_type)][self.moves_manager.adjustment_dictionary_name])
     
     else:
@@ -480,10 +505,12 @@ class game:
       self.moves_manager.selected_piece = None
 
   def highlight_selected_box(self):
+
   	if self.selected_box:
   		pygame.draw.rect(self.screen,(0,255,0),[self.selected_box.xstart,self.selected_box.ystart,self.selected_box.width,self.selected_box.height],3)
 
   def highlight_legal_moves(self):
+
     if self.moves_manager.legal_moves:
       for i in self.moves_manager.legal_moves:
         pygame.draw.rect(self.screen,(0,255,0),[i.xstart,i.ystart,i.width,i.height],4)
@@ -509,7 +536,7 @@ class game:
       self.update()
       self.update_pieces()
       if start[1]>stop[1]:
-        start[1]-=1
+        start[1]-=2
         self.screen.blit(piece.image,(start[0],start[1]))
         pygame.display.flip()
       else:
@@ -525,19 +552,29 @@ class game:
 
   #graphical
   def get_captured_pieces_numbers(self):
+
     num = FONT.render("0",True,RED)
     rects = [num.get_rect() for i in range(10)]
+    rects[0].center = (1160,190)
+    rects[1].center = (1245,190)
+    rects[2].center = (1327,190)
+    rects[3].center = (1410,190)
+    rects[4].center = (1493,190)
+
     rects[5].center = (1160,320)
     rects[6].center = (1245,320)
     rects[7].center = (1327,320)
     rects[8].center = (1410,320)
     rects[9].center = (1493,320)
-    self.captured_pieces_count = {'BPawn':[num,rects[5]],'BRook':[num,rects[6]],'B_Bishop':[num,rects[7]],
+    self.captured_pieces_count = {'WPawn':[num,rects[0]],'WRook':[num,rects[1]],'W_Bishop':[num,rects[2]],
+                                  'WKnight':[num,rects[3]],'WQueen':[num,rects[4]],
+                                  'BPawn':[num,rects[5]],'BRook':[num,rects[6]],'B_Bishop':[num,rects[7]],
                                   'BKnight':[num,rects[8]],'BQueen':[num,rects[9]]
                                  }
 
 
   def update(self):
+
     #Board - Border
     pygame.draw.rect(self.screen,BLACK,[self.Interface.xstart,self.Interface.ystart,self.Interface.boardwidth,self.Interface.boardheight],3)
     #Settings Panel - Border 
@@ -557,13 +594,14 @@ class game:
     #Captured Pieces
     pygame.draw.rect(self.screen,GREEN,[self.Interface.killed_xstart+2,self.Interface.killed_ystart+2,self.Interface.killed_box_width-2.5,self.Interface.killed_box_height-2.5])
     #Chat box
-    pygame.draw.rect(self.screen,LIGHTGREEN,[self.Interface.chatbox_xstart+2,self.Interface.chatbox_ystart+2,self.Interface.chatbox_width-2.5,self.Interface.chatbox_height-3])
+    pygame.draw.rect(self.screen,WHITE,[self.Interface.chatbox_xstart+2,self.Interface.chatbox_ystart+2,self.Interface.chatbox_width-2.5,self.Interface.chatbox_height-3])
     #Chat box text bar
-    pygame.draw.rect(self.screen,WHITE,[self.Interface.messsage_input_xstart+2,self.Interface.messsage_input_ystart+2,self.Interface.messsage_input_width-2.5,self.Interface.messsage_input_height-2.5])
+    #pygame.draw.rect(self.screen,WHITE,[self.Interface.messsage_input_xstart+2,self.Interface.messsage_input_ystart+2,self.Interface.messsage_input_width-2.5,self.Interface.messsage_input_height-2.5])
     #Chat box text bar - Border
-    pygame.draw.rect(self.screen,BLACK,[self.Interface.messsage_input_xstart,self.Interface.messsage_input_ystart,self.Interface.messsage_input_width,self.Interface.messsage_input_height],2)
-    if self.Interface.cursor_blink():
-      pygame.draw.line(self.screen,BLACK,(self.Interface.cursor_coord[0][0],self.Interface.cursor_coord[0][1]),(self.Interface.cursor_coord[1][0],self.Interface.cursor_coord[1][1]),2)
+    if self.Interface.chat_panel.selected == "chat":
+      pygame.draw.rect(self.screen,BLACK,[self.Interface.messsage_input_xstart,self.Interface.messsage_input_ystart,self.Interface.messsage_input_width,self.Interface.messsage_input_height],2)
+      if self.Interface.cursor_blink():
+        pygame.draw.line(self.screen,BLACK,(self.Interface.cursor_coord[0][0],self.Interface.cursor_coord[0][1]),(self.Interface.cursor_coord[1][0],self.Interface.cursor_coord[1][1]),2)
 
     #Captured pieces
     self.screen.blit(self.white_pieces_images['Pawn'],(1100,117))
@@ -591,13 +629,28 @@ class game:
 
     pygame.draw.circle(self.screen,RED,(1160,190),12,3)
     pygame.draw.circle(self.screen,WHITE,(1160,190),10)
+    pygame.draw.circle(self.screen,RED,(1245,190),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1245,190),10)
+    pygame.draw.circle(self.screen,RED,(1327,190),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1327,190),10)
+    pygame.draw.circle(self.screen,RED,(1410,190),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1410,190),10)
+    pygame.draw.circle(self.screen,RED,(1493,190),12,3)
+    pygame.draw.circle(self.screen,WHITE,(1493,190),10)
 
+    self.screen.blit(self.captured_pieces_count['WPawn'][0],self.captured_pieces_count['WPawn'][1])
+    self.screen.blit(self.captured_pieces_count['WRook'][0],self.captured_pieces_count['WRook'][1])
+    self.screen.blit(self.captured_pieces_count['W_Bishop'][0],self.captured_pieces_count['W_Bishop'][1])
+    self.screen.blit(self.captured_pieces_count['WKnight'][0],self.captured_pieces_count['WKnight'][1])
+    self.screen.blit(self.captured_pieces_count['WQueen'][0],self.captured_pieces_count['WQueen'][1])
 
     self.screen.blit(self.captured_pieces_count['BPawn'][0],self.captured_pieces_count['BPawn'][1])
     self.screen.blit(self.captured_pieces_count['BRook'][0],self.captured_pieces_count['BRook'][1])
     self.screen.blit(self.captured_pieces_count['B_Bishop'][0],self.captured_pieces_count['B_Bishop'][1])
     self.screen.blit(self.captured_pieces_count['BKnight'][0],self.captured_pieces_count['BKnight'][1])
     self.screen.blit(self.captured_pieces_count['BQueen'][0],self.captured_pieces_count['BQueen'][1])
+
+    self.Interface.chat_panel.mount()
 
     
 
