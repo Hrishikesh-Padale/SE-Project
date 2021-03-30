@@ -13,18 +13,10 @@ from move_functions import *
 warnings.filterwarnings("ignore")
 
 clock = pygame.time.Clock()
-
-#fullscreen = int(input("Run in fullscreen?(1/0):"))
-#if fullscreen:
-#    WSIZE = (0,0)
-#    screen = pygame.display.set_mode((0,0))
-#    width,height = screen.get_size()
-#else:
-#    width,height = 1536,801
-#    screen = pygame.display.set_mode((width,height))
-
-
+#WSIZE = (0,0)
+#screen = pygame.display.set_mode((0,0))
 width,height = 1536,801
+
 screen = pygame.display.set_mode((width,height))
 Interface = interface(width,height)
 Interface.screen = screen
@@ -50,6 +42,7 @@ Game.load_pieces()
 Game.moves_manager = Moves_manager()
 Game.init_my_pieces()
 Game.init_opponent_pieces()
+Game.get_axes()
 
 #start = [Game.grid[7][6].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[7][6].ystart+Game.position_adjustment['type3']['WKnight'][1]] 
 #stop = [Game.grid[5][5].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[5][5].ystart+Game.position_adjustment['type3']['WKnight'][1]]
@@ -60,7 +53,7 @@ while running:
     screen.fill(WHITE)
     events = pygame.event.get()
     for event in events:
-    	if event.type == QUIT or (event.type == pygame.KEYDOWN and event.key == K_ESCAPE):
+    	if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == K_ESCAPE):
             running = False
     	elif event.type == pygame.MOUSEBUTTONDOWN:
     		pos = pygame.mouse.get_pos()
