@@ -22,7 +22,17 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0901db4-ad47-42cb-9e53-5724f393a5f9" name="Default Changelist" comment="" />
+    <list default="true" id="c0901db4-ad47-42cb-9e53-5724f393a5f9" name="Default Changelist" comment="queen moves added">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Media/pieces type 1/B_Bishop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Media/pieces type 1/W_Bishop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Media/pieces type 2/B_Bishop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Media/pieces type 2/W_Bishop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Media/pieces type 3/B_Bishop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Media/pieces type 3/W_Bishop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/move_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/move_functions.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +56,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
   </component>
   <component name="RunManager" selected="Python.run">
     <configuration name="functions" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -69,18 +80,39 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SE-project" />
+    <configuration name="move_functions" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="F:\Anaconda\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/move_functions.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="F:\Anaconda\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -93,6 +125,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.run" />
+        <item itemvalue="Python.move_functions" />
         <item itemvalue="Python.functions" />
       </list>
     </recent_temporary>
@@ -106,6 +139,35 @@
       <option name="presentableId" value="Default" />
       <updated>1615660668643</updated>
     </task>
+    <task id="LOCAL-00001" summary="rook moves">
+      <created>1617109504689</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1617109504689</updated>
+    </task>
+    <task id="LOCAL-00002" summary="knight error corrected">
+      <created>1617110486070</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1617110486070</updated>
+    </task>
+    <task id="LOCAL-00003" summary="rook moves updated">
+      <created>1617115527952</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1617115527952</updated>
+    </task>
+    <task id="LOCAL-00004" summary="queen moves added">
+      <created>1617116987846</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1617116987846</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -120,27 +182,38 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="rook moves" />
+    <MESSAGE value="knight error corrected" />
+    <MESSAGE value="rook moves updated" />
+    <MESSAGE value="queen moves added" />
+    <option name="LAST_COMMIT_MESSAGE" value="queen moves added" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog" timestamp="1617026058196">
+    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog" timestamp="1617097865043">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1617026058196" />
-    <state width="1515" height="155" key="GridCell.Tab.0.bottom" timestamp="1617040900132">
+    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1617097865043" />
+    <state width="1515" height="155" key="GridCell.Tab.0.bottom" timestamp="1617117735312">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="155" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617040900132" />
-    <state width="1515" height="155" key="GridCell.Tab.0.center" timestamp="1617040900132">
+    <state width="1515" height="155" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617117735312" />
+    <state width="1515" height="155" key="GridCell.Tab.0.center" timestamp="1617117735311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="155" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617040900132" />
-    <state width="1515" height="155" key="GridCell.Tab.0.left" timestamp="1617040900132">
+    <state width="1515" height="155" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617117735311" />
+    <state width="1515" height="155" key="GridCell.Tab.0.left" timestamp="1617117735311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="155" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617040900132" />
-    <state width="1515" height="155" key="GridCell.Tab.0.right" timestamp="1617040900132">
+    <state width="1515" height="155" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617117735311" />
+    <state width="1515" height="155" key="GridCell.Tab.0.right" timestamp="1617117735311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="155" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617040900132" />
+    <state width="1515" height="155" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617117735311" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1617116993384">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1617116993384" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1617037161603">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

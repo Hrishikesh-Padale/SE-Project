@@ -337,34 +337,34 @@ class game:
         self.get_captured_pieces_numbers()
         self.position_adjustment = {
             'type1': {'WPawn': (0, 0), 'WRook': (0, 0),
-                      'WKnight': (0, 0), 'W_Bishop': (0, 0),
+                      'WKnight': (0, 0), 'WBishop': (0, 0),
                       'WQueen': (0, 0), 'WKing': (0, 0),
                       'BPawn': (0, 0), 'BRook': (0, 0),
-                      'BKnight': (0, 0), 'B_Bishop': (0, 0),
+                      'BKnight': (0, 0), 'BBishop': (0, 0),
                       'BQueen': (0, 0), 'BKing': (0, 0)},
 
             'type2': {'WPawn': (Interface.width * (0.19 / 100), 0),
                       'WRook': (Interface.width * (0.4 / 100), Interface.height * (0.62 / 100)),
                       'WKnight': (Interface.width * (0.97 / 100), Interface.height * (0.4 / 100)),
-                      'W_Bishop': (Interface.width * (0.5 / 100), Interface.height * (0.5 / 100)),
+                      'WBishop': (Interface.width * (0.5 / 100), Interface.height * (0.5 / 100)),
                       'WQueen': (Interface.width * (1.1 / 100), -Interface.height * (0.4 / 100)),
                       'WKing': (Interface.width * (0.97 / 100), Interface.height * (0.4 / 100)),
                       'BPawn': (0, 0), 'BRook': (Interface.width * (0.4 / 100), Interface.height * (0.4 / 100)),
                       'BKnight': (Interface.width * (1 / 100), Interface.height * (0.12 / 100)),
-                      'B_Bishop': (Interface.width * (0.65 / 100), Interface.height * (1.1 / 100)),
+                      'BBishop': (Interface.width * (0.65 / 100), Interface.height * (1.1 / 100)),
                       'BQueen': (Interface.width * (1.1 / 100), 0),
                       'BKing': (Interface.width * (0.97 / 100), Interface.height * (0.4 / 100))},
 
             'type3': {'WPawn': (Interface.width * (1 / 100), Interface.height * (0.62 / 100)),
                       'WRook': (Interface.width * (0.97 / 100), Interface.height * (0.9 / 100)),
                       'WKnight': (Interface.width * (0.97 / 100), Interface.height * (0.5 / 100)),
-                      'W_Bishop': (Interface.width * (0.97 / 100), Interface.height * (0.7 / 100)),
+                      'WBishop': (Interface.width * (0.97 / 100), Interface.height * (0.7 / 100)),
                       'WQueen': (Interface.width * (0.32 / 100), Interface.height * (0.7 / 100)),
                       'WKing': (Interface.width * (0.8 / 100), Interface.height * (0.9 / 100)),
                       'BPawn': (Interface.width * (0.97 / 100), Interface.height * (0.6 / 100)),
                       'BRook': (Interface.width * (0.97 / 100), Interface.height * (0.6 / 100)),
                       'BKnight': (Interface.width * (1 / 100), Interface.height * (0.24 / 100)),
-                      'B_Bishop': (Interface.width * (1 / 100), Interface.height * (0.12 / 100)),
+                      'BBishop': (Interface.width * (1 / 100), Interface.height * (0.12 / 100)),
                       'BQueen': (Interface.width * (0.32 / 100), 0),
                       'BKing': (Interface.width * (0.84 / 100), Interface.height * (0.5 / 100))},
         }
@@ -405,10 +405,10 @@ class game:
         self.grid[7][0].piece = rooks[0]
         self.grid[7][7].piece = rooks[1]
 
-        bishops = [piece('bishop', [7, 2], "white"), piece('bisop', [7, 5], "white")]
+        bishops = [piece('bishop', [7, 2], "white"), piece('bishop', [7, 5], "white")]
         for bishop in bishops:
             bishop.image = self.white_pieces_images['Bishop']
-            bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['W_Bishop']
+            bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WBishop']
         self.moves_manager.pieces['bishops'] = bishops
         self.grid[7][2].piece = bishops[0]
         self.grid[7][5].piece = bishops[1]
@@ -463,7 +463,7 @@ class game:
         bishops = [piece('bishop', [0, 2], "black"), piece('bisop', [0, 5], "black")]
         for bishop in bishops:
             bishop.image = self.black_pieces_images['Bishop']
-            bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['B_Bishop']
+            bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BBishop']
         self.enemy_pieces['bishops'] = bishops
         self.grid[0][2].piece = bishops[0]
         self.grid[0][5].piece = bishops[1]
@@ -510,6 +510,7 @@ class game:
         if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == "white":
             self.selected_box = self.grid[coords[0]][coords[1]]
             self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+            print(self.moves_manager.legal_moves)#
 
         elif (self.grid[coords[0]][coords[1]].is_empty or self.grid[coords[0]][
             coords[1]].piece.color == "black") and coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
@@ -553,8 +554,9 @@ class game:
             # keep updating the screen and pieces while moving piece
             self.update()
             self.update_pieces()
+            #add animation conditions for different pieces
             if start[1] >= stop[1]:
-                start[1] -= 4
+                start[1] -= 1
                 self.screen.blit(piece.image, (start[0], start[1]))
                 pygame.display.flip()
             else:
