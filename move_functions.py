@@ -22,7 +22,7 @@ class Moves_manager:
                 if board[piece.position[0] - 2][piece.position[0] - 1].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] - 1])
             '''
-            print(piece.position)
+            #print(piece.position)
             self.legal_moves = list()
             if piece.position[0] - 1 >= 0 and piece.position[1] + 2 <= 7:
 
@@ -62,9 +62,11 @@ class Moves_manager:
                 #    self.legal_moves.append(board[piece.position[0] + 2][piece.position[1] - 1])
 
             ####Out of Index Error####
-            #if piece.position[0] - 2 >= 0 and piece.position[1] + 1 <= 7:
-            #    if board[piece.position[0] - 2][piece.position[0] + 1].is_empty == True:
-            #        self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] + 1])
+            if piece.position[0] - 2 >= 0 and piece.position[1] + 1 <= 7:
+                print(piece.position)
+                print(board[piece.position[0] - 2][piece.position[1]])
+                if board[piece.position[0] - 2][piece.position[1] +1].is_empty == True:
+                    self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] + 1])
                 #if piece.color == 'black' and piece.name != 'king':
                 #    self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] + 1])
 
