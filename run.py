@@ -68,7 +68,8 @@ while running:
             row = int((pos[1] - Interface.ystart) // (Interface.boardheight // 8))
             # print(row,col,pos)
             if row <= 7 and col <= 7 and row >= 0 and col >= 0:
-                Game.handle_click_event([row, col])
+                Game.handle_click_event([row, col], "white")
+
 
     # update the screen based on events
     Game.update()

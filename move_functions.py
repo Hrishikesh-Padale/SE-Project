@@ -1,3 +1,4 @@
+from functions import *
 class Moves_manager:
     def __init__(self):
         self.pieces	 = {}
@@ -8,74 +9,125 @@ class Moves_manager:
     def get_legal_moves(self,piece,board):
         self.selected_piece = piece
         self.adjustment_dictionary_name = self.selected_piece.color[0].upper()+self.selected_piece.name[0].upper()+self.selected_piece.name[1:]
-        if piece.name == 'pawn':
-            if piece.is_at_start:
-                self.legal_moves.append(board[piece.position[0]-1][piece.position[1]])
-                self.legal_moves.append(board[piece.position[0]-2][piece.position[1]])
-                piece.is_at_start = False
-            else:
-                self.legal_moves.append(board[piece.position[0]-1][piece.position[1]])
+        if piece.name == 'pawn' and piece.color == 'white':
+            
+            if piece.position[0] == 6:
+                if (board[piece.position[0]-1][piece.position[1]].is_empty == True):
+                    self.legal_moves.append(board[piece.position[0]-1][piece.position[1]])
+                if (board[piece.position[0]-2][piece.position[1]].is_empty == True):
+                    self.legal_moves.append(board[piece.position[0]-2][piece.position[1]])
+                    
+                #captures
+                if board[piece.position[0]-1][piece.position[1]+1].is_empty == False:
+                    if (board[piece.position[0]-1][piece.position[1]+1].piece.color == 'black') and (board[piece.position[0]-1][piece.position[1]+1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] + 1])
+                if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
+                    if (board[piece.position[0]-1][piece.position[1]-1].piece.color == 'black') and (board[piece.position[0]-1][piece.position[1]-1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] - 1])
+                    
+            elif piece.position[0] in [5, 4, 3, 2]:
+                if (board[piece.position[0]-1][piece.position[1]].is_empty == True):
+                    self.legal_moves.append(board[piece.position[0]-1][piece.position[1]])
+                    
+                #captures
+                if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
+                    if (board[piece.position[0]-1][piece.position[1]+1].piece.color == 'black') and (board[piece.position[0]-1][piece.position[1]+1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] + 1])
+                if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
+                    if (board[piece.position[0]-1][piece.position[1]-1].piece.color == 'black') and (board[piece.position[0]-1][piece.position[1]-1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] - 1])
+            
+            #promotion to be added
+            elif piece.position[0] == 1:
+                if (board[piece.position[0] - 1][piece.position[1]].is_empty == True):
+                    promotions = ['queen', 'rook', 'bishop', 'knight']
+                    for i in promotions:
+                        piece.name = i
+                        self.legal_moves.append(board[piece.position[0]-1][piece.position[1]])
+                #captures and promotes
+                if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
+                    if (board[piece.position[0]-1][piece.position[1]+1].piece.color == 'black') and (board[piece.position[0]-1][piece.position[1]+1].piece.name != 'king'):
+                        promotions = ['queen', 'rook', 'bishop', 'knight']
+                        for i in promotions:
+                            piece.name = i
+                            self.legal_moves.append(board[piece.position[0]-1][piece.position[1]])
+                if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
+                    if (board[piece.position[0]-1][piece.position[1]-1].piece.color == 'black') and (board[piece.position[0]-1][piece.position[1]-1].piece.name != 'king'):
+                        promotions = ['queen', 'rook', 'bishop', 'knight']
+                        for i in promotions:
+                            piece.name = i
+                            self.legal_moves.append(board[piece.position[0]-1][piece.position[1]])
 
         elif piece.name == 'knight':
-            '''
-            if (piece.position[0] - 2 >= 0 and piece.position[1] - 1 >= 0):
-                if board[piece.position[0] - 2][piece.position[0] - 1].is_empty == True:
-                    self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] - 1])
-            '''
+
             #print(piece.position)
             self.legal_moves = list()
             if piece.position[0] - 1 >= 0 and piece.position[1] + 2 <= 7:
 
-                if board[piece.position[0] - 1][piece.position[0] + 2].is_empty == True:
+                if board[piece.position[0] - 1][piece.position[1] + 2].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] + 2])
-                #if piece.color == 'black' and piece.name != 'king':
-                #    self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] + 2])
+                #captures
+                else:
+                    if (board[piece.position[0] - 1][piece.position[1] + 2].piece.color == 'black') and (board[piece.position[0] - 1][piece.position[1] + 2].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] + 2])
 
             if piece.position[0] - 1 >= 0 and piece.position[1] - 2 >= 0:
                 if board[piece.position[0] - 1][piece.position[0] - 2].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] - 2])
-                #if piece.color == 'black' and piece.name != 'king':
-                #    self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] - 2])
+                #captures
+                else:
+                    if (board[piece.position[0] - 1][piece.position[0] - 2].piece.color == 'black') and (board[piece.position[0] - 1][piece.position[0] -2].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 1][piece.position[1] - 2])
 
             if piece.position[0] + 1 <= 7 and piece.position[1] + 2 <= 7:
                 if board[piece.position[0] + 1][piece.position[0] + 2].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] + 1][piece.position[1] + 2])
-                #if piece.color == 'black' and piece.name != 'king':
-                #    self.legal_moves.append(board[piece.position[0] + 1][piece.position[1] + 2])
+                #captures
+                else:
+                    if (board[piece.position[0] + 1][piece.position[0] + 2].piece.color == 'black') and (board[piece.position[0] + 1][piece.position[0] + 2].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] + 1][piece.position[1] + 2])
 
             if piece.position[0] + 1 <= 7 and piece.position[1] - 2 >= 0:
                 if board[piece.position[0] + 1][piece.position[0] - 2].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] + 1][piece.position[1] - 2])
-                #if piece.color == 'black' and piece.name != 'king':
-                #    self.legal_moves.append(board[piece.position[0] + 1][piece.position[1] - 2])
+                #captures
+                else:
+                    if (board[piece.position[0] + 1][piece.position[0] - 2].piece.color == 'black') and (board[piece.position[0] + 1][piece.position[0] - 2].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] + 1][piece.position[1] - 2])
 
             if piece.position[0] + 2 <= 7 and piece.position[1] + 1 <= 7:
                 if board[piece.position[0] + 2][piece.position[0] + 1].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] + 2][piece.position[1] + 1])
-                #if piece.color == 'black' and piece.name != 'king':
-                #    self.legal_moves.append(board[piece.position[0] + 2][piece.position[1] + 1])
+                #captures
+                else:
+                    if (board[piece.position[0] + 2][piece.position[0] + 1].piece.color == 'black') and (board[piece.position[0] + 2][piece.position[0] + 1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] + 2][piece.position[1] + 1])
 
             if piece.position[0] + 2 <= 7 and piece.position[1] - 1 >= 0:
                 if board[piece.position[0] + 2][piece.position[0] - 1].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] + 2][piece.position[1] - 1])
-                #if piece.color == 'black' and piece.name != 'king':
-                #    self.legal_moves.append(board[piece.position[0] + 2][piece.position[1] - 1])
+                #captures
+                else:
+                    if (board[piece.position[0] + 2][piece.position[0] - 1].piece.color == 'black') and (board[piece.position[0] + 2][piece.position[0] - 1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] + 2][piece.position[1] - 1])
 
-            ####Out of Index Error####
             if piece.position[0] - 2 >= 0 and piece.position[1] + 1 <= 7:
-                print(piece.position)
-                print(board[piece.position[0] - 2][piece.position[1]])
+                #print(piece.position)
+                #print(board[piece.position[0] - 2][piece.position[1]])
                 if board[piece.position[0] - 2][piece.position[1] +1].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] + 1])
-                #if piece.color == 'black' and piece.name != 'king':
-                #    self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] + 1])
+                #captures
+                else:
+                    if (board[piece.position[0] - 2][piece.position[0] + 1].piece.color == 'black') and (board[piece.position[0] - 2][piece.position[0] + 1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] + 1])
 
             if piece.position[0] - 2 >= 0 and piece.position[1] - 1 >= 0:
-
                 if board[piece.position[0] - 2][piece.position[0] - 1].is_empty == True:
                     self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] - 1])
-                #if (board[piece.position[0] - 2][piece.position[0] - 1].is_empty == False) and (board[piece.position[0] - 2][piece.position[0] -1].piece.color == 'black') and (board[piece.position[0] - 2][piece.position[0] -1].piece.name != 'king'):
-                #    self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] - 1])
+                #captures
+                else:
+                    if (board[piece.position[0] - 2][piece.position[0] -1].piece.color == 'black') and (board[piece.position[0] - 2][piece.position[0] -1].piece.name != 'king'):
+                        self.legal_moves.append(board[piece.position[0] - 2][piece.position[1] - 1])
 
         elif piece.name == 'rook':
             self.legal_moves = list()
@@ -83,6 +135,8 @@ class Moves_manager:
                 for i in range(piece.position[0] + 1, 8):
                     if (board[i][piece.position[1]].is_empty == True):
                         self.legal_moves.append(board[i][piece.position[1]])
+
+                    #captures
                     else:
                         if (board[i][piece.position[1]].piece.color == 'black' and board[i][piece.position[1]].piece.name != 'king'):
                             self.legal_moves.append(board[i][piece.position[1]])
@@ -94,6 +148,8 @@ class Moves_manager:
                 for i in range(piece.position[0] - 1, -1, -1):
                     if (board[i][piece.position[1]].is_empty == True) :
                         self.legal_moves.append(board[i][piece.position[1]])
+
+                    #captures
                     else:
                         if (board[i][piece.position[1]].piece.color == 'black' and board[i][piece.position[1]].piece.name != 'king'):
                             self.legal_moves.append(board[i][piece.position[1]])
@@ -105,6 +161,8 @@ class Moves_manager:
                 for i in range(piece.position[1] + 1, 8):
                     if (board[piece.position[0]][i].is_empty == True):
                         self.legal_moves.append(board[piece.position[0]][i])
+
+                    #captures
                     else:
                         if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][i].piece.name != 'king'):
                             self.legal_moves.append(board[piece.position[0]][i])
@@ -115,6 +173,8 @@ class Moves_manager:
                 for i in range(piece.position[1] - 1, -1, -1):
                     if (board[piece.position[0]][i].is_empty == True):
                         self.legal_moves.append(board[piece.position[0]][i])
+
+                    #captures
                     else:
                         if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][i].piece.name != 'king'):
                             self.legal_moves.append(board[piece.position[0]][i])
@@ -128,6 +188,8 @@ class Moves_manager:
                 for i in range(piece.position[0] + 1, 8):
                     if (board[i][piece.position[1]].is_empty == True):
                         self.legal_moves.append(board[i][piece.position[1]])
+
+                    #captures
                     else:
                         if (board[i][piece.position[1]].piece.color == 'black' and board[i][piece.position[1]].piece.name != 'king'):
                             self.legal_moves.append(board[i][piece.position[1]])
@@ -139,6 +201,8 @@ class Moves_manager:
                 for i in range(piece.position[0] - 1, -1, -1):
                     if (board[i][piece.position[1]].is_empty == True) :
                         self.legal_moves.append(board[i][piece.position[1]])
+
+                    #captures
                     else:
                         if (board[i][piece.position[1]].piece.color == 'black' and board[i][piece.position[1]].piece.name != 'king'):
                             self.legal_moves.append(board[i][piece.position[1]])
@@ -150,6 +214,8 @@ class Moves_manager:
                 for i in range(piece.position[1] + 1, 8):
                     if (board[piece.position[0]][i].is_empty == True):
                         self.legal_moves.append(board[piece.position[0]][i])
+
+                    #captures
                     else:
                         if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][i].piece.name != 'king'):
                             self.legal_moves.append(board[piece.position[0]][i])
@@ -161,6 +227,8 @@ class Moves_manager:
                 for i in range(piece.position[1] - 1, -1, -1):
                     if (board[piece.position[0]][i].is_empty == True):
                         self.legal_moves.append(board[piece.position[0]][i])
+
+                    #captures
                     else:
                         if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][i].piece.name != 'king'):
                             self.legal_moves.append(board[piece.position[0]][i])
@@ -177,6 +245,8 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i += 1
                         j += 1
+
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])
@@ -193,6 +263,7 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i -= 1
                         j -= 1
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])
@@ -209,6 +280,8 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i -= 1
                         j += 1
+
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])
@@ -225,6 +298,8 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i += 1
                         j -= 1
+
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])
@@ -242,6 +317,8 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i += 1
                         j += 1
+
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])
@@ -258,6 +335,8 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i -= 1
                         j -= 1
+
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])
@@ -274,6 +353,8 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i -= 1
                         j += 1
+
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])
@@ -290,6 +371,8 @@ class Moves_manager:
                         self.legal_moves.append(board[i][j])
                         i += 1
                         j -= 1
+
+                    #captures
                     else:
                         if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
                             self.legal_moves.append(board[i][j])

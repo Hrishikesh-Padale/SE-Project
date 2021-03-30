@@ -460,7 +460,7 @@ class game:
         self.grid[0][0].piece = rooks[0]
         self.grid[0][7].piece = rooks[1]
 
-        bishops = [piece('bishop', [0, 2], "black"), piece('bisop', [0, 5], "black")]
+        bishops = [piece('bishop', [0, 2], "black"), piece('bishop', [0, 5], "black")]
         for bishop in bishops:
             bishop.image = self.black_pieces_images['Bishop']
             bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BBishop']
@@ -506,11 +506,11 @@ class game:
                 self.grid[piece.position[0]][piece.position[1]].xstart + piece.pos_adjustment[0],
                 self.grid[piece.position[0]][piece.position[1]].ystart + piece.pos_adjustment[1]))
 
-    def handle_click_event(self, coords):
-        if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == "white":
+    def handle_click_event(self, coords, color):
+        if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == color:
             self.selected_box = self.grid[coords[0]][coords[1]]
             self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
-            print(self.moves_manager.legal_moves)#
+            #print(self.moves_manager.legal_moves)#
 
         elif (self.grid[coords[0]][coords[1]].is_empty or self.grid[coords[0]][
             coords[1]].piece.color == "black") and coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
