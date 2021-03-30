@@ -81,27 +81,45 @@ class Moves_manager:
             self.legal_moves = list()
             if piece.position[0] != 7:
                 for i in range(piece.position[0] + 1, 8):
-                    if (board[piece.position[i]][piece.position[1]].is_empty == True) or (board[piece.position[i]][piece.position[1]].piece.color == 'black' and board[piece.position[i]][piece.position[1]].piece.name != 'king'):
-                        self.legal_moves.append(board[piece.position[i]][piece.position[1]])
+                    if (board[i][piece.position[1]].is_empty == True):
+                        self.legal_moves.append(board[i][piece.position[1]])
                     else:
-                        break
+                        if (board[i][piece.position[1]].piece.color == 'black' and board[i][piece.position[1]].piece.name != 'king'):
+                            self.legal_moves.append(board[i][piece.position[1]])
+                            break
+                        elif board[i][piece.position[1]].piece.color == 'white':
+                            break
+
             if piece.position[0] != 0:
                 for i in range(piece.position[0] - 1, -1, -1):
-                    if (board[piece.position[i]][piece.position[1]].is_empty == True) or (board[piece.position[i]][piece.position[1]].piece.color == 'black' and board[piece.position[i]][piece.position[1]].piece.name != 'king'):
-                        self.legal_moves.append(board[piece.position[i]][piece.position[1]])
+                    if (board[i][piece.position[1]].is_empty == True) :
+                        self.legal_moves.append(board[i][piece.position[1]])
                     else:
-                        break
+                        if (board[i][piece.position[1]].piece.color == 'black' and board[i][piece.position[1]].piece.name != 'king'):
+                            self.legal_moves.append(board[i][piece.position[1]])
+                            break
+                        elif board[i][piece.position[1]].piece.color == 'white':
+                            break
+
             if piece.position[1] != 7:
                 for i in range(piece.position[1] + 1, 8):
-                    if (board[piece.position[0]][piece.position[i]].is_empty == True) or (board[piece.position[0]][piece.position[i]].piece.color == 'black' and board[piece.position[0]][piece.position[i]].piece.name != 'king'):
-                        self.legal_moves.append(board[piece.position[0]][piece.position[i]])
+                    if (board[piece.position[0]][i].is_empty == True):
+                        self.legal_moves.append(board[piece.position[0]][i])
                     else:
-                        break
+                        if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][i].piece.name != 'king'):
+                            self.legal_moves.append(board[piece.position[0]][i])
+                            break
+                        elif board[piece.position[0]][i].piece.color == 'white':
+                            break
             if piece.position[1] != 0:
                 for i in range(piece.position[1] - 1, -1, -1):
-                    if (board[piece.position[0]][piece.position[i]].is_empty == True) or (board[piece.position[0]][piece.position[i]].piece.color == 'black' and board[piece.position[0]][piece.position[i]].piece.name != 'king'):
-                        self.legal_moves.append(board[piece.position[0]][piece.position[i]])
+                    if (board[piece.position[0]][i].is_empty == True):
+                        self.legal_moves.append(board[piece.position[0]][i])
                     else:
-                        break
+                        if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][i].piece.name != 'king'):
+                            self.legal_moves.append(board[piece.position[0]][i])
+                            break
+                        elif board[piece.position[0]][i].piece.color == 'white':
+                            break
         else:
             self.legal_moves = list()
