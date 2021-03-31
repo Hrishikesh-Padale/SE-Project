@@ -538,7 +538,7 @@ class game:
       self.update_pieces()
       self.Interface.print_messages()
       if start[1]>stop[1]:
-        start[1]-=3
+        start[1]-=2
         self.screen.blit(piece.image,(start[0],start[1]))
         pygame.display.flip()
       else:
