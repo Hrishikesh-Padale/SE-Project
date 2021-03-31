@@ -6,6 +6,28 @@ class Moves_manager:
         self.selected_piece = None
         self.adjustment_dictionary_name = None
 
+    def get_king_moves(self, piece, board):
+        self.selected_piece = piece
+        self.adjustment_dictionary_name = self.selected_piece.color[0].upper() + self.selected_piece.name[
+            0].upper() + self.selected_piece.name[1:]
+
+        self.king_moves = list()
+        possible_moves = [[-1, 0], [-1, 1], [0, 1], [1, 1],
+                          [1, 0], [1, -1], [0, -1], [-1, -1]]
+        #modification needed for including castling, checks, checkmate, stalemate
+        for pos in possible_moves:
+            if (piece.position[0] + pos[0] >= 0) and (piece.position[1] + pos[1] >= 0) and (
+                    piece.position[0] + pos[0] <= 7) and (piece.position[1] + pos[1] <= 7):
+                if board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].is_empty == True:
+                    self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                # captures
+                else:
+                    if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
+                            board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
+                        self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+        return self.king_moves
+
+
     def get_knight_moves(self, piece, board):
         self.selected_piece = piece
         self.adjustment_dictionary_name = self.selected_piece.color[0].upper() + self.selected_piece.name[
@@ -258,6 +280,9 @@ class Moves_manager:
 
         elif piece.name == 'bishop':
             self.legal_moves = self.get_bishop_moves(piece, board)
+
+        elif piece.name == 'king':
+            self.legal_moves = self.get_king_moves(piece, board)
 
         else:
             self.legal_moves = list()
