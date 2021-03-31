@@ -173,7 +173,7 @@ class interface:
                                          [self.messsage_input_xstart + self.width * (0.3 / 100),
                                           self.messsage_input_ystart + self.height * (4.4 / 100)]]
                     self.last_msg += 1
-                    if self.last_msg >= 12:
+                    if self.last_msg >= 10:
                         self.first_msg += 1
 
                 elif event.key == pygame.K_LEFT and self.cursor_position > 0:

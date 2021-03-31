@@ -72,8 +72,6 @@ while running:
             if row <= 7 and col <= 7 and row >= 0 and col >= 0:
                 Game.handle_click_event([row, col], Game.turn())
 
-
-
     # update the screen based on events
     Game.update()
     Game.highlight_selected_box()
@@ -82,22 +80,22 @@ while running:
     Interface.get_chat_input(events)
     Interface.print_messages()
 
-    # collinearity line
-    # pygame.draw.line(screen,RED,(10,775),(7+Interface.boardwidth,775),2)
-
-    # pos = pygame.mouse.get_pos()
-    # screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
-
-    '''_____________________Moving piece animation test___________________________'''
-    # if start[0]>=stop[0] and start[1]>=stop[1]:
-    #	start[0]-=3
-    #	start[1]-=3
-    #	screen.blit(Game.white_pieces_images['Bishop'],(start[0],start[1]))
-    # else:
-    #	screen.blit(Game.white_pieces_images['Bishop'],(stop[0],stop[1]))
-    '''___________________________________________________________________________'''
-
     clock.tick(60)
     pygame.display.flip()
 
 pygame.quit()
+
+# collinearity line
+# pygame.draw.line(screen,RED,(10,775),(7+Interface.boardwidth,775),2)
+
+# pos = pygame.mouse.get_pos()
+# screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
+
+'''_____________________Moving piece animation test___________________________'''
+# if start[0]>=stop[0] and start[1]>=stop[1]:
+#	start[0]-=3
+#	start[1]-=3
+#	screen.blit(Game.white_pieces_images['Bishop'],(start[0],start[1]))
+# else:
+#	screen.blit(Game.white_pieces_images['Bishop'],(stop[0],stop[1]))
+'''___________________________________________________________________________'''
