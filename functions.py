@@ -6,6 +6,7 @@ from threading import Thread
 from socket import *
 import time
 import random
+from chat_panel import *
 
 pygame.init()
 BLACK = (0, 0, 0)
@@ -30,6 +31,7 @@ LIGHTNAVY = (153, 153, 255)
 RED = (255, 0, 0)
 
 FONT = pygame.font.SysFont('freesansbold.ttf', 25)
+AXIS_COORD_FONT = pygame.font.SysFont('consolas', 25, True)
 
 
 class box:
@@ -73,9 +75,9 @@ class interface:
     # self.receive_thread.start()
 
     def generate_board_coordinates(self):
-        self.xstart = self.width * (18.94 / 100)
+        self.xstart = self.width * (20 / 100)
         self.ystart = self.height * (0.998 / 100)
-        self.boardheight = self.height - 2 * self.ystart - 5
+        self.boardheight = 780
         self.boardwidth = self.boardheight
         self.xend = self.xstart + self.boardwidth
         self.boxwidth = self.boardwidth // 8
@@ -103,6 +105,8 @@ class interface:
         self.chatbox_ystart = self.killed_ystart + self.killed_box_height + self.width * (0.97 / 100)
         self.chatbox_width = self.panelwidth
         self.chatbox_height = self.boardheight + self.ystart - self.chatbox_ystart
+        self.chat_panel = Chat_panel(self.screen, [self.chatbox_xstart, self.chatbox_ystart, self.chatbox_width,
+                                                   self.chatbox_height])
 
     def draw_chess_board(self):
         for i in range(8):
@@ -144,7 +148,7 @@ class interface:
                     self.message_rect = self.message_text.get_rect()
                     self.message_rect.center = (
                     self.messsage_input_xstart + self.width * (0.3 / 100) + (self.message_rect.width // 2),
-                    self.messsage_input_ystart + self.height * (2.5 / 100))
+                    self.messsage_input_ystart + self.height * (2 / 100))
                     text = FONT.render(self.message[self.cursor_position:], True, BLACK)
                     rect = text.get_rect()
                     self.cursor_coord[0][0] = self.messsage_input_xstart + self.width * (
@@ -207,7 +211,7 @@ class interface:
                     self.message_rect = self.message_text.get_rect()
                     self.message_rect.center = (
                     self.messsage_input_xstart + self.width * (0.3 / 100) + (self.message_rect.width // 2),
-                    self.messsage_input_ystart + self.height * (2.5 / 100))
+                    self.messsage_input_ystart + self.height * (2 / 100))
                     deleted_letter = FONT.render(deleted_letter, True, BLACK)
                     rect = deleted_letter.get_rect()
                     self.cursor_coord[0][0] -= rect.width
@@ -233,7 +237,7 @@ class interface:
 
     def generate_other_functionalities(self):
         self.game_info_box1_coords = (self.width * (0.65 / 100), self.ystart)
-        self.game_info_box1_width = (self.height * (33.7 / 100))
+        self.game_info_box1_width = (self.height * (33.7 / 100)) + 10
         self.game_info_box1_height = (self.boardheight // 2) - (self.height * (1.2 / 100))
 
         self.game_info_box2_coords = (
@@ -278,7 +282,7 @@ class interface:
                         message_rect = message.get_rect()
                         self.chat_buffer_graphic.append(([username, uname_rect], [message, message_rect]))
                         self.last_msg += 1
-                        if self.last_msg >= 12:
+                        if self.last_msg >= 10:
                             self.first_msg += 1
                     else:
                         self.chat_buffer_text.append(message)
@@ -290,7 +294,7 @@ class interface:
                         text2_rect = text2.get_rect()
                         self.chat_buffer_graphic.append(([text1, text1_rect], [text2, text2_rect]))
                         self.last_msg += 1
-                        if self.last_msg >= 12:
+                        if self.last_msg >= 10:
                             self.first_msg += 1
             except:
                 self.sock.close()
@@ -338,10 +342,10 @@ class game:
         self.get_captured_pieces_numbers()
         self.position_adjustment = {
             'type1': {'WPawn': (0, 0), 'WRook': (0, 0),
-                      'WKnight': (0, 0), 'WBishop': (0, 0),
+                      'WKnight': (0, 0), 'W_Bishop': (0, 0),
                       'WQueen': (0, 0), 'WKing': (0, 0),
                       'BPawn': (0, 0), 'BRook': (0, 0),
-                      'BKnight': (0, 0), 'BBishop': (0, 0),
+                      'BKnight': (0, 0), 'B_Bishop': (0, 0),
                       'BQueen': (0, 0), 'BKing': (0, 0)},
 
             'type2': {'WPawn': (Interface.width * (0.19 / 100), 0),
@@ -552,7 +556,7 @@ class game:
                      "e": 4, "f": 5, "g": 6, "h": 7}
     cols_to_files = {v: k for k, v in files_to_cols.items()}
 
-    def chess_notation(self, piece, destination, board, adjustment):
+    def chess_notation(self, piece, destination):
         return self.rank_file(piece.position[0], piece.position[1]) +  self.rank_file(destination[0], destination[1])
 
     def rank_file(self, row, col):
@@ -578,18 +582,17 @@ class game:
             # keep updating the screen and pieces while moving piece
             self.update()
             self.update_pieces()
+            self.Interface.print_messages()
             #add animation conditions for different pieces
-            if start[1] >= stop[1]:
-                start[1] -= 1
+            if start[1] > stop[1]:
+                start[1] -= 2
                 self.screen.blit(piece.image, (start[0], start[1]))
                 pygame.display.flip()
             else:
-                print(self.chess_notation(piece, destination, board, adjustment))#######
+                print(self.chess_notation(piece, destination))
                 piece.position = destination
                 piece.locked = True
                 break
-
-        #print(piece.position)
 
         self.moves_manager.selected_piece = None
         self.moves_manager.legal_moves = []
@@ -599,18 +602,72 @@ class game:
 
     # graphical
     def get_captured_pieces_numbers(self):
+
         num = FONT.render("0", True, RED)
         rects = [num.get_rect() for i in range(10)]
-        rects[5].center = (1160, 320)
-        rects[6].center = (1245, 320)
-        rects[7].center = (1327, 320)
-        rects[8].center = (1410, 320)
-        rects[9].center = (1493, 320)
-        self.captured_pieces_count = {'BPawn': [num, rects[5]], 'BRook': [num, rects[6]], 'B_Bishop': [num, rects[7]],
+        rects[0].center = (1170, 200)
+        rects[1].center = (1255, 200)
+        rects[2].center = (1337, 200)
+        rects[3].center = (1420, 200)
+        rects[4].center = (1503, 200)
+        rects[5].center = (1170, 330)
+        rects[6].center = (1255, 330)
+        rects[7].center = (1337, 330)
+        rects[8].center = (1420, 330)
+        rects[9].center = (1503, 330)
+        self.captured_pieces_count = {'WPawn': [num, rects[0]], 'WRook': [num, rects[1]], 'W_Bishop': [num, rects[2]],
+                                      'WKnight': [num, rects[3]], 'WQueen': [num, rects[4]],
+                                      'BPawn': [num, rects[5]], 'BRook': [num, rects[6]], 'B_Bishop': [num, rects[7]],
                                       'BKnight': [num, rects[8]], 'BQueen': [num, rects[9]]
                                       }
 
+    def get_axes(self):
+
+        a = AXIS_COORD_FONT.render("a", True, BLACK)
+        b = AXIS_COORD_FONT.render("b", True, BLACK)
+        c = AXIS_COORD_FONT.render("c", True, BLACK)
+        d = AXIS_COORD_FONT.render("d", True, BLACK)
+        e = AXIS_COORD_FONT.render("e", True, BLACK)
+        f = AXIS_COORD_FONT.render("f", True, BLACK)
+        g = AXIS_COORD_FONT.render("g", True, BLACK)
+        h = AXIS_COORD_FONT.render("h", True, BLACK)
+        self.x_axis_coords = {"a": [a, a.get_rect()], "b": [b, b.get_rect()], "c": [c, c.get_rect()],
+                              "d": [d, d.get_rect()],
+                              "e": [e, e.get_rect()], "f": [f, f.get_rect()], "g": [g, g.get_rect()],
+                              "h": [h, h.get_rect()]}
+        self.x_axis_coords["a"][1].center = (315, 773)
+        self.x_axis_coords["b"][1].center = (412, 773)
+        self.x_axis_coords["c"][1].center = (509, 773)
+        self.x_axis_coords["d"][1].center = (606, 773)
+        self.x_axis_coords["e"][1].center = (703, 773)
+        self.x_axis_coords["f"][1].center = (800, 773)
+        self.x_axis_coords["g"][1].center = (897, 773)
+        self.x_axis_coords["h"][1].center = (994, 773)
+
+        one = AXIS_COORD_FONT.render("1", True, BLACK)
+        two = AXIS_COORD_FONT.render("2", True, BLACK)
+        three = AXIS_COORD_FONT.render("3", True, BLACK)
+        four = AXIS_COORD_FONT.render("4", True, BLACK)
+        five = AXIS_COORD_FONT.render("5", True, BLACK)
+        six = AXIS_COORD_FONT.render("6", True, BLACK)
+        seven = AXIS_COORD_FONT.render("7", True, BLACK)
+        eight = AXIS_COORD_FONT.render("8", True, BLACK)
+        self.y_axis_coords = {"one": [one, one.get_rect()], "two": [two, two.get_rect()],
+                              "three": [three, three.get_rect()], "four": [four, four.get_rect()],
+                              "five": [five, five.get_rect()], "six": [six, six.get_rect()],
+                              "seven": [seven, seven.get_rect()], "eight": [eight, eight.get_rect()]}
+
+        self.y_axis_coords["one"][1].center = (315, 700)
+        self.y_axis_coords["two"][1].center = (315, 603)
+        self.y_axis_coords["three"][1].center = (315, 506)
+        self.y_axis_coords["four"][1].center = (315, 409)
+        self.y_axis_coords["five"][1].center = (315, 312)
+        self.y_axis_coords["six"][1].center = (315, 215)
+        self.y_axis_coords["seven"][1].center = (315, 118)
+        self.y_axis_coords["eight"][1].center = (315, 21)
+
     def update(self):
+
         # Board - Border
         pygame.draw.rect(self.screen, BLACK, [self.Interface.xstart, self.Interface.ystart, self.Interface.boardwidth,
                                               self.Interface.boardheight], 3)
@@ -644,47 +701,59 @@ class game:
                                               self.Interface.killed_box_width - 2.5,
                                               self.Interface.killed_box_height - 2.5])
         # Chat box
-        pygame.draw.rect(self.screen, LIGHTGREEN, [self.Interface.chatbox_xstart + 2, self.Interface.chatbox_ystart + 2,
-                                                   self.Interface.chatbox_width - 2.5,
-                                                   self.Interface.chatbox_height - 3])
+        pygame.draw.rect(self.screen, WHITE, [self.Interface.chatbox_xstart + 2, self.Interface.chatbox_ystart + 2,
+                                              self.Interface.chatbox_width - 2.5, self.Interface.chatbox_height - 3])
         # Chat box text bar
-        pygame.draw.rect(self.screen, WHITE,
-                         [self.Interface.messsage_input_xstart + 2, self.Interface.messsage_input_ystart + 2,
-                          self.Interface.messsage_input_width - 2.5, self.Interface.messsage_input_height - 2.5])
+        # pygame.draw.rect(self.screen,WHITE,[self.Interface.messsage_input_xstart+2,self.Interface.messsage_input_ystart+2,self.Interface.messsage_input_width-2.5,self.Interface.messsage_input_height-2.5])
         # Chat box text bar - Border
-        pygame.draw.rect(self.screen, BLACK,
-                         [self.Interface.messsage_input_xstart, self.Interface.messsage_input_ystart,
-                          self.Interface.messsage_input_width, self.Interface.messsage_input_height], 2)
-        if self.Interface.cursor_blink():
-            pygame.draw.line(self.screen, BLACK, (self.Interface.cursor_coord[0][0], self.Interface.cursor_coord[0][1]),
-                             (self.Interface.cursor_coord[1][0], self.Interface.cursor_coord[1][1]), 2)
+        if self.Interface.chat_panel.selected == "chat":
+            pygame.draw.rect(self.screen, BLACK,
+                             [self.Interface.messsage_input_xstart, self.Interface.messsage_input_ystart,
+                              self.Interface.messsage_input_width, self.Interface.messsage_input_height], 2)
+            if self.Interface.cursor_blink():
+                pygame.draw.line(self.screen, BLACK,
+                                 (self.Interface.cursor_coord[0][0], self.Interface.cursor_coord[0][1]),
+                                 (self.Interface.cursor_coord[1][0], self.Interface.cursor_coord[1][1]), 2)
 
         # Captured pieces
-        self.screen.blit(self.white_pieces_images['Pawn'], (1100, 117))
-        self.screen.blit(self.white_pieces_images['Rook'], (1180, 115))
-        self.screen.blit(self.white_pieces_images['Bishop'], (1265, 114))
-        self.screen.blit(self.white_pieces_images['Knight'], (1345, 112))
-        self.screen.blit(self.white_pieces_images['Queen'], (1420, 113))
+        self.screen.blit(self.white_pieces_images['Pawn'], (1110, 127))
+        self.screen.blit(self.white_pieces_images['Rook'], (1190, 125))
+        self.screen.blit(self.white_pieces_images['Bishop'], (1275, 124))
+        self.screen.blit(self.white_pieces_images['Knight'], (1355, 122))
+        self.screen.blit(self.white_pieces_images['Queen'], (1430, 123))
+        self.screen.blit(self.black_pieces_images['Pawn'], (1110, 257))
+        self.screen.blit(self.black_pieces_images['Rook'], (1190, 255))
+        self.screen.blit(self.black_pieces_images['Bishop'], (1275, 252))
+        self.screen.blit(self.black_pieces_images['Knight'], (1355, 252))
+        self.screen.blit(self.black_pieces_images['Queen'], (1430, 250))
 
-        self.screen.blit(self.black_pieces_images['Pawn'], (1100, 247))
-        self.screen.blit(self.black_pieces_images['Rook'], (1180, 245))
-        self.screen.blit(self.black_pieces_images['Bishop'], (1265, 242))
-        self.screen.blit(self.black_pieces_images['Knight'], (1345, 242))
-        self.screen.blit(self.black_pieces_images['Queen'], (1420, 240))
+        pygame.draw.circle(self.screen, BLACK, (1170, 330), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1170, 330), 10)
+        pygame.draw.circle(self.screen, BLACK, (1255, 330), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1255, 330), 10)
+        pygame.draw.circle(self.screen, BLACK, (1337, 330), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1337, 330), 10)
+        pygame.draw.circle(self.screen, BLACK, (1420, 330), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1420, 330), 10)
+        pygame.draw.circle(self.screen, BLACK, (1503, 330), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1503, 330), 10)
 
-        pygame.draw.circle(self.screen, RED, (1160, 320), 12, 3)
-        pygame.draw.circle(self.screen, WHITE, (1160, 320), 10)
-        pygame.draw.circle(self.screen, RED, (1245, 320), 12, 3)
-        pygame.draw.circle(self.screen, WHITE, (1245, 320), 10)
-        pygame.draw.circle(self.screen, RED, (1327, 320), 12, 3)
-        pygame.draw.circle(self.screen, WHITE, (1327, 320), 10)
-        pygame.draw.circle(self.screen, RED, (1410, 320), 12, 3)
-        pygame.draw.circle(self.screen, WHITE, (1410, 320), 10)
-        pygame.draw.circle(self.screen, RED, (1493, 320), 12, 3)
-        pygame.draw.circle(self.screen, WHITE, (1493, 320), 10)
+        pygame.draw.circle(self.screen, BLACK, (1170, 200), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1170, 200), 10)
+        pygame.draw.circle(self.screen, BLACK, (1255, 200), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1255, 200), 10)
+        pygame.draw.circle(self.screen, BLACK, (1337, 200), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1337, 200), 10)
+        pygame.draw.circle(self.screen, BLACK, (1420, 200), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1420, 200), 10)
+        pygame.draw.circle(self.screen, BLACK, (1503, 200), 12, 3)
+        pygame.draw.circle(self.screen, WHITE, (1503, 200), 10)
 
-        pygame.draw.circle(self.screen, RED, (1160, 190), 12, 3)
-        pygame.draw.circle(self.screen, WHITE, (1160, 190), 10)
+        self.screen.blit(self.captured_pieces_count['WPawn'][0], self.captured_pieces_count['WPawn'][1])
+        self.screen.blit(self.captured_pieces_count['WRook'][0], self.captured_pieces_count['WRook'][1])
+        self.screen.blit(self.captured_pieces_count['W_Bishop'][0], self.captured_pieces_count['W_Bishop'][1])
+        self.screen.blit(self.captured_pieces_count['WKnight'][0], self.captured_pieces_count['WKnight'][1])
+        self.screen.blit(self.captured_pieces_count['WQueen'][0], self.captured_pieces_count['WQueen'][1])
 
         self.screen.blit(self.captured_pieces_count['BPawn'][0], self.captured_pieces_count['BPawn'][1])
         self.screen.blit(self.captured_pieces_count['BRook'][0], self.captured_pieces_count['BRook'][1])
@@ -692,4 +761,11 @@ class game:
         self.screen.blit(self.captured_pieces_count['BKnight'][0], self.captured_pieces_count['BKnight'][1])
         self.screen.blit(self.captured_pieces_count['BQueen'][0], self.captured_pieces_count['BQueen'][1])
 
-    # def update_captured_pieces(self):
+        self.Interface.chat_panel.mount(self.Interface.chatbox_xstart, self.Interface.chatbox_ystart)
+
+        for coord in self.x_axis_coords:
+            self.screen.blit(self.x_axis_coords[coord][0], self.x_axis_coords[coord][1])
+        for coord in self.y_axis_coords:
+            self.screen.blit(self.y_axis_coords[coord][0], self.y_axis_coords[coord][1])
+
+# def update_captured_pieces(self):
