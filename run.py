@@ -56,9 +56,11 @@ Game.init_opponent_pieces()
 # stop = [501.36, 403.96018000000004]
 
 # main loop of the game
+
 while running:
     screen.fill(WHITE)
     events = pygame.event.get()
+
     for event in events:
         if event.type == QUIT or (event.type == pygame.KEYDOWN and event.key == K_ESCAPE):
             running = False
@@ -68,7 +70,8 @@ while running:
             row = int((pos[1] - Interface.ystart) // (Interface.boardheight // 8))
             # print(row,col,pos)
             if row <= 7 and col <= 7 and row >= 0 and col >= 0:
-                Game.handle_click_event([row, col], "white")
+                Game.handle_click_event([row, col], Game.turn())
+
 
 
     # update the screen based on events

@@ -329,6 +329,7 @@ class game:
         self.piece_type = piece_type
         self.grid = Interface.grid
         self.Interface = Interface
+        self.whiteToMove = True
         self.enemy_pieces = {}
         self.selected_box = None
         self.screen = screen
@@ -506,6 +507,16 @@ class game:
                 self.grid[piece.position[0]][piece.position[1]].xstart + piece.pos_adjustment[0],
                 self.grid[piece.position[0]][piece.position[1]].ystart + piece.pos_adjustment[1]))
 
+    # as of now, both white and black pieces can move as per some basic rules.
+    # strict turn is yet to be implemented
+    def turn(self):
+        if self.whiteToMove == True:
+            self.whiteToMove = False
+            return 'white'
+        else:
+            self.whiteToMove = True
+            return 'black'
+
     def handle_click_event(self, coords, color):
         if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == color:
             self.selected_box = self.grid[coords[0]][coords[1]]
@@ -534,6 +545,19 @@ class game:
             for i in self.moves_manager.legal_moves:
                 pygame.draw.rect(self.screen, (0, 255, 0), [i.xstart, i.ystart, i.width, i.height], 4)
 
+    ranks_to_rows = {"1": 7, "2": 6, "3": 5, "4": 4,
+                     "5": 3, "6": 2, "7": 1, "8": 0}
+    rows_to_ranks = {v: k for k, v in ranks_to_rows.items()}
+    files_to_cols = {"a": 0, "b": 1, "c": 2, "d": 3,
+                     "e": 4, "f": 5, "g": 6, "h": 7}
+    cols_to_files = {v: k for k, v in files_to_cols.items()}
+
+    def chess_notation(self, piece, destination, board, adjustment):
+        return self.rank_file(piece.position[0], piece.position[1]) +  self.rank_file(destination[0], destination[1])
+
+    def rank_file(self, row, col):
+        return self.cols_to_files[col] + self.rows_to_ranks[row]
+
     def move(self, piece, destination, board, adjustment):
 
         # get start and stop positions
@@ -560,9 +584,12 @@ class game:
                 self.screen.blit(piece.image, (start[0], start[1]))
                 pygame.display.flip()
             else:
+                print(self.chess_notation(piece, destination, board, adjustment))#######
                 piece.position = destination
                 piece.locked = True
                 break
+
+        #print(piece.position)
 
         self.moves_manager.selected_piece = None
         self.moves_manager.legal_moves = []
