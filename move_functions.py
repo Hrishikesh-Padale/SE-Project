@@ -22,9 +22,14 @@ class Moves_manager:
                     self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
                 # captures
                 else:
-                    if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
+                    if self.selected_piece.color == 'white':
+                        if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
                             board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
-                        self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                            self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                    else:
+                        if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'white') and (
+                            board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
+                            self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
         return self.king_moves
 
 
@@ -43,9 +48,16 @@ class Moves_manager:
                     self.knight_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
                 # captures
                 else:
-                    if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
+                    if self.selected_piece.color == 'white':
+                        if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
                             board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
-                        self.knight_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                            self.knight_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                    else:
+                        if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'white') and (
+                            board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
+                            self.knight_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+
+
         return self.knight_moves
 
     def get_rook_moves(self, piece, board):
@@ -61,12 +73,20 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[i][piece.position[1]].piece.color == 'black' and board[i][
-                        piece.position[1]].piece.name != 'king'):
-                        self.rook_moves.append(board[i][piece.position[1]])
-                        break
-                    elif board[i][piece.position[1]].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[i][piece.position[1]].piece.color == 'black' and board[i][
+                            piece.position[1]].piece.name != 'king'):
+                            self.rook_moves.append(board[i][piece.position[1]])
+                            break
+                        elif board[i][piece.position[1]].piece.color == 'white':
+                            break
+                    else:
+                        if (board[i][piece.position[1]].piece.color == 'white' and board[i][
+                            piece.position[1]].piece.name != 'king'):
+                            self.rook_moves.append(board[i][piece.position[1]])
+                            break
+                        elif board[i][piece.position[1]].piece.color == 'black':
+                            break
 
         if piece.position[0] != 0:
             for i in range(piece.position[0] - 1, -1, -1):
@@ -75,12 +95,21 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[i][piece.position[1]].piece.color == 'black' and board[i][
-                        piece.position[1]].piece.name != 'king'):
-                        self.rook_moves.append(board[i][piece.position[1]])
-                        break
-                    elif board[i][piece.position[1]].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[i][piece.position[1]].piece.color == 'black' and board[i][
+                            piece.position[1]].piece.name != 'king'):
+                            self.rook_moves.append(board[i][piece.position[1]])
+                            break
+                        elif board[i][piece.position[1]].piece.color == 'white':
+                            break
+                    else:
+                        if (board[i][piece.position[1]].piece.color == 'white' and board[i][
+                            piece.position[1]].piece.name != 'king'):
+                            self.rook_moves.append(board[i][piece.position[1]])
+                            break
+                        elif board[i][piece.position[1]].piece.color == 'black':
+                            break
+
 
         if piece.position[1] != 7:
             for i in range(piece.position[1] + 1, 8):
@@ -89,12 +118,20 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][
-                        i].piece.name != 'king'):
-                        self.rook_moves.append(board[piece.position[0]][i])
-                        break
-                    elif board[piece.position[0]][i].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][
+                            i].piece.name != 'king'):
+                            self.rook_moves.append(board[piece.position[0]][i])
+                            break
+                        elif board[piece.position[0]][i].piece.color == 'white':
+                            break
+                    else:
+                        if (board[piece.position[0]][i].piece.color == 'white' and board[
+                            piece.position[1]][i].piece.name != 'king'):
+                            self.rook_moves.append(board[i][piece.position[1]])
+                            break
+                        elif board[piece.position[0]][i].piece.color == 'black':
+                            break
         if piece.position[1] != 0:
             for i in range(piece.position[1] - 1, -1, -1):
                 if (board[piece.position[0]][i].is_empty == True):
@@ -102,12 +139,21 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][
-                        i].piece.name != 'king'):
-                        self.rook_moves.append(board[piece.position[0]][i])
-                        break
-                    elif board[piece.position[0]][i].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[piece.position[0]][i].piece.color == 'black' and board[piece.position[0]][
+                            i].piece.name != 'king'):
+                            self.rook_moves.append(board[piece.position[0]][i])
+                            break
+                        elif board[piece.position[0]][i].piece.color == 'white':
+                            break
+                    else:
+                        if (board[piece.position[0]][i].piece.color == 'white' and board[piece.position[0]][
+                            i].piece.name != 'king'):
+                            self.rook_moves.append(board[piece.position[0]][i])
+                            break
+                        elif board[piece.position[0]][i].piece.color == 'black':
+                            break
+
         return self.rook_moves
 
     def get_bishop_moves(self, piece, board):
@@ -129,11 +175,19 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
-                        self.bishop_moves.append(board[i][j])
-                        break
-                    elif board[i][j].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'white':
+                            break
+                    else:
+                        if (board[i][j].piece.color == 'white' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'black':
+                            break
+
 
         if piece.position[0] != 0 and piece.position[1] != 0:
             i = piece.position[0] - 1
@@ -147,11 +201,18 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
-                        self.bishop_moves.append(board[i][j])
-                        break
-                    elif board[i][j].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'white':
+                            break
+                    else:
+                        if (board[i][j].piece.color == 'white' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'black':
+                            break
 
         if piece.position[0] != 0 and piece.position[1] != 7:
             i = piece.position[0] - 1
@@ -165,11 +226,18 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
-                        self.bishop_moves.append(board[i][j])
-                        break
-                    elif board[i][j].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'white':
+                            break
+                    else:
+                        if (board[i][j].piece.color == 'white' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'black':
+                            break
 
         if piece.position[0] != 7 and piece.position[1] != 0:
             i = piece.position[0] + 1
@@ -183,17 +251,25 @@ class Moves_manager:
 
                 # captures
                 else:
-                    if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
-                        self.bishop_moves.append(board[i][j])
-                        break
-                    elif board[i][j].piece.color == 'white':
-                        break
+                    if self.selected_piece.color == 'white':
+                        if (board[i][j].piece.color == 'black' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'white':
+                            break
+                    else:
+                        if (board[i][j].piece.color == 'white' and board[i][j].piece.name != 'king'):
+                            self.bishop_moves.append(board[i][j])
+                            break
+                        elif board[i][j].piece.color == 'black':
+                            break
         return self.bishop_moves
 
     def get_queen_moves(self, piece, board):
         self.selected_piece = piece
         self.adjustment_dictionary_name = self.selected_piece.color[0].upper() + self.selected_piece.name[
             0].upper() + self.selected_piece.name[1:]
+
         self.queen_moves = self.get_rook_moves(piece, board)
         temp = self.get_bishop_moves(piece, board)
         if temp is not None:

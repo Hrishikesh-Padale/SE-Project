@@ -8,6 +8,9 @@ import time
 import random
 from chat_panel import *
 
+captured_piece = None
+moved_piece = None
+
 selected_square = []
 playerclick = []
 whiteToMove = True
@@ -342,9 +345,9 @@ class game:
         self.screen = screen
         self.pieces_scaling_factor = sfac
         self.moves_manager = None
-        self.selected_square = selected_square
+        #self.selected_square = selected_square
         self.selected_piece = None
-        self.playerclick = playerclick
+        #self.playerclick = playerclick
         self.get_captured_pieces_numbers()
         self.position_adjustment = {
             'type1': {'WPawn': (0, 0), 'WRook': (0, 0),
@@ -645,7 +648,12 @@ class game:
                 board[destination[0]][destination[1]].ystart + adjustment[1] + 1]
 
         # set the current box of grid to empty
+        moved_piece = self.grid[piece.position[0]][piece.position[1]]
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
+        if not self.grid[destination[0]][destination[1]].is_empty:
+            captured_piece = self.grid[destination[0]][destination[1]]
+        else:
+            captured_piece = None
         self.grid[destination[0]][destination[1]].piece = piece
 
         # unlock the piece so that update_pieces function does not show it on screen when it is moving
