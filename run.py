@@ -44,6 +44,8 @@ Game.init_my_pieces()
 Game.init_opponent_pieces()
 Game.get_axes()
 
+#cursor = pygame.transform.scale(pygame.image.load('Media/cursor.png'),(50,50))
+
 #start = [Game.grid[7][6].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[7][6].ystart+Game.position_adjustment['type3']['WKnight'][1]] 
 #stop = [Game.grid[5][5].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[5][5].ystart+Game.position_adjustment['type3']['WKnight'][1]]
 #print(start,stop)
@@ -75,8 +77,8 @@ while running:
     #collinearity line
     #pygame.draw.line(screen,RED,(10,775),(7+Interface.boardwidth,775),2)
 
-    #pos = pygame.mouse.get_pos()
-    #screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))
+    pos = pygame.mouse.get_pos()
+    #screen.blit(cursor,(pos[0]-27,pos[1]-23))
 
     '''_____________________Moving piece animation test___________________________'''
     #if start[0]>=stop[0] and start[1]>=stop[1]:								

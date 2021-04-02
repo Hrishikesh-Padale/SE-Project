@@ -349,7 +349,6 @@ class Main_menu:
 			self.screen.blit(self.settings.description[0],self.settings.d_rect[0])
 			self.screen.blit(self.settings.description[1],self.settings.d_rect[1])
 			self.screen.blit(self.settings.description[2],self.settings.d_rect[2])
-			#self.screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor.png'),(70,70)),(pos[0]-27,pos[1]-23))
 			
 			self.quit_button.draw(self.screen,pygame.mouse.get_pos())
 			pygame.display.flip()
