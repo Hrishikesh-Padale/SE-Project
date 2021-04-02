@@ -8,6 +8,9 @@ import time
 import random
 from chat_panel import *
 
+selected_square = []
+playerclick = []
+whiteToMove = True
 pygame.init()
 BLACK = (0, 0, 0)
 GRAY = (130, 130, 130)
@@ -339,6 +342,9 @@ class game:
         self.screen = screen
         self.pieces_scaling_factor = sfac
         self.moves_manager = None
+        self.selected_square = selected_square
+        self.selected_piece = None
+        self.playerclick = playerclick
         self.get_captured_pieces_numbers()
         self.position_adjustment = {
             'type1': {'WPawn': (0, 0), 'WRook': (0, 0),
@@ -512,33 +518,100 @@ class game:
                 self.grid[piece.position[0]][piece.position[1]].ystart + piece.pos_adjustment[1]))
 
     # as of now, both white and black pieces can move as per some basic rules.
-    # strict turn is yet to be implemented
-    def turn(self):
-        if self.whiteToMove == True:
-            self.whiteToMove = False
-            return 'white'
-        else:
-            self.whiteToMove = True
-            return 'black'
+    # strict turn is now implemented
+    # now, management of captures internally and graphically to be done
 
-    def handle_click_event(self, coords, color):
-        if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == color:
+    def handle_click_event(self, coords):
+        global playerclick, selected_square, whiteToMove
+        # if white to move
+        if whiteToMove:
             self.selected_box = self.grid[coords[0]][coords[1]]
-            self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
-            #print(self.moves_manager.legal_moves)#
+            if len(playerclick) == 0:
+                if not self.grid[coords[0]][coords[1]].is_empty:
+                    if self.grid[coords[0]][coords[1]].piece.color == 'white':
+                        self.highlight_selected_box()
+                        selected_square = coords
+                        playerclick.append(selected_square)
+                        #self.highlight_legal_moves()
+                        #self.highlight_selected_box()
+                        self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    else:
+                        self.selected_box = None
+                else:
+                    self.selected_box = None
+            elif len(playerclick) == 1:
+                if not self.grid[coords[0]][coords[1]].is_empty:
+                    if self.grid[coords[0]][coords[1]].piece.color == 'white':
+                        if selected_square == coords:
+                            selected_square = []
+                            playerclick = []
+                            self.selected_box = None
+                        else:
+                            selected_square = coords
+                            playerclick = [selected_square]
+                            self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    elif self.grid[coords[0]][coords[1]].piece.color == 'black' and coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                        self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                        whiteToMove = not whiteToMove
 
-        elif (self.grid[coords[0]][coords[1]].is_empty or self.grid[coords[0]][
-            coords[1]].piece.color == "black") and coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
-            self.move(self.moves_manager.selected_piece, coords, self.grid,
-                      self.position_adjustment['type{}'.format(self.piece_type)][
-                          self.moves_manager.adjustment_dictionary_name])
+                else:
+                    if coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                        self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                        whiteToMove = not whiteToMove
 
+            else:
+                self.selected_box = None
+                self.moves_manager.legal_moves = []
+                self.moves_manager.selected_piece = None
+
+        #if black to move
         else:
-            self.selected_box = None
-            self.moves_manager.legal_moves = []
-            self.moves_manager.selected_piece = None
+            self.selected_box = self.grid[coords[0]][coords[1]]
+            if len(playerclick) == 0:
+                if not self.grid[coords[0]][coords[1]].is_empty:
+                    if self.grid[coords[0]][coords[1]].piece.color == 'black':
+                        selected_square = coords
+                        playerclick.append(selected_square)
+                        self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    else:
+                        self.selected_box = None
+                else:
+                    self.selected_box = None
+            elif len(playerclick) == 1:
+                if not self.grid[coords[0]][coords[1]].is_empty:
+                    if self.grid[coords[0]][coords[1]].piece.color == 'black':
+                        if selected_square == coords:
+                            selected_square = []
+                            playerclick = []
+                            self.selected_box = None
+                        else:
+                            selected_square = coords
+                            playerclick = [selected_square]
+                            self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    elif self.grid[coords[0]][coords[1]].piece.color == 'white' and coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                        self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                        whiteToMove = not whiteToMove
+
+                else:
+                    if coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                        self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                        whiteToMove = not whiteToMove
+
+            else:
+                self.selected_box = None
+                self.moves_manager.legal_moves = []
+                self.moves_manager.selected_piece = None
 
     def highlight_selected_box(self):
+        #print(self.selected_box)
         if self.selected_box:
             pygame.draw.rect(self.screen, (0, 255, 0),
                              [self.selected_box.xstart, self.selected_box.ystart, self.selected_box.width,

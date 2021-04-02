@@ -4,25 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BranchesTreeState">
-    <expand>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-    </expand>
+    <expand />
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0901db4-ad47-42cb-9e53-5724f393a5f9" name="Default Changelist" comment="merged" />
+    <list default="true" id="c0901db4-ad47-42cb-9e53-5724f393a5f9" name="Default Changelist" comment="strict turn implemented" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -122,6 +108,8 @@
         <item itemvalue="Python.run" />
         <item itemvalue="Python.move_functions" />
         <item itemvalue="Python.functions" />
+        <item itemvalue="Python.run" />
+        <item itemvalue="Python.move_functions" />
       </list>
     </recent_temporary>
   </component>
@@ -190,12 +178,61 @@
       <option name="project" value="LOCAL" />
       <updated>1617219119853</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="changes to be implemented in handleclick">
+      <created>1617353233772</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1617353233772</updated>
+    </task>
+    <task id="LOCAL-00010" summary="strict turn implemented">
+      <created>1617369787650</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1617369787650</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
@@ -214,40 +251,61 @@
     <MESSAGE value="king moves added" />
     <MESSAGE value="merged master and hrishi branch" />
     <MESSAGE value="merged" />
-    <option name="LAST_COMMIT_MESSAGE" value="merged" />
+    <MESSAGE value="changes to be implemented in handleclick" />
+    <MESSAGE value="strict turn implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="strict turn implemented" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog" timestamp="1617219075753">
+    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog" timestamp="1617354614501">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1617219075753" />
+    <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1617354614501" />
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1617123562325">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1617123562325" />
-    <state width="1515" height="139" key="GridCell.Tab.0.bottom" timestamp="1617218820893">
+    <state width="1515" height="215" key="GridCell.Tab.0.bottom" timestamp="1617369825640">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="139" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617218820893" />
-    <state width="1515" height="139" key="GridCell.Tab.0.center" timestamp="1617218820892">
+    <state width="1515" height="215" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617369825640" />
+    <state width="1515" height="215" key="GridCell.Tab.0.center" timestamp="1617369825640">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="139" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617218820892" />
-    <state width="1515" height="139" key="GridCell.Tab.0.left" timestamp="1617218820891">
+    <state width="1515" height="215" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617369825640" />
+    <state width="1515" height="215" key="GridCell.Tab.0.left" timestamp="1617369825640">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="139" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617218820891" />
-    <state width="1515" height="139" key="GridCell.Tab.0.right" timestamp="1617218820892">
+    <state width="1515" height="215" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617369825640" />
+    <state width="1515" height="215" key="GridCell.Tab.0.right" timestamp="1617369825640">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="139" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617218820892" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1617217636431">
+    <state width="1515" height="215" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617369825640" />
+    <state x="559" y="114" key="RollbackChangesDialog" timestamp="1617354443603">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1617217636431" />
+    <state x="559" y="114" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1617354443603" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1617369843223">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1617369843223" />
+    <state x="554" y="306" key="git4idea.ui.GitResetDialog" timestamp="1617354467508">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="554" y="306" key="git4idea.ui.GitResetDialog/0.0.1536.824@0.0.1536.824" timestamp="1617354467508" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1617118706890">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1617118706890" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/functions.py</url>
+          <line>313</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
