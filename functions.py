@@ -646,6 +646,7 @@ class game:
 
         # set the current box of grid to empty
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
+        self.grid[destination[0]][destination[1]].piece = piece
 
         # unlock the piece so that update_pieces function does not show it on screen when it is moving
         piece.locked = False

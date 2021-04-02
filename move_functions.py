@@ -216,28 +216,32 @@ class Moves_manager:
                     self.white_pawn_moves.append(board[piece.position[0] - 2][piece.position[1]])
 
             # captures
-            if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
-                if (board[piece.position[0] - 1][piece.position[1] + 1].piece.color == 'black') and (
+            if piece.position[0] - 1 >= 0 and piece.position[1] + 1 <= 7:
+                if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
+                    if (board[piece.position[0] - 1][piece.position[1] + 1].piece.color == 'black') and (
                         board[piece.position[0] - 1][piece.position[1] + 1].piece.name != 'king'):
-                    self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] + 1])
-            if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
-                if (board[piece.position[0] - 1][piece.position[1] - 1].piece.color == 'black') and (
+                        self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] + 1])
+            if piece.position[0] - 1 >= 0 and piece.position[1] - 1 >= 0:
+                if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
+                    if (board[piece.position[0] - 1][piece.position[1] - 1].piece.color == 'black') and (
                         board[piece.position[0] - 1][piece.position[1] - 1].piece.name != 'king'):
-                    self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] - 1])
+                        self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] - 1])
 
         elif piece.position[0] in [5, 4, 3, 2]:
             if (board[piece.position[0] - 1][piece.position[1]].is_empty == True):
                 self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1]])
 
             # captures
-            if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
-                if (board[piece.position[0] - 1][piece.position[1] + 1].piece.color == 'black') and (
-                        board[piece.position[0] - 1][piece.position[1] + 1].piece.name != 'king'):
-                    self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] + 1])
-            if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
-                if (board[piece.position[0] - 1][piece.position[1] - 1].piece.color == 'black') and (
-                        board[piece.position[0] - 1][piece.position[1] - 1].piece.name != 'king'):
-                    self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] - 1])
+            if piece.position[0] - 1 >= 0 and piece.position[1] + 1 <= 7:
+                if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
+                    if (board[piece.position[0] - 1][piece.position[1] + 1].piece.color == 'black') and (
+                            board[piece.position[0] - 1][piece.position[1] + 1].piece.name != 'king'):
+                        self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] + 1])
+            if piece.position[0] - 1 >= 0 and piece.position[1] - 1 >= 0:
+                if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
+                    if (board[piece.position[0] - 1][piece.position[1] - 1].piece.color == 'black') and (
+                            board[piece.position[0] - 1][piece.position[1] - 1].piece.name != 'king'):
+                        self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1] - 1])
 
         # promotion to be added
         elif piece.position[0] == 1:
@@ -278,28 +282,33 @@ class Moves_manager:
                     self.black_pawn_moves.append(board[piece.position[0] + 2][piece.position[1]])
 
             # captures
-            if board[piece.position[0] + 1][piece.position[1] + 1].is_empty == False:
-                if (board[piece.position[0] + 1][piece.position[1] + 1].piece.color == 'white') and (
-                        board[piece.position[0] + 1][piece.position[1] + 1].piece.name != 'king'):
-                    self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] + 1])
-            if board[piece.position[0] + 1][piece.position[1] - 1].is_empty == False:
-                if (board[piece.position[0] + 1][piece.position[1] - 1].piece.color == 'white') and (
-                        board[piece.position[0] + 1][piece.position[1] - 1].piece.name != 'king'):
-                    self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] - 1])
+            print(piece.position)
+            if piece.position[0] + 1 <= 7 and piece.position[1] + 1 <= 7:
+                if board[piece.position[0] + 1][piece.position[1] + 1].is_empty == False:
+                    if (board[piece.position[0] + 1][piece.position[1] + 1].piece.color == 'white') and (
+                            board[piece.position[0] + 1][piece.position[1] + 1].piece.name != 'king'):
+                        self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] + 1])
+            if piece.position[0] + 1 <= 7 and piece.position[1] - 1 >= 0:
+                if board[piece.position[0] + 1][piece.position[1] - 1].is_empty == False:
+                    if (board[piece.position[0] + 1][piece.position[1] - 1].piece.color == 'white') and (
+                            board[piece.position[0] + 1][piece.position[1] - 1].piece.name != 'king'):
+                        self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] - 1])
 
         elif piece.position[0] in [5, 4, 3, 2]:
             if (board[piece.position[0] + 1][piece.position[1]].is_empty == True):
                 self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1]])
 
             # captures
-            if board[piece.position[0] + 1][piece.position[1] + 1].is_empty == False:
-                if (board[piece.position[0] + 1][piece.position[1] + 1].piece.color == 'white') and (
-                        board[piece.position[0] + 1][piece.position[1] + 1].piece.name != 'king'):
-                    self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] + 1])
-            if board[piece.position[0] + 1][piece.position[1] - 1].is_empty == False:
-                if (board[piece.position[0] + 1][piece.position[1] - 1].piece.color == 'white') and (
-                        board[piece.position[0] + 1][piece.position[1] - 1].piece.name != 'king'):
-                    self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] - 1])
+            if piece.position[0] + 1 <= 7 and piece.position[1] + 1 <= 7:
+                if board[piece.position[0] + 1][piece.position[1] + 1].is_empty == False:
+                    if (board[piece.position[0] + 1][piece.position[1] + 1].piece.color == 'white') and (
+                            board[piece.position[0] + 1][piece.position[1] + 1].piece.name != 'king'):
+                        self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] + 1])
+            if piece.position[0] + 1 <= 7 and piece.position[1] - 1 >= 0:
+                if board[piece.position[0] + 1][piece.position[1] - 1].is_empty == False:
+                    if (board[piece.position[0] + 1][piece.position[1] - 1].piece.color == 'white') and (
+                            board[piece.position[0] + 1][piece.position[1] - 1].piece.name != 'king'):
+                        self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] - 1])
 
         # promotion to be added
         elif piece.position[0] == 6:
