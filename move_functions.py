@@ -2,9 +2,53 @@ from functions import *
 class Moves_manager:
     def __init__(self):
         self.pieces	 = {}
+        self.enemy_pieces = {}
         self.legal_moves = list()
         self.selected_piece = None
         self.adjustment_dictionary_name = None
+        self.wking_loc = list()
+        self.bking_loc = list()
+
+    def pin_and_check(self, board):
+        directions = [[-1, 0], [-1, 1], [0, 1], [1, 1],
+                      [1, 0], [1, -1], [0, -1], [-1, -1]]
+
+        #if whiteToMove:
+
+            # first taking [1, 0] for testing
+        #print(self.wking_loc)
+            #print(dir[0])
+        dir = [1, 0]
+        '''
+        x = dir[0] + self.wking_loc[0]
+        y = self.wking_loc[1]
+        possible_pin = list()
+
+        while x <= 7 and x >= 0 :
+            if board[x][y].is_empty == True:
+                x = x + dir[0]
+            else:
+                if board[x][y].piece.color == 'white':
+                    if len(possible_pin) == 0:
+                        possible_pin = [board[x][y].piece]
+                        x = x + dir[0]
+                    elif len(possible_pin) == 1:
+                        possible_pin = list()
+                        print("No possibility of check and pin")
+
+
+                else:
+                    if board[x][y].piece.name in ['rook', 'queen']:
+                        if len(possible_pin) == 0:
+                            print("White king is in check")
+                        elif len(possible_pin) == 1:
+                            print(f'{possible_pin[0].name} is pinned')
+        '''
+
+
+
+
+
 
     def get_king_moves(self, piece, board):
         self.selected_piece = piece
@@ -358,7 +402,7 @@ class Moves_manager:
                     self.black_pawn_moves.append(board[piece.position[0] + 2][piece.position[1]])
 
             # captures
-            print(piece.position)
+            #print(piece.position)
             if piece.position[0] + 1 <= 7 and piece.position[1] + 1 <= 7:
                 if board[piece.position[0] + 1][piece.position[1] + 1].is_empty == False:
                     if (board[piece.position[0] + 1][piece.position[1] + 1].piece.color == 'white') and (
@@ -413,7 +457,7 @@ class Moves_manager:
     def get_legal_moves(self,piece,board):
         self.selected_piece = piece
         self.adjustment_dictionary_name = self.selected_piece.color[0].upper()+self.selected_piece.name[0].upper()+self.selected_piece.name[1:]
-
+        self.pin_and_check(board)
         if piece.name == 'pawn' and piece.color == 'white':
             self.legal_moves = self.get_white_pawn_moves(piece, board)
 

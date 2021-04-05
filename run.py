@@ -69,6 +69,7 @@ while running:
     Game.highlight_selected_box()
     Game.highlight_legal_moves()
     Game.update_pieces()
+    Game.get_captured_pieces_numbers()
     if Interface.chat_panel.selected == "chat":
         Interface.get_chat_input(events)
         Interface.print_messages()
