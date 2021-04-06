@@ -525,7 +525,7 @@ class game:
         if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == color:
             self.selected_box = self.grid[coords[0]][coords[1]]
             self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
-            #print(self.moves_manager.legal_moves)#
+            #print(self.moves_manager.legal_moves)
 
         elif (self.grid[coords[0]][coords[1]].is_empty or self.grid[coords[0]][
             coords[1]].piece.color == "black") and coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
@@ -537,6 +537,7 @@ class game:
             self.selected_box = None
             self.moves_manager.legal_moves = []
             self.moves_manager.selected_piece = None
+            #print("True")
 
     def highlight_selected_box(self):
         if self.selected_box:
@@ -693,8 +694,8 @@ class game:
         # Board
         self.Interface.draw_chess_board()
         # Settings Panel
-        pygame.draw.rect(self.screen, LIGHTBLUE, [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
-                                                  self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
+        #pygame.draw.rect(self.screen, LIGHTBLUE, [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
+        #                                          self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
         # Captured Pieces
         pygame.draw.rect(self.screen, GREEN, [self.Interface.killed_xstart + 2, self.Interface.killed_ystart + 2,
                                               self.Interface.killed_box_width - 2.5,
@@ -766,5 +767,6 @@ class game:
             self.screen.blit(self.x_axis_coords[coord][0], self.x_axis_coords[coord][1])
         for coord in self.y_axis_coords:
             self.screen.blit(self.y_axis_coords[coord][0], self.y_axis_coords[coord][1])
+
 
 # def update_captured_pieces(self):

@@ -17,6 +17,8 @@ class Chat_panel:
 		self.leaderboard_img = pygame.transform.scale(pygame.image.load('Media/leaderboard.png'),(150,67))
 		self.log_img = pygame.transform.scale(pygame.image.load('Media/log.png'),(47,39))
 
+		self.break_image = pygame.transform.scale(pygame.image.load('Media/break.png'),(80,80))
+
 	def mount(self,xstart,ystart):
 
 		self.screen.blit(self.chat_img,(xstart+20,ystart+1))
@@ -35,5 +37,7 @@ class Chat_panel:
 		pygame.draw.rect(self.screen,BLACK,[xstart+165,ystart,83,41],2)
 		pygame.draw.rect(self.screen,BLACK,[xstart+247,ystart,86,41],2)
 		pygame.draw.rect(self.screen,BLACK,[xstart+332,ystart,87,41],2)
+
+		self.screen.blit(self.break_image,(xstart+10,10))
 
 

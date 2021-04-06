@@ -207,6 +207,7 @@ class Moves_manager:
             0].upper() + self.selected_piece.name[1:]
 
         self.white_pawn_moves = list()
+        #print(piece.position)
 
         if piece.position[0] == 6:
             if (board[piece.position[0] - 1][piece.position[1]].is_empty == True):
