@@ -694,8 +694,8 @@ class game:
         # Board
         self.Interface.draw_chess_board()
         # Settings Panel
-        #pygame.draw.rect(self.screen, LIGHTBLUE, [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
-        #                                          self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
+        pygame.draw.rect(self.screen, (0,255,0), [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
+                                                  self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
         # Captured Pieces
         pygame.draw.rect(self.screen, GREEN, [self.Interface.killed_xstart + 2, self.Interface.killed_ystart + 2,
                                               self.Interface.killed_box_width - 2.5,
