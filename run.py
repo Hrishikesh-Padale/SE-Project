@@ -8,8 +8,11 @@ import random
 from functions import *
 import warnings
 from move_functions import *
+from login import Login
+#from main_menu import *
 
-# from main_menu import *
+#sign_in = Login()
+#sign_in.window.mainloop()
 
 warnings.filterwarnings("ignore")
 
@@ -27,8 +30,8 @@ icon = pygame.image.load('Media/icon_3.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Chess")
 
-# Main_menu = Main_menu(screen)
-# Main_menu.update(clock)  
+#Main_menu = Main_menu(screen)
+#Main_menu.update(clock)  
 
 Interface.generate_board_coordinates()
 Interface.generate_settings_panel()

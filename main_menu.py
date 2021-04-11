@@ -46,6 +46,7 @@ class Main_menu:
 		self.background_color = (114,6,6)
 		self.options_color = (140,44,44)
 		self.icon_background_color = (82,0,2)
+		#self.bg = pygame.image.load('Media/bg2.jpg')
 
 		self.quickplay = Option("Quickplay",138,150.5)
 		self.quickplay.rect.center = (self.quickplay.xstart+30+(self.quickplay.rect.width/2),self.quickplay.ystart+250)
@@ -124,9 +125,10 @@ class Main_menu:
 				elif event.type == pygame.MOUSEBUTTONDOWN:
 					if (pos[0]>=self.quit_button.xlim[0] and pos[0]<=self.quit_button.xlim[1]) and (pos[1]>=self.quit_button.ylim[0] and pos[1]<= self.quit_button.ylim[1]):
 						return
-					print(pygame.mouse.get_pos())
+					#print(pygame.mouse.get_pos())
 
 			self.screen.fill(self.background_color)
+			#self.screen.blit(self.bg,(0,0))
 			pos = pygame.mouse.get_pos()
 			#mouse pointer on quickplay
 			if pos[0]>=138 and pos[0]<=438 and pos[1]>=150.5 and pos[1]<=650.5:
