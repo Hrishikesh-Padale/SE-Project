@@ -8,7 +8,7 @@ import random
 from functions import *
 import warnings
 from move_functions import *
-from login import Login
+#from login_register import Login_Register
 #from main_menu import *
 
 #sign_in = Login()

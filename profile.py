@@ -17,8 +17,8 @@ class Profile:
 		self.profile_picture = pygame.transform.scale(pygame.image.load('Media/prof.png'),(280,280))
 		self.screen = screen
 		self.clock = clock
-		self.get_fields()
 		self.get_friends()
+		self.get_fields()
 
 	def get_friends(self):
 		self.Friends_list = [chr(character) for character in range(65,91)]
@@ -50,7 +50,7 @@ class Profile:
 		self.total_hours_played = "Hours played          {}".format(self.data["total_hours_played"])
 		self.points = "Points                      {}".format(self.data["points"])
 		self.edit = "Edit"
-		self.friends = "Friends"
+		self.friends = "Friends({})".format(len(self.Friends_list))
 
 		self.username = FONT1.render(self.username,True,(255,255,255))
 		self.username_rect = self.username.get_rect()
@@ -96,7 +96,7 @@ class Profile:
 
 	def update(self):
 		while True:
-			self.screen.fill((4,76,84))
+			self.screen.fill("#17252A")
 			pos = pygame.mouse.get_pos()
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:

@@ -123,8 +123,9 @@ class Main_menu:
 				if event.type == pygame.QUIT:
 					return
 				elif event.type == pygame.MOUSEBUTTONDOWN:
-					if (pos[0]>=self.quit_button.xlim[0] and pos[0]<=self.quit_button.xlim[1]) and (pos[1]>=self.quit_button.ylim[0] and pos[1]<= self.quit_button.ylim[1]):
-						return
+					if event.button == 1:
+						if (pos[0]>=self.quit_button.xlim[0] and pos[0]<=self.quit_button.xlim[1]) and (pos[1]>=self.quit_button.ylim[0] and pos[1]<= self.quit_button.ylim[1]):
+							return
 					#print(pygame.mouse.get_pos())
 
 			self.screen.fill(self.background_color)
