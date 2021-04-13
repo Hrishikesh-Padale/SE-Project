@@ -8,6 +8,13 @@ import time
 import random
 from chat_panel import *
 
+captured_piece = None
+moved_piece = None
+
+selected_square = list()
+playerclick = list()
+whiteToMove = True
+
 pygame.init()
 BLACK = (0, 0, 0)
 GRAY = (130, 130, 130)
@@ -328,8 +335,9 @@ class game:
     def __init__(self, Interface, screen, sfac, piece_type):
         self.white_pieces_images = {}
         self.black_pieces_images = {}
-        self.captured_pieces = {'WPawn': 0, 'WRook': 0, 'WKnight': 0, 'W_Bishop': 0, 'WQueen': 0,
-                                'BPawn': 0, 'BRook': 0, 'BKnight': 0, 'B_Bishop': 0, 'BQueen': 0}
+        self.captured_pieces = {'wpawn': 0, 'wrook': 0, 'wknight': 0, 'wbishop': 0, 'wqueen': 0,
+                                'bpawn': 0, 'brook': 0, 'bknight': 0, 'bbishop': 0, 'bqueen': 0}
+        self.captured_pieces_count = {}
         self.piece_type = piece_type
         self.grid = Interface.grid
         self.Interface = Interface
@@ -398,7 +406,7 @@ class game:
         for pawn in pawns:
             pawn.image = self.white_pieces_images['Pawn']
             pawn.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WPawn']
-        self.moves_manager.pieces['pawns'] = pawns
+        self.moves_manager.pieces['pawn'] = pawns
         for i in range(8):
             self.grid[6][i].piece = pawns[i]
 
@@ -406,7 +414,7 @@ class game:
         for rook in rooks:
             rook.image = self.white_pieces_images['Rook']
             rook.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WRook']
-        self.moves_manager.pieces['rooks'] = rooks
+        self.moves_manager.pieces['rook'] = rooks
         self.grid[7][0].piece = rooks[0]
         self.grid[7][7].piece = rooks[1]
 
@@ -414,7 +422,7 @@ class game:
         for bishop in bishops:
             bishop.image = self.white_pieces_images['Bishop']
             bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WBishop']
-        self.moves_manager.pieces['bishops'] = bishops
+        self.moves_manager.pieces['bishop'] = bishops
         self.grid[7][2].piece = bishops[0]
         self.grid[7][5].piece = bishops[1]
 
@@ -422,7 +430,7 @@ class game:
         for knight in knights:
             knight.image = self.white_pieces_images['Knight']
             knight.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['WKnight']
-        self.moves_manager.pieces['knights'] = knights
+        self.moves_manager.pieces['knight'] = knights
         self.grid[7][1].piece = knights[0]
         self.grid[7][6].piece = knights[1]
 
@@ -453,7 +461,7 @@ class game:
         for pawn in pawns:
             pawn.image = self.black_pieces_images['Pawn']
             pawn.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BPawn']
-        self.enemy_pieces['pawns'] = pawns
+        self.moves_manager.enemy_pieces['pawn'] = pawns
         for i in range(8):
             self.grid[1][i].piece = pawns[i]
 
@@ -461,7 +469,7 @@ class game:
         for rook in rooks:
             rook.image = self.black_pieces_images['Rook']
             rook.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BRook']
-        self.enemy_pieces['rooks'] = rooks
+        self.moves_manager.enemy_pieces['rook'] = rooks
         self.grid[0][0].piece = rooks[0]
         self.grid[0][7].piece = rooks[1]
 
@@ -469,7 +477,7 @@ class game:
         for bishop in bishops:
             bishop.image = self.black_pieces_images['Bishop']
             bishop.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BBishop']
-        self.enemy_pieces['bishops'] = bishops
+        self.moves_manager.enemy_pieces['bishop'] = bishops
         self.grid[0][2].piece = bishops[0]
         self.grid[0][5].piece = bishops[1]
 
@@ -477,20 +485,20 @@ class game:
         for knight in knights:
             knight.image = self.black_pieces_images['Knight']
             knight.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BKnight']
-        self.enemy_pieces['knights'] = knights
+        self.moves_manager.enemy_pieces['knight'] = knights
         self.grid[0][1].piece = knights[0]
         self.grid[0][6].piece = knights[1]
 
         king = piece('king', [0, 4], "black")
         king.image = self.black_pieces_images['King']
         king.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BKing']
-        self.enemy_pieces['king'] = [king]
+        self.moves_manager.enemy_pieces['king'] = [king]
         self.grid[0][4].piece = king
 
         queen = piece('queen', [0, 3], "black")
         queen.image = self.black_pieces_images['Queen']
         queen.pos_adjustment = self.position_adjustment['type{}'.format(self.piece_type)]['BQueen']
-        self.enemy_pieces['queen'] = [queen]
+        self.moves_manager.enemy_pieces['queen'] = [queen]
         self.grid[0][3].piece = queen
 
         for i in range(0, 2):
@@ -500,44 +508,154 @@ class game:
     def update_pieces(self):
         for pieces in self.moves_manager.pieces:
             for piece in self.moves_manager.pieces[pieces]:
-                if piece.locked:
+                if piece.locked and piece.is_alive:
                     self.screen.blit(piece.image, (
                     self.grid[piece.position[0]][piece.position[1]].xstart + piece.pos_adjustment[0],
                     self.grid[piece.position[0]][piece.position[1]].ystart + piece.pos_adjustment[1]))
 
-        for pieces in self.enemy_pieces:
-            for piece in self.enemy_pieces[pieces]:
+        for pieces in self.moves_manager.enemy_pieces:
+            for piece in self.moves_manager.enemy_pieces[pieces]:
                 self.screen.blit(piece.image, (
                 self.grid[piece.position[0]][piece.position[1]].xstart + piece.pos_adjustment[0],
                 self.grid[piece.position[0]][piece.position[1]].ystart + piece.pos_adjustment[1]))
 
     # as of now, both white and black pieces can move as per some basic rules.
-    # strict turn is yet to be implemented
-    def turn(self):
-        if self.whiteToMove == True:
-            self.whiteToMove = False
-            return 'white'
+
+    def handle_click_event(self, coords):
+        global playerclick, selected_square, whiteToMove
+        self.selected_box = self.grid[coords[0]][coords[1]]
+        #print(self.squareUnderAttack(coords, self.grid))
+        # if white to move
+        if whiteToMove:
+            if len(playerclick) == 0: #player clicks on first square
+                if self.grid[coords[0]][coords[1]].is_empty == False: #if the square selected is not empty
+                    if self.grid[coords[0]][coords[1]].piece.color == 'white': #white selects white piece
+                        selected_square = coords
+                        playerclick.append(selected_square)
+                        #print('1')
+                        self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    elif (self.grid[coords[0]][coords[1]].piece.color == 'black'):#white selects empty square or blackpiece
+                        self.selected_box = None
+                        playerclick = list()
+                        selected_square = list()
+                        #print('2')
+                else:#if square selected is empty
+                    self.selected_box = None
+                    playerclick = list()
+                    selected_square = list()
+                    #print('3')
+            elif len(playerclick) == 1: #player clicks on second square
+                if self.grid[coords[0]][coords[1]].is_empty == False: #if selected square is not empty
+                    if self.grid[coords[0]][coords[1]].piece.color == 'white': #if selected square contains white piece
+                        if selected_square == coords: #if white player clicks same square twice ie he's trying to deselect
+                            selected_square = list()
+                            playerclick = list()
+                            self.selected_box = None
+                            #print('4')
+                        else:
+                            selected_square = coords
+                            playerclick = [selected_square]
+                            #print('5')
+                            self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    elif self.grid[coords[0]][coords[1]].piece.color == 'black':
+                        if coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                            #print(self.moves_manager.selected_piece)
+                            self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                            #print('6')
+                            selected_square = list()
+                            playerclick = list()
+                            whiteToMove = not whiteToMove
+                        else:
+                            selected_square = list()
+                            playerclick = list()
+                            self.selected_box = None
+
+                else:
+                    if coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                        #print(self.moves_manager.selected_piece)
+                        self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                        #print('7')
+                        selected_square = list()
+                        playerclick = list()
+                        whiteToMove = not whiteToMove
+                    else:
+                        selected_square = list()
+                        playerclick = list()
+                        self.selected_box = None
+
+            else:
+                self.selected_box = None
+                playerclick = list()
+                selected_square = list()
+                self.moves_manager.legal_moves = []
+                self.moves_manager.selected_piece = None
+                #print('8')
+
+        #if black to move
         else:
-            self.whiteToMove = True
-            return 'black'
+            if len(playerclick) == 0:
+                if self.grid[coords[0]][coords[1]].is_empty == False:
+                    if self.grid[coords[0]][coords[1]].piece.color == 'black':
+                        selected_square = coords
+                        playerclick.append(selected_square)
+                        self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    elif (self.grid[coords[0]][
+                                  coords[1]].piece.color == 'white'):
+                        self.selected_box = None
+                        playerclick = list()
+                        selected_square = list()
+                else:
+                    self.selected_box = None
+                    playerclick = list()
+                    selected_square = list()
+            elif len(playerclick) == 1:
+                if self.grid[coords[0]][coords[1]].is_empty == False:
+                    if self.grid[coords[0]][coords[1]].piece.color == 'black':
+                        if selected_square == coords:
+                            selected_square = list()
+                            playerclick = list()
+                            self.selected_box = None
+                        else:
+                            selected_square = coords
+                            playerclick = [selected_square]
+                            self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
+                    elif self.grid[coords[0]][coords[1]].piece.color == 'white':
+                        if coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                            self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                            selected_square = list()
+                            playerclick = list()
+                            whiteToMove = not whiteToMove
+                        else:
+                            selected_square = list()
+                            playerclick = list()
+                            self.selected_box = None
 
-    def handle_click_event(self, coords, color):
-        if not self.grid[coords[0]][coords[1]].is_empty and self.grid[coords[0]][coords[1]].piece.color == color:
-            self.selected_box = self.grid[coords[0]][coords[1]]
-            self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
-            #print(self.moves_manager.legal_moves)
+                else:
+                    if coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
+                        self.move(self.moves_manager.selected_piece, coords, self.grid,
+                                  self.position_adjustment['type{}'.format(self.piece_type)][
+                                      self.moves_manager.adjustment_dictionary_name])
+                        whiteToMove = not whiteToMove
+                        selected_square = list()
+                        playerclick = list()
+                    else:
+                        selected_square = list()
+                        playerclick = list()
+                        self.selected_box = None
 
-        elif (self.grid[coords[0]][coords[1]].is_empty or self.grid[coords[0]][
-            coords[1]].piece.color == "black") and coords in [[i.x, i.y] for i in self.moves_manager.legal_moves]:
-            self.move(self.moves_manager.selected_piece, coords, self.grid,
-                      self.position_adjustment['type{}'.format(self.piece_type)][
-                          self.moves_manager.adjustment_dictionary_name])
+            else:
+                self.selected_box = None
+                playerclick = list()
+                selected_square = list()
+                self.moves_manager.legal_moves = []
+                self.moves_manager.selected_piece = None
 
-        else:
-            self.selected_box = None
-            self.moves_manager.legal_moves = []
-            self.moves_manager.selected_piece = None
-            #print("True")
 
     def highlight_selected_box(self):
         if self.selected_box:
@@ -546,9 +664,10 @@ class game:
                               self.selected_box.height], 3)
 
     def highlight_legal_moves(self):
-        if self.moves_manager.legal_moves:
-            for i in self.moves_manager.legal_moves:
-                pygame.draw.rect(self.screen, (0, 255, 0), [i.xstart, i.ystart, i.width, i.height], 4)
+        if self.selected_box:
+            if self.moves_manager.legal_moves:
+                for i in self.moves_manager.legal_moves:
+                    pygame.draw.rect(self.screen, (0, 255, 0), [i.xstart, i.ystart, i.width, i.height], 4)
 
     ranks_to_rows = {"1": 7, "2": 6, "3": 5, "4": 4,
                      "5": 3, "6": 2, "7": 1, "8": 0}
@@ -557,14 +676,14 @@ class game:
                      "e": 4, "f": 5, "g": 6, "h": 7}
     cols_to_files = {v: k for k, v in files_to_cols.items()}
 
-    def chess_notation(self, piece, destination, board, adjustment):
+    def chess_notation(self, piece, destination):
         return self.rank_file(piece.position[0], piece.position[1]) +  self.rank_file(destination[0], destination[1])
 
     def rank_file(self, row, col):
         return self.cols_to_files[col] + self.rows_to_ranks[row]
 
     def move(self, piece, destination, board, adjustment):
-
+        global moved_piece, captured_piece
         # get start and stop positions
         start = [board[piece.position[0]][piece.position[1]].xstart + adjustment[0],
                  board[piece.position[0]][piece.position[1]].ystart + adjustment[1]]
@@ -572,8 +691,37 @@ class game:
         stop = [board[destination[0]][destination[1]].xstart + adjustment[0],
                 board[destination[0]][destination[1]].ystart + adjustment[1] + 1]
 
+        print(self.chess_notation(piece, destination))
+        moved_piece = piece
         # set the current box of grid to empty
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
+
+        if self.grid[destination[0]][destination[1]].is_empty == False: #destination square non-empty means definitely contains black piece
+            captured_piece = self.grid[destination[0]][destination[1]].piece
+            '''
+            setting position of captured piece to [-1,-1] because 
+            [-1,-1] doesn't exist on the grid and so does the captured piece
+            '''
+            if captured_piece.color == 'white':
+                for i in range(len(self.moves_manager.pieces[captured_piece.name])):
+                    if self.moves_manager.pieces[captured_piece.name][i].position == destination:
+                        self.moves_manager.pieces[captured_piece.name][i].is_alive = False
+                        self.moves_manager.pieces[captured_piece.name][i].position = [-1,-1]
+                        break
+
+            else:
+                for i in range(len(self.moves_manager.enemy_pieces[captured_piece.name])):
+                    if self.moves_manager.enemy_pieces[captured_piece.name][i].position == destination:
+                        self.moves_manager.enemy_pieces[captured_piece.name][i].is_alive = False
+                        self.moves_manager.enemy_pieces[captured_piece.name][i].position = [-1, -1]
+                        break
+
+            self.captured_pieces[captured_piece.color[:1] + captured_piece.name] += 1
+
+        else:
+            captured_piece = None
+        #'''
+        self.grid[destination[0]][destination[1]].piece = piece
 
         # unlock the piece so that update_pieces function does not show it on screen when it is moving
         piece.locked = False
@@ -591,6 +739,9 @@ class game:
                 pygame.display.flip()
             else:
                 piece.position = destination
+                self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
+                self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
+                # print(self.moves_manager.wking_loc, self.moves_manager.bking_loc)
                 piece.locked = True
                 break
 
@@ -598,11 +749,9 @@ class game:
         self.moves_manager.legal_moves = []
         self.selected_box = None
         self.grid[destination[0]][destination[1]].is_empty = False
-        self.grid[destination[0]][destination[1]].piece = piece
 
     # graphical
     def get_captured_pieces_numbers(self):
-
         num = FONT.render("0", True, RED)
         rects = [num.get_rect() for i in range(10)]
         rects[0].center = (1170, 200)
@@ -615,11 +764,10 @@ class game:
         rects[7].center = (1337, 330)
         rects[8].center = (1420, 330)
         rects[9].center = (1503, 330)
-        self.captured_pieces_count = {'WPawn': [num, rects[0]], 'WRook': [num, rects[1]], 'W_Bishop': [num, rects[2]],
-                                      'WKnight': [num, rects[3]], 'WQueen': [num, rects[4]],
-                                      'BPawn': [num, rects[5]], 'BRook': [num, rects[6]], 'B_Bishop': [num, rects[7]],
-                                      'BKnight': [num, rects[8]], 'BQueen': [num, rects[9]]
-                                      }
+        pieces = ['wpawn', 'wrook', 'wbishop', 'wknight', 'wqueen', 'bpawn', 'brook', 'bbishop', 'bknight', 'bqueen']
+        for i in range(len(pieces)):
+            num = FONT.render(str(self.captured_pieces[pieces[i]]), True, RED)
+            self.captured_pieces_count[pieces[i]] = [num, rects[i]]
 
     def get_axes(self):
 
@@ -749,17 +897,17 @@ class game:
         pygame.draw.circle(self.screen, BLACK, (1503, 200), 12, 3)
         pygame.draw.circle(self.screen, WHITE, (1503, 200), 10)
 
-        self.screen.blit(self.captured_pieces_count['WPawn'][0], self.captured_pieces_count['WPawn'][1])
-        self.screen.blit(self.captured_pieces_count['WRook'][0], self.captured_pieces_count['WRook'][1])
-        self.screen.blit(self.captured_pieces_count['W_Bishop'][0], self.captured_pieces_count['W_Bishop'][1])
-        self.screen.blit(self.captured_pieces_count['WKnight'][0], self.captured_pieces_count['WKnight'][1])
-        self.screen.blit(self.captured_pieces_count['WQueen'][0], self.captured_pieces_count['WQueen'][1])
+        self.screen.blit(self.captured_pieces_count['wpawn'][0], self.captured_pieces_count['wpawn'][1])
+        self.screen.blit(self.captured_pieces_count['wrook'][0], self.captured_pieces_count['wrook'][1])
+        self.screen.blit(self.captured_pieces_count['wbishop'][0], self.captured_pieces_count['wbishop'][1])
+        self.screen.blit(self.captured_pieces_count['wknight'][0], self.captured_pieces_count['wknight'][1])
+        self.screen.blit(self.captured_pieces_count['wqueen'][0], self.captured_pieces_count['wqueen'][1])
 
-        self.screen.blit(self.captured_pieces_count['BPawn'][0], self.captured_pieces_count['BPawn'][1])
-        self.screen.blit(self.captured_pieces_count['BRook'][0], self.captured_pieces_count['BRook'][1])
-        self.screen.blit(self.captured_pieces_count['B_Bishop'][0], self.captured_pieces_count['B_Bishop'][1])
-        self.screen.blit(self.captured_pieces_count['BKnight'][0], self.captured_pieces_count['BKnight'][1])
-        self.screen.blit(self.captured_pieces_count['BQueen'][0], self.captured_pieces_count['BQueen'][1])
+        self.screen.blit(self.captured_pieces_count['bpawn'][0], self.captured_pieces_count['bpawn'][1])
+        self.screen.blit(self.captured_pieces_count['brook'][0], self.captured_pieces_count['brook'][1])
+        self.screen.blit(self.captured_pieces_count['bbishop'][0], self.captured_pieces_count['bbishop'][1])
+        self.screen.blit(self.captured_pieces_count['bknight'][0], self.captured_pieces_count['bknight'][1])
+        self.screen.blit(self.captured_pieces_count['bqueen'][0], self.captured_pieces_count['bqueen'][1])
 
         self.Interface.chat_panel.mount(self.Interface.chatbox_xstart, self.Interface.chatbox_ystart)
 

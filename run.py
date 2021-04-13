@@ -72,13 +72,14 @@ while running:
             row = int((pos[1] - Interface.ystart) // (Interface.boardheight // 8))
             # print(row,col,pos)
             if row <= 7 and col <= 7 and row >= 0 and col >= 0:
-                Game.handle_click_event([row, col], Game.turn())
+                Game.handle_click_event([row, col])
 
     # update the screen based on events
     Game.update()
     Game.highlight_selected_box()
     Game.highlight_legal_moves()
     Game.update_pieces()
+    Game.get_captured_pieces_numbers()
     if Interface.chat_panel.selected == "chat":
         Interface.get_chat_input(events)
         Interface.print_messages()
