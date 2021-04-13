@@ -347,6 +347,7 @@ class game:
         self.screen = screen
         self.pieces_scaling_factor = sfac
         self.moves_manager = None
+        self.selected_piece = None
         self.get_captured_pieces_numbers()
         self.position_adjustment = {
             'type1': {'WPawn': (0, 0), 'WRook': (0, 0),
@@ -515,9 +516,10 @@ class game:
 
         for pieces in self.moves_manager.enemy_pieces:
             for piece in self.moves_manager.enemy_pieces[pieces]:
-                self.screen.blit(piece.image, (
-                self.grid[piece.position[0]][piece.position[1]].xstart + piece.pos_adjustment[0],
-                self.grid[piece.position[0]][piece.position[1]].ystart + piece.pos_adjustment[1]))
+                if piece.locked and piece.is_alive:
+                    self.screen.blit(piece.image, (
+                    self.grid[piece.position[0]][piece.position[1]].xstart + piece.pos_adjustment[0],
+                    self.grid[piece.position[0]][piece.position[1]].ystart + piece.pos_adjustment[1]))
 
     # as of now, both white and black pieces can move as per some basic rules.
 
