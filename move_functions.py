@@ -1,6 +1,16 @@
 from functions import *
+#from functions import game
+#from functions import update_castle
+class CastleRights:
+    def __init__(self, wks, wqs, bks, bqs):
+        self.wks = wks
+        self.wqs = wqs
+        self.bks = bks
+        self.bqs = bqs
+
 class Moves_manager:
-    def __init__(self):
+    def __init__(self, game):
+        self.game = game
         self.pieces	 = {}
         self.enemy_pieces = {}
         self.legal_moves = list()
@@ -8,6 +18,39 @@ class Moves_manager:
         self.adjustment_dictionary_name = None
         self.wking_loc = list()
         self.bking_loc = list()
+        self.currentCastleRights = self.game.update_castle()#currentCastleRights
+
+
+    def get_castling_moves(self, piece, board):
+        #global currentCastleRights
+        self.selected_piece = piece
+        self.adjustment_dictionary_name = self.selected_piece.color[0].upper() + self.selected_piece.name[
+            0].upper() + self.selected_piece.name[1:]
+        self.castle_moves = list()
+        if piece.color == 'white':
+            if self.currentCastleRights.wks == True:
+                #print("1")
+                if board[piece.position[0]][piece.position[1] + 1].is_empty == True and board[piece.position[0]][piece.position[1] + 2].is_empty == True:
+                    self.castle_moves.append(board[piece.position[0]][piece.position[1] + 2])
+            if self.currentCastleRights.wqs == True:
+                if board[piece.position[0]][piece.position[1] - 1].is_empty == True and board[piece.position[0]][
+                    piece.position[1] - 2].is_empty == True and board[piece.position[0]][piece.position[1] - 3].is_empty == True:
+                    self.castle_moves.append(board[piece.position[0]][piece.position[1] - 2])
+
+        else:
+            if self.currentCastleRights.bks == True:
+                # print("1")
+                if board[piece.position[0]][piece.position[1] + 1].is_empty == True and board[piece.position[0]][
+                    piece.position[1] + 2].is_empty == True:
+                    self.castle_moves.append(board[piece.position[0]][piece.position[1] + 2])
+            if self.currentCastleRights.bqs == True:
+                if board[piece.position[0]][piece.position[1] - 1].is_empty == True and board[piece.position[0]][
+                    piece.position[1] - 2].is_empty == True and board[piece.position[0]][
+                    piece.position[1] - 3].is_empty == True:
+                    self.castle_moves.append(board[piece.position[0]][piece.position[1] - 2])
+
+        return self.castle_moves
+
 
     def get_king_moves(self, piece, board):
         self.selected_piece = piece
@@ -29,10 +72,14 @@ class Moves_manager:
                         if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
                             board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
                             self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                            #self.get_castling_moves(self.king_moves, board, piece)
                     else:
                         if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'white') and (
                             board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
                             self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                            #self.get_castling_moves(self.king_moves, board, piece)
+
+
         return self.king_moves
 
 
@@ -437,6 +484,10 @@ class Moves_manager:
 
         elif piece.name == 'king':
             self.legal_moves = self.get_king_moves(piece, board)
+            tmp = self.get_castling_moves(piece, board)
+            for i in tmp:
+                self.legal_moves.append(i)
+            #print(tmp)
 
         else:
             self.legal_moves = list()

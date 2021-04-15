@@ -7,6 +7,7 @@ from socket import *
 import time
 import random
 from chat_panel import *
+from move_functions import *
 
 captured_piece = None
 moved_piece = None
@@ -14,6 +15,8 @@ moved_piece = None
 selected_square = list()
 playerclick = list()
 whiteToMove = True
+
+castle_for_move_functions = list()
 
 pygame.init()
 BLACK = (0, 0, 0)
@@ -75,11 +78,11 @@ class interface:
         self.last_msg = 0
         self.server = '65.0.204.13'
         self.port = 12000
-        self.username = "Hrishi"
+        self.username = "Rutvik"
 
-    # self.connect_to_server()
-    # self.receive_thread = Thread(target=self.receive_messages)
-    # self.receive_thread.start()
+        #self.connect_to_server()
+        #self.receive_thread = Thread(target=self.receive_messages)
+        #self.receive_thread.start()
 
     def generate_board_coordinates(self):
         self.xstart = self.width * (20 / 100)
@@ -171,7 +174,7 @@ class interface:
                     self.last_message_done = False
                     self.chat_buffer_text.append("Me:" + self.message)
                     msg = self.username + ":" + self.message
-                    # self.send_message(msg)
+                    self.send_message(msg)
                     text = FONT.render(self.message, True, BLACK)
                     rect = text.get_rect()
                     username = FONT.render("Me:", True, random.choice([RED, GREEN, LIGHTBLUE, LIGHTNAVY]))
@@ -330,9 +333,10 @@ class piece:
         return "Name:{}\nPosition:{}\nColor:{}\nAlive:{}".format(self.name, self.position, self.color, self.is_alive)
 
 
-class game:
+class game(object):
 
-    def __init__(self, Interface, screen, sfac, piece_type):
+    def __init__(self, Interface = None, screen = None, sfac = None, piece_type = None):
+        global castle_for_move_functions
         self.white_pieces_images = {}
         self.black_pieces_images = {}
         self.captured_pieces = {'wpawn': 0, 'wrook': 0, 'wknight': 0, 'wbishop': 0, 'wqueen': 0,
@@ -341,12 +345,14 @@ class game:
         self.piece_type = piece_type
         self.grid = Interface.grid
         self.Interface = Interface
+        self.moves_manager = None
         self.whiteToMove = True
+        self.currentCastleRights = CastleRights(True, True, True, True)
+        castle_for_move_functions = self.currentCastleRights
         self.enemy_pieces = {}
         self.selected_box = None
         self.screen = screen
         self.pieces_scaling_factor = sfac
-        self.moves_manager = None
         self.selected_piece = None
         self.get_captured_pieces_numbers()
         self.position_adjustment = {
@@ -382,6 +388,7 @@ class game:
                       'BQueen': (Interface.width * (0.32 / 100), 0),
                       'BKing': (Interface.width * (0.84 / 100), Interface.height * (0.5 / 100))},
         }
+        castle_for_move_functions = self.update_castle()
 
     def load_pieces(self):
         piece = ['Rook', 'Bishop', 'Knight', 'Queen', 'King', 'Pawn']
@@ -684,6 +691,33 @@ class game:
     def rank_file(self, row, col):
         return self.cols_to_files[col] + self.rows_to_ranks[row]
 
+
+
+    def update_castling_rights(self, moved_piece):
+        if moved_piece.color == 'white':
+            if moved_piece.name == 'king':
+                self.currentCastleRights.wks = False
+                self.currentCastleRights.wqs = False
+
+            elif moved_piece.name == 'rook':
+                if moved_piece.position[0] == 7 and moved_piece.position[1] == 0:
+                    self.currentCastleRights.wqs = False
+                elif moved_piece.position[0] == 7 and moved_piece.position[1] == 7:
+                    self.currentCastleRights.wks = False
+
+        else:
+            if moved_piece.name == 'king':
+                self.currentCastleRights.bks = False
+                self.currentCastleRights.bqs = False
+
+            elif moved_piece.name == 'rook':
+                if moved_piece.position[0] == 0 and moved_piece.position[1] == 0:
+                    self.currentCastleRights.bqs = False
+                elif moved_piece.position[0] == 0 and moved_piece.position[1] == 7:
+                    self.currentCastleRights.bks = False
+
+
+
     def move(self, piece, destination, board, adjustment):
         global moved_piece, captured_piece
         # get start and stop positions
@@ -695,6 +729,8 @@ class game:
 
         print(self.chess_notation(piece, destination))
         moved_piece = piece
+        self.update_castling_rights(moved_piece)
+        print(self.currentCastleRights.wks, self.currentCastleRights.wqs, self.currentCastleRights.bks, self.currentCastleRights.bqs)
         # set the current box of grid to empty
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
 
@@ -725,6 +761,25 @@ class game:
         #'''
         self.grid[destination[0]][destination[1]].piece = piece
 
+        #moving rook while castling
+
+        #1) first added code for white short castling.
+        #2) other 3 remaining
+        #3) debugging code right now
+        if piece.name == 'king':
+            if piece.position == [7, 4]:
+                if destination == [7, 6]:
+                    castling_rook = self.grid[7][7].piece
+                    self.grid[7][7].is_empty = True #moves_manager.pieces update remaining for rook during castling
+                    self.grid[7][5].is_empty = False
+                    self.grid[7][5].piece = castling_rook
+                    self.grid[7][5].piece.position = [7,5]
+                    for i in range(len(self.moves_manager.pieces['rook'])):
+                        if self.moves_manager.pieces['rook'][i].position == [7, 7]:
+                            self.moves_manager.pieces['rook'][i].position = [7, 5]
+                            break
+
+
         # unlock the piece so that update_pieces function does not show it on screen when it is moving
         piece.locked = False
 
@@ -752,6 +807,8 @@ class game:
         self.selected_box = None
         self.grid[destination[0]][destination[1]].is_empty = False
 
+    def update_castle(self):
+        return self.currentCastleRights
     # graphical
     def get_captured_pieces_numbers(self):
         num = FONT.render("0", True, RED)
@@ -920,3 +977,8 @@ class game:
 
 
 # def update_captured_pieces(self):
+class update_castle(object):
+    def __init__(self):
+
+        self.currentCastleRights = castle_for_move_functions
+
