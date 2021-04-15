@@ -730,7 +730,7 @@ class game(object):
         print(self.chess_notation(piece, destination))
         moved_piece = piece
         self.update_castling_rights(moved_piece)
-        print(self.currentCastleRights.wks, self.currentCastleRights.wqs, self.currentCastleRights.bks, self.currentCastleRights.bqs)
+        #print(self.currentCastleRights.wks, self.currentCastleRights.wqs, self.currentCastleRights.bks, self.currentCastleRights.bqs)
         # set the current box of grid to empty
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
 
@@ -762,15 +762,11 @@ class game(object):
         self.grid[destination[0]][destination[1]].piece = piece
 
         #moving rook while castling
-
-        #1) first added code for white short castling.
-        #2) other 3 remaining
-        #3) debugging code right now
         if piece.name == 'king':
             if piece.position == [7, 4]:
-                if destination == [7, 6]:
+                if destination == [7, 6]: #white king-side castling
                     castling_rook = self.grid[7][7].piece
-                    self.grid[7][7].is_empty = True #moves_manager.pieces update remaining for rook during castling
+                    self.grid[7][7].is_empty = True
                     self.grid[7][5].is_empty = False
                     self.grid[7][5].piece = castling_rook
                     self.grid[7][5].piece.position = [7,5]
@@ -778,6 +774,39 @@ class game(object):
                         if self.moves_manager.pieces['rook'][i].position == [7, 7]:
                             self.moves_manager.pieces['rook'][i].position = [7, 5]
                             break
+                elif  destination == [7, 2]: #white queen-side castling
+                    castling_rook = self.grid[7][0].piece
+                    self.grid[7][0].is_empty = True
+                    self.grid[7][3].is_empty = False
+                    self.grid[7][3].piece = castling_rook
+                    self.grid[7][3].piece.position = [7, 3]
+                    for i in range(len(self.moves_manager.pieces['rook'])):
+                        if self.moves_manager.pieces['rook'][i].position == [7, 0]:
+                            self.moves_manager.pieces['rook'][i].position == [7, 3]
+                            break
+
+            elif piece.position == [0, 4]:
+                if destination == [0, 6]: #black king-side castling
+                    castling_rook = self.grid[0][7].piece
+                    self.grid[0][7].is_empty = True
+                    self.grid[0][5].is_empty = False
+                    self.grid[0][5].piece = castling_rook
+                    self.grid[0][5].piece.position = [0,5]
+                    for i in range(len(self.moves_manager.enemy_pieces['rook'])):
+                        if self.moves_manager.enemy_pieces['rook'][i].position == [0, 7]:
+                            self.moves_manager.enemy_pieces['rook'][i].position = [0, 5]
+                            break
+                elif  destination == [0, 2]: #white queen-side castling
+                    castling_rook = self.grid[0][0].piece
+                    self.grid[0][0].is_empty = True
+                    self.grid[0][3].is_empty = False
+                    self.grid[0][3].piece = castling_rook
+                    self.grid[0][3].piece.position = [0, 3]
+                    for i in range(len(self.moves_manager.enemy_pieces['rook'])):
+                        if self.moves_manager.enemy_pieces['rook'][i].position == [0, 0]:
+                            self.moves_manager.enemy_pieces['rook'][i].position == [0, 3]
+                            break
+                    
 
 
         # unlock the piece so that update_pieces function does not show it on screen when it is moving
@@ -979,6 +1008,5 @@ class game(object):
 # def update_captured_pieces(self):
 class update_castle(object):
     def __init__(self):
-
         self.currentCastleRights = castle_for_move_functions
 

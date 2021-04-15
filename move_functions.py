@@ -1,6 +1,5 @@
 from functions import *
-#from functions import game
-#from functions import update_castle
+
 class CastleRights:
     def __init__(self, wks, wqs, bks, bqs):
         self.wks = wks
