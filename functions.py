@@ -118,10 +118,10 @@ class interface:
         for i in range(8):
             for j in range(8):
                 if (i + j) % 2 == 1:
-                    pygame.draw.rect(self.screen, COLOR5,
+                    pygame.draw.rect(self.screen, COLOR7,
                                      [self.grid[i][j].xstart, self.grid[i][j].ystart, self.boxwidth, self.boxheight])
                 else:
-                    pygame.draw.rect(self.screen, COLOR6,
+                    pygame.draw.rect(self.screen, COLOR8,
                                      [self.grid[i][j].xstart, self.grid[i][j].ystart, self.boxwidth, self.boxheight])
 
     def generate_message_input_box(self):

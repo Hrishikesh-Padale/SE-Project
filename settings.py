@@ -1,7 +1,9 @@
 import pygame
 from pygame.locals import *
+from pygame import mixer
 
 pygame.init()
+mixer.init()
 
 FONT1 = pygame.font.SysFont('calibri',40,True)
 FONT2 = pygame.font.SysFont('calibri',20,True)
@@ -25,7 +27,8 @@ class Settings:
 		self.ptype = 3
 		self.ctype = 3
 		self.music = 1
-		self.volume_value = 50 
+		self.volume_value = 30
+		self.play_music()
 
 
 	def get_typechoice_images(self):
@@ -75,6 +78,13 @@ class Settings:
 		self.decrease_rect = self.decrease.get_rect()
 		self.decrease_rect.center = (1314,715)
 
+	def play_music(self):
+
+		mixer.music.load("Media/music1.mp3")
+		mixer.music.set_volume(self.volume_value/100)
+		mixer.music.play(loops=-1)
+
+
 	def update(self):
 
 		while True:
@@ -86,19 +96,31 @@ class Settings:
 					return
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
+
+					#music turn on or off
 					if pos[0]<=400 and pos[0]>=300 and pos[1]<=730 and pos[1]>=700:
 						self.music = not self.music
+						if not self.music:
+							mixer.music.stop()
+						else:
+							self.play_music()
 
+					#volume change
 					elif pos[0]<=1280 and pos[0]>=1250 and pos[1]<=730 and pos[1]>=700:
 						if self.volume_value < 100:
 							self.volume_value += 10
 							#print(self.volume_value)
+							if self.music:
+								mixer.music.set_volume(self.volume_value/100)
 
 					elif pos[0]<=1330 and pos[0]>=1300 and pos[1]<=730 and pos[1]>=700:
 						if self.volume_value > 0:
 							self.volume_value -= 10
 							#print(self.volume_value)
+							if self.music:
+								mixer.music.set_volume(self.volume_value/100)
 
+					#piece appearance
 					elif pos[0]<=725 and pos[0]>=695 and pos[1]<=195 and pos[1]>=165:
 						self.ptype = 1
 
@@ -108,6 +130,7 @@ class Settings:
 					elif pos[0]<=725 and pos[0]>=695 and pos[1]<=537 and pos[1]>=507:
 						self.ptype = 3
 
+					#color theme
 					elif pos[0]<=990 and pos[0]>=960 and pos[1]<=310 and pos[1]>=280:
 						self.ctype = 1
 
