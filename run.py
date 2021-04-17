@@ -8,6 +8,8 @@ import random
 from functions import *
 import warnings
 from move_functions import *
+
+
 #from login_register import Login_Register
 #from main_menu import *
 
@@ -49,6 +51,7 @@ Game.init_opponent_pieces()
 Game.get_axes()
 
 
+
 #cursor = pygame.transform.scale(pygame.image.load('Media/cursor.png'),(50,50))
 
 #start = [Game.grid[7][6].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[7][6].ystart+Game.position_adjustment['type3']['WKnight'][1]] 
@@ -58,6 +61,11 @@ Game.get_axes()
 # start = [Game.grid[7][6].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[7][6].ystart+Game.position_adjustment['type3']['WKnight'][1]] 
 # stop = [Game.grid[5][5].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[5][5].ystart+Game.position_adjustment['type3']['WKnight'][1]]
 # print(start,stop)
+
+
+#1f1f23 - Dark Grey
+#9147ff - Purple
+#464649 - Grey
 
 # main loop of the game
 while running:
@@ -75,6 +83,7 @@ while running:
                 Game.handle_click_event([row, col])
 
     # update the screen based on events
+
     Game.update()
     Game.highlight_selected_box()
     Game.highlight_legal_moves()
@@ -100,8 +109,8 @@ while running:
     # else:																		
     #	screen.blit(Game.white_pieces_images['Knight'],(stop[0],stop[1]))		
     '''___________________________________________________________________________'''
-
+    
     clock.tick(60)
     pygame.display.flip()
-
+    
 pygame.quit()

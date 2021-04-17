@@ -76,10 +76,9 @@ class interface:
         self.server = '65.0.204.13'
         self.port = 12000
         self.username = "Hrishi"
-
-    # self.connect_to_server()
-    # self.receive_thread = Thread(target=self.receive_messages)
-    # self.receive_thread.start()
+        #self.connect_to_server()
+        #self.receive_thread = Thread(target=self.receive_messages)
+        #self.receive_thread.start()
 
     def generate_board_coordinates(self):
         self.xstart = self.width * (20 / 100)
@@ -119,10 +118,10 @@ class interface:
         for i in range(8):
             for j in range(8):
                 if (i + j) % 2 == 1:
-                    pygame.draw.rect(self.screen, COLOR3,
+                    pygame.draw.rect(self.screen, COLOR5,
                                      [self.grid[i][j].xstart, self.grid[i][j].ystart, self.boxwidth, self.boxheight])
                 else:
-                    pygame.draw.rect(self.screen, COLOR4,
+                    pygame.draw.rect(self.screen, COLOR6,
                                      [self.grid[i][j].xstart, self.grid[i][j].ystart, self.boxwidth, self.boxheight])
 
     def generate_message_input_box(self):
@@ -171,7 +170,7 @@ class interface:
                     self.last_message_done = False
                     self.chat_buffer_text.append("Me:" + self.message)
                     msg = self.username + ":" + self.message
-                    # self.send_message(msg)
+                    #self.send_message(msg)
                     text = FONT.render(self.message, True, BLACK)
                     rect = text.get_rect()
                     username = FONT.render("Me:", True, random.choice([RED, GREEN, LIGHTBLUE, LIGHTNAVY]))
@@ -184,7 +183,7 @@ class interface:
                                          [self.messsage_input_xstart + self.width * (0.3 / 100),
                                           self.messsage_input_ystart + self.height * (4.4 / 100)]]
                     self.last_msg += 1
-                    if self.last_msg >= 10:
+                    if self.last_msg >= 11:
                         self.first_msg += 1
 
                 elif event.key == pygame.K_LEFT and self.cursor_position > 0:
@@ -351,10 +350,10 @@ class game:
         self.get_captured_pieces_numbers()
         self.position_adjustment = {
             'type1': {'WPawn': (0, 0), 'WRook': (0, 0),
-                      'WKnight': (0, 0), 'W_Bishop': (0, 0),
+                      'WKnight': (0, 0), 'WBishop': (0, 0),
                       'WQueen': (0, 0), 'WKing': (0, 0),
                       'BPawn': (0, 0), 'BRook': (0, 0),
-                      'BKnight': (0, 0), 'B_Bishop': (0, 0),
+                      'BKnight': (0, 0), 'BBishop': (0, 0),
                       'BQueen': (0, 0), 'BKing': (0, 0)},
 
             'type2': {'WPawn': (Interface.width * (0.19 / 100), 0),
@@ -391,14 +390,16 @@ class game:
         if self.pieces_scaling_factor:
             for piece in self.white_pieces_images:
                 self.white_pieces_images[piece] = pygame.transform.scale(self.white_pieces_images[piece],
-                                                                         self.pieces_scaling_factor)
+                                                                         (self.pieces_scaling_factor,self.pieces_scaling_factor))
+        
+        piece = ['Rook', 'Bishop', 'Knight', 'Queen', 'King', 'Pawn']
         for i in piece:
             self.black_pieces_images[i] = pygame.image.load(f'Media/pieces type {self.piece_type}/B{i}.png')
 
         if self.pieces_scaling_factor:
             for piece in self.black_pieces_images:
                 self.black_pieces_images[piece] = pygame.transform.scale(self.black_pieces_images[piece],
-                                                                         self.pieces_scaling_factor)
+                                                                         (self.pieces_scaling_factor,self.pieces_scaling_factor))
 
     def init_my_pieces(self):
         pawns = [piece('pawn', [6, 0], "white"), piece('pawn', [6, 1], "white"), piece('pawn', [6, 2], "white"),
@@ -700,6 +701,7 @@ class game:
 
         if self.grid[destination[0]][destination[1]].is_empty == False: #destination square non-empty means definitely contains black piece
             captured_piece = self.grid[destination[0]][destination[1]].piece
+            self.grid[destination[0]][destination[1]].piece.is_alive = False
             '''
             setting position of captured piece to [-1,-1] because 
             [-1,-1] doesn't exist on the grid and so does the captured piece
@@ -844,8 +846,8 @@ class game:
         # Board
         self.Interface.draw_chess_board()
         # Settings Panel
-        pygame.draw.rect(self.screen, (0,255,0), [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
-                                                  self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
+        #pygame.draw.rect(self.screen, (0,255,0), [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
+        #                                          self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
         # Captured Pieces
         pygame.draw.rect(self.screen, GREEN, [self.Interface.killed_xstart + 2, self.Interface.killed_ystart + 2,
                                               self.Interface.killed_box_width - 2.5,

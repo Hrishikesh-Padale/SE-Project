@@ -1,4 +1,4 @@
-from functions import *
+#from functions import *
 class Moves_manager:
     def __init__(self):
         self.pieces	 = {}

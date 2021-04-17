@@ -17,10 +17,10 @@ class Chat_panel:
 		self.leaderboard_img = pygame.transform.scale(pygame.image.load('Media/leaderboard.png'),(150,67))
 		self.log_img = pygame.transform.scale(pygame.image.load('Media/log.png'),(47,39))
 
-		self.break_image = pygame.transform.scale(pygame.image.load('Media/break.png'),(80,80))
-		self.forfeit_image = pygame.transform.scale(pygame.image.load('Media/Forfeit.png'),(60,70))
-		self.undo_image = pygame.transform.scale(pygame.image.load('Media/undo.png'),(80,70))
-		self.leave_image = pygame.transform.scale(pygame.image.load('Media/leave.png'),(60,60))
+		#self.break_image = pygame.transform.scale(pygame.image.load('Media/break.png'),(80,80))
+		#self.forfeit_image = pygame.transform.scale(pygame.image.load('Media/Forfeit.png'),(60,70))
+		#self.undo_image = pygame.transform.scale(pygame.image.load('Media/undo.png'),(80,70))
+		#self.leave_image = pygame.transform.scale(pygame.image.load('Media/leave.png'),(60,60))
 
 	def mount(self,xstart,ystart):
 
@@ -41,9 +41,9 @@ class Chat_panel:
 		pygame.draw.rect(self.screen,BLACK,[xstart+247,ystart,86,41],2)
 		pygame.draw.rect(self.screen,BLACK,[xstart+332,ystart,87,41],2)
 
-		self.screen.blit(self.break_image,(xstart+20,10))
-		self.screen.blit(self.forfeit_image,(xstart+130,14))
-		self.screen.blit(self.undo_image,(xstart+210,12))
-		self.screen.blit(self.leave_image,(xstart+310,14))
+		#self.screen.blit(self.break_image,(xstart+20,10))
+		#self.screen.blit(self.forfeit_image,(xstart+130,14))
+		#self.screen.blit(self.undo_image,(xstart+210,12))
+		#self.screen.blit(self.leave_image,(xstart+310,14))
 
 
