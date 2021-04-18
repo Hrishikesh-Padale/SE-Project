@@ -28,7 +28,8 @@ class Settings:
 		self.ctype = 3
 		self.music = 1
 		self.volume_value = 30
-		self.play_music()
+		if self.music:
+			self.play_music()
 
 
 	def get_typechoice_images(self):
