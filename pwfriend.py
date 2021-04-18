@@ -14,7 +14,6 @@ class PlayWithFriend:
 		self.screen = screen
 		self.clock = clock
 		self.get_search_bar()
-		self.done = False
 		self.Friends_list = [chr(character) for character in range(65,91)]
 		#print(self.Friends_list)
 		self.Friends_texts = [FONT1.render(i,True,(random.randrange(1,256),random.randrange(1,256),random.randrange(1,256))) for i in self.Friends_list]
@@ -117,13 +116,13 @@ class PlayWithFriend:
 
 
 	def update(self):
-		while not self.done:
+		while True:
 			#events = pygame.event.get()
 			pos = pygame.mouse.get_pos()
 			self.screen.fill("#1f1f23")
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					self.done = True
+					return
 
 				elif event.type == pygame.KEYDOWN:
 					self.get_input_pwf(event)

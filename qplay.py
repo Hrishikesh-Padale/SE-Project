@@ -9,7 +9,6 @@ class Quickplay:
 
 	def __init__(self,screen,clock):
 
-		self.done = False
 		self.screen = screen
 		self.clock = clock
 		self.profile_picture = pygame.transform.scale(pygame.image.load('Media/prof.png'),(240,240))
@@ -31,12 +30,12 @@ class Quickplay:
 
 	def update(self):
 
-		while not self.done:
+		while True:
 
 			self.screen.fill((114,6,6))
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					self.done = True
+					return
 
 			pygame.draw.rect(self.screen,(140,44,44),[440,100,300,500],border_radius=20)
 			pygame.draw.rect(self.screen,(82,0,2),[460,120,260,220],border_radius=20)
