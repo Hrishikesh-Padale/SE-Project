@@ -50,19 +50,6 @@ Game.init_my_pieces()
 Game.init_opponent_pieces()
 Game.get_axes()
 
-
-
-#cursor = pygame.transform.scale(pygame.image.load('Media/cursor.png'),(50,50))
-
-#start = [Game.grid[7][6].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[7][6].ystart+Game.position_adjustment['type3']['WKnight'][1]] 
-#stop = [Game.grid[5][5].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[5][5].ystart+Game.position_adjustment['type3']['WKnight'][1]]
-#print(start,stop)
-
-# start = [Game.grid[7][6].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[7][6].ystart+Game.position_adjustment['type3']['WKnight'][1]] 
-# stop = [Game.grid[5][5].xstart+Game.position_adjustment['type3']['WKnight'][0],Game.grid[5][5].ystart+Game.position_adjustment['type3']['WKnight'][1]]
-# print(start,stop)
-
-
 #1f1f23 - Dark Grey
 #9147ff - Purple
 #464649 - Grey

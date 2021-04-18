@@ -7,10 +7,6 @@ pygame.init()
 FONT1 = pygame.font.SysFont('calibri',25,True)
 FONT2 = pygame.font.SysFont('calibri',30,True)
 
-width,height = 1536,801
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((width,height))
-
 class Profile:
 
 	def __init__(self,screen,clock):
@@ -145,9 +141,12 @@ class Profile:
 			pygame.draw.line(self.screen,(0,0,0),(1125,153),(1450,153),3)
 
 			pygame.display.flip()
-			clock.tick(60)
+			self.clock.tick(60)
 
 
-profile = Profile(screen,clock)
-profile.update()
-pygame.quit()
+#width,height = 1536,801
+#clock = pygame.time.Clock()
+#screen = pygame.display.set_mode((width,height))
+#profile = Profile(screen,clock)
+#profile.update()
+#pygame.quit()

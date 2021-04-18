@@ -9,12 +9,6 @@ FONT1 = pygame.font.SysFont('calibri',40,True)
 FONT2 = pygame.font.SysFont('calibri',20,True)
 FONT3 = pygame.font.SysFont('calibri',30,True)
 
-
-width,height = 1536,801
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((width,height))
-pygame.display.set_caption("Settings")
-
 class Settings:
 
 	def __init__(self,screen,clock):
@@ -211,8 +205,13 @@ class Settings:
 			self.screen.blit(self.decrease,self.decrease_rect)
 
 			pygame.display.flip()
-			clock.tick(60)
+			self.clock.tick(60)
 
-settings = Settings(screen,clock)
-settings.update()
+#width,height = 1536,801
+#clock = pygame.time.Clock()
+#screen = pygame.display.set_mode((width,height))
+#pygame.display.set_caption("Settings")
+#settings = Settings(screen,clock)
+#settings.update()
+#pygame.quit()
 

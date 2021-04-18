@@ -1,6 +1,11 @@
 import pygame
 import sys
 from pygame.locals import *
+from qplay import *
+from pwfriend import *
+from player_profile import *
+from Settings import *
+
 
 pygame.init()
 FONT1 = pygame.font.SysFont('calibri',35,True)
@@ -41,8 +46,9 @@ class Option:
 	
 
 class Main_menu:
-	def __init__(self,screen):
+	def __init__(self,screen,clock):
 		self.screen = screen
+		self.clock = clock
 		self.background_color = (114,6,6)
 		self.options_color = (140,44,44)
 		self.icon_background_color = (82,0,2)
@@ -117,8 +123,15 @@ class Main_menu:
 
 		self.quit_button = Button('Quit',1350,0)
 
-	def update(self,clock):
+
+		self.qp_object = Quickplay(self.screen,self.clock)
+		self.pwf_object = PlayWithFriend(self.screen,self.clock)
+		self.prof_object = Profile(self.screen,self.clock)
+		self.settings_object = Settings(self.screen,self.clock)
+
+	def update(self):
 		while True:
+			pos = pygame.mouse.get_pos()
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					return
@@ -126,11 +139,18 @@ class Main_menu:
 					if event.button == 1:
 						if (pos[0]>=self.quit_button.xlim[0] and pos[0]<=self.quit_button.xlim[1]) and (pos[1]>=self.quit_button.ylim[0] and pos[1]<= self.quit_button.ylim[1]):
 							return
-					#print(pygame.mouse.get_pos())
+						elif pos[0]>=138 and pos[0]<=438 and pos[1]>=150.5 and pos[1]<=650.5:
+							self.qp_object.update()
+						elif pos[0]>=478 and pos[0]<=758 and pos[1]>=150.5 and pos[1]<=650.5:
+							self.pwf_object.update()
+						elif pos[0]>=778 and pos[0]<=1078 and pos[1]>=150.5 and pos[1]<=650.5:
+							self.prof_object.update()
+						elif pos[0]>=1098 and pos[0]<=1398 and pos[1]>=150.5 and pos[1]<=650.5:
+							self.settings_object.update()
 
 			self.screen.fill(self.background_color)
 			#self.screen.blit(self.bg,(0,0))
-			pos = pygame.mouse.get_pos()
+
 			#mouse pointer on quickplay
 			if pos[0]>=138 and pos[0]<=438 and pos[1]>=150.5 and pos[1]<=650.5:
 				pygame.draw.rect(self.screen,self.options_color,[self.quickplay.xstart-12.5,self.quickplay.ystart-40,self.quickplay.width+25,self.quickplay.height+80],border_radius=20)
@@ -355,12 +375,12 @@ class Main_menu:
 			
 			self.quit_button.draw(self.screen,pygame.mouse.get_pos())
 			pygame.display.flip()
-			clock.tick(60)
+			self.clock.tick(60)
 
 
 width,height = 1536,801
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((width,height))
-Main_menu = Main_menu(screen)
-Main_menu.update(clock)
+Main_menu = Main_menu(screen,clock)
+Main_menu.update()
 pygame.quit()

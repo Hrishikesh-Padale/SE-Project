@@ -193,30 +193,32 @@ class PlayWithFriend:
 
 			for i in self.buttons_pos:
 				pygame.draw.rect(self.screen,(255,255,255),[620,i,80,25],2)
-				if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 171  and pos[1] >= 146:
-					pygame.draw.rect(self.screen,(255,255,255),[622,148,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 221  and pos[1] >= 196:
-					pygame.draw.rect(self.screen,(255,255,255),[622,198,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 271  and pos[1] >= 246:
-					pygame.draw.rect(self.screen,(255,255,255),[622,248,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 321 and pos[1] >= 296:
-					pygame.draw.rect(self.screen,(255,255,255),[622,298,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 371 and pos[1] >= 346:
-					pygame.draw.rect(self.screen,(255,255,255),[622,348,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 421 and pos[1] >= 396:
-					pygame.draw.rect(self.screen,(255,255,255),[622,398,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 471 and pos[1] >= 446:
-					pygame.draw.rect(self.screen,(255,255,255),[622,448,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 521 and pos[1] >= 496:
-					pygame.draw.rect(self.screen,(255,255,255),[622,498,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 571 and pos[1] >= 546:
-					pygame.draw.rect(self.screen,(255,255,255),[622,548,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 621 and pos[1] >= 596:
-					pygame.draw.rect(self.screen,(255,255,255),[622,598,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 671 and pos[1] >= 646:
-					pygame.draw.rect(self.screen,(255,255,255),[622,648,80,25])
-				elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 721 and pos[1] >= 696:
-					pygame.draw.rect(self.screen,(255,255,255),[622,698,80,25])
+
+				
+			if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 171  and pos[1] >= 146:
+				pygame.draw.rect(self.screen,(255,255,255),[622,148,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 221  and pos[1] >= 196:
+				pygame.draw.rect(self.screen,(255,255,255),[622,198,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 271  and pos[1] >= 246:
+				pygame.draw.rect(self.screen,(255,255,255),[622,248,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 321 and pos[1] >= 296:
+				pygame.draw.rect(self.screen,(255,255,255),[622,298,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 371 and pos[1] >= 346:
+				pygame.draw.rect(self.screen,(255,255,255),[622,348,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 421 and pos[1] >= 396:
+				pygame.draw.rect(self.screen,(255,255,255),[622,398,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 471 and pos[1] >= 446:
+				pygame.draw.rect(self.screen,(255,255,255),[622,448,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 521 and pos[1] >= 496:
+				pygame.draw.rect(self.screen,(255,255,255),[622,498,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 571 and pos[1] >= 546:
+				pygame.draw.rect(self.screen,(255,255,255),[622,548,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 621 and pos[1] >= 596:
+				pygame.draw.rect(self.screen,(255,255,255),[622,598,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 671 and pos[1] >= 646:
+				pygame.draw.rect(self.screen,(255,255,255),[622,648,80,25])
+			elif pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 721 and pos[1] >= 696:
+				pygame.draw.rect(self.screen,(255,255,255),[622,698,80,25])
 
 			for i in self.button_texts_pos:
 				self.screen.blit(self.invite_text,(635,i))
@@ -236,11 +238,10 @@ class PlayWithFriend:
 			self.clock.tick(60)
 
 
-width,height = 1536,801
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((width,height))
-pygame.display.set_caption("Play With Friend")
-play_with_friend = PlayWithFriend(screen,clock)
-play_with_friend.update()
-
-pygame.quit()
+#width,height = 1536,801
+#clock = pygame.time.Clock()
+#screen = pygame.display.set_mode((width,height))
+#pygame.display.set_caption("Play With Friend")
+#play_with_friend = PlayWithFriend(screen,clock)
+#play_with_friend.update()
+#pygame.quit()
