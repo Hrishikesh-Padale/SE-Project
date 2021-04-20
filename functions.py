@@ -38,6 +38,7 @@ LIGHTNAVY = (153, 153, 255)
 RED = (255, 0, 0)
 
 FONT = pygame.font.SysFont('freesansbold.ttf', 25)
+FONT1 = pygame.font.SysFont('freesansbold.ttf', 35)
 AXIS_COORD_FONT = pygame.font.SysFont('consolas', 25, True)
 
 
@@ -348,6 +349,7 @@ class game:
         self.moves_manager = None
         self.selected_piece = None
         self.get_captured_pieces_numbers()
+        self.get_buttons()
         self.position_adjustment = {
             'type1': {'WPawn': (0, 0), 'WRook': (0, 0),
                       'WKnight': (0, 0), 'WBishop': (0, 0),
@@ -381,6 +383,11 @@ class game:
                       'BQueen': (Interface.width * (0.32 / 100), 0),
                       'BKing': (Interface.width * (0.84 / 100), Interface.height * (0.5 / 100))},
         }
+
+    def get_buttons(self):
+        self.music_button = FONT1.render("Music:ON",True,(0,180,0))
+        self.forfeit_button = FONT1.render("Forfeit",True,(0,0,0))
+        self.leave_button = FONT1.render("Leave",True,(0,0,0))
 
     def load_pieces(self):
         piece = ['Rook', 'Bishop', 'Knight', 'Queen', 'King', 'Pawn']
@@ -733,7 +740,7 @@ class game:
         # moving piece
         while True:
             # keep updating the screen and pieces while moving piece
-            self.update()
+            self.update(pygame.mouse.get_pos())
             self.update_pieces()
             self.Interface.print_messages()
             #add animation conditions for different pieces
@@ -818,7 +825,7 @@ class game:
         self.y_axis_coords["seven"][1].center = (315, 118)
         self.y_axis_coords["eight"][1].center = (315, 21)
 
-    def update(self):
+    def update(self,pos):
 
         # Board - Border
         pygame.draw.rect(self.screen, BLACK, [self.Interface.xstart, self.Interface.ystart, self.Interface.boardwidth,
@@ -846,8 +853,8 @@ class game:
         # Board
         self.Interface.draw_chess_board()
         # Settings Panel
-        #pygame.draw.rect(self.screen, (0,255,0), [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
-        #                                          self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
+        pygame.draw.rect(self.screen, (0,102,50), [self.Interface.panel_xstart + 2, self.Interface.panel_ystart + 2,
+                                                  self.Interface.panelwidth - 2.5, self.Interface.panelheight - 2.5])
         # Captured Pieces
         pygame.draw.rect(self.screen, GREEN, [self.Interface.killed_xstart + 2, self.Interface.killed_ystart + 2,
                                               self.Interface.killed_box_width - 2.5,
@@ -919,6 +926,27 @@ class game:
             self.screen.blit(self.x_axis_coords[coord][0], self.x_axis_coords[coord][1])
         for coord in self.y_axis_coords:
             self.screen.blit(self.y_axis_coords[coord][0], self.y_axis_coords[coord][1])
+
+        pygame.draw.rect(self.screen,(0,0,0),[1115,20,140,53],2)
+        pygame.draw.rect(self.screen,(0,0,0),[1275,20,100,53],2)
+        pygame.draw.rect(self.screen,(0,0,0),[1395,20,110,53],2)
+        pygame.draw.rect(self.screen,(255,255,255),[1117,22,137,50])
+        pygame.draw.rect(self.screen,(255,255,255),[1277,22,97,50])
+        pygame.draw.rect(self.screen,(255,255,255),[1397,22,107,50])
+
+        #focusing buttons
+        if pos[0]<=1255 and pos[0]>=1115 and pos[1]<=73 and pos[1]>=20:
+            pygame.draw.rect(self.screen,(0,0,150),[1117,22,137,50])
+        elif pos[0]<=1375 and pos[0]>=1275 and pos[1]<=73 and pos[1]>=20:
+            pygame.draw.rect(self.screen,(0,0,150),[1277,22,97,50])
+        elif pos[0]<=1505 and pos[0]>=1395 and pos[1]<=73 and pos[1]>=20:
+            pygame.draw.rect(self.screen,(0,0,150),[1397,22,107,50])
+
+        self.screen.blit(self.music_button,(1125,35))
+        self.screen.blit(self.forfeit_button,(1285,35))
+        self.screen.blit(self.leave_button,(1415,35))
+
+
 
 
 # def update_captured_pieces(self):

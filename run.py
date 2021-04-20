@@ -63,15 +63,23 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            col = int((pos[0] - Interface.xstart) // (Interface.boardwidth // 8))
-            row = int((pos[1] - Interface.ystart) // (Interface.boardheight // 8))
-            # print(row,col,pos)
-            if row <= 7 and col <= 7 and row >= 0 and col >= 0:
-                Game.handle_click_event([row, col])
+            if event.button == 1:
+                col = int((pos[0] - Interface.xstart) // (Interface.boardwidth // 8))
+                row = int((pos[1] - Interface.ystart) // (Interface.boardheight // 8))
+                # print(row,col,pos)
+                if row <= 7 and col <= 7 and row >= 0 and col >= 0:
+                    Game.handle_click_event([row, col])
+
+                if pos[0]<=1255 and pos[0]>=1115 and pos[1]<=73 and pos[1]>=20:
+                    print("Music")
+                elif pos[0]<=1375 and pos[0]>=1275 and pos[1]<=73 and pos[1]>=20:
+                    print("Forfeit")
+                elif pos[0]<=1505 and pos[0]>=1395 and pos[1]<=73 and pos[1]>=20:
+                    print("Leave")
 
     # update the screen based on events
 
-    Game.update()
+    Game.update(pygame.mouse.get_pos())
     Game.highlight_selected_box()
     Game.highlight_legal_moves()
     Game.update_pieces()
@@ -82,8 +90,6 @@ while running:
 
     # collinearity line
     # pygame.draw.line(screen,RED,(10,775),(7+Interface.boardwidth,775),2)
-
-    pos = pygame.mouse.get_pos()
     #screen.blit(cursor,(pos[0]-27,pos[1]-23))
     # pos = pygame.mouse.get_pos()
     # screen.blit(pygame.transform.scale(pygame.image.load('Media/cursor_2.png'),(90,90)),(pos[0]-27,pos[1]-23))

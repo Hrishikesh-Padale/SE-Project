@@ -77,12 +77,30 @@ class Login_Register:
 		self.confirm_reg_password.place(relx=0.15,rely=0.6)
 		self.confirm_reg_password.bind("<Button-1>",self.confirm_reg_pass_click)
 
-		self.reg_button = Button(text="Register",padx=78,font=('Impact',15),bg="GREEN",command=self.reg)
+		self.reg_button = Button(text="Register",padx=78,font=('Impact',15),bg="GREEN",command=self.load_otp_widgets)
 		self.reg_button.place(relx=0.15,rely=0.7)
 
 		self.go_back_button = Button(text="Go Back",padx=78,font=('Impact',15),bg="GREEN",command=self.forget_register_widgets)
 		self.go_back_button.place(relx=0.15,rely=0.8)
 
+	def load_otp_widgets(self):
+
+		self.label3.place_forget()
+		self.Email.place_forget()
+		self.reg_username.place_forget()
+		self.reg_password.place_forget()
+		self.confirm_reg_password.place_forget()
+		self.reg_button.place_forget()
+		self.go_back_button.place_forget()
+
+		self.label4 = Label(self.window,text="Enter OTP sent on your email",font=("Arial Bold", 15),fg="BLACK")
+		self.otp = Entry(self.window,width=20,font=('Impact',15),fg="BLACK",bd=2)
+
+		self.label4.place(relx=0.1,rely=0.2)
+		self.otp.place(relx=0.15,rely=0.3)
+
+		self.submit_button = Button(text="Submit",padx=78,font=('Impact',15),bg="GREEN",command=self.validate_otp_code)
+		self.submit_button.place(relx=0.15,rely=0.4)
 
 	def forget_login_widgets(self):
 
@@ -91,6 +109,7 @@ class Login_Register:
 		self.password.place_forget()
 		self.login_button.place_forget()
 		self.register_button.place_forget()
+		self.show_pass_check.place_forget()
 		self.remember_me.place_forget()
 		self.forgot_pass.place_forget()
 
@@ -108,7 +127,18 @@ class Login_Register:
 
 		self.load_login_widgets()
 
+	def forget_otp_widgets(self):
 
+		self.label4.place_forget()
+		self.otp.place_forget()
+		self.submit_button.place_forget()
+
+		self.load_login_widgets()
+
+
+	def validate_otp_code(self):
+
+		self.forget_otp_widgets()
 
 	def uname_click(self,*args):
 		self.username.delete(0,'end')
