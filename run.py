@@ -7,7 +7,7 @@ import time
 import random
 from functions import *
 import warnings
-from move_functions import *
+from move_functions import Moves_manager, CastleRights
 #from login_register import Login_Register
 #from main_menu import *
 
@@ -61,6 +61,7 @@ Game.get_axes()
 
 # main loop of the game
 while running:
+    Game.moves_manager.whiteToMove = Game.whiteToMove
     screen.fill(WHITE)
     events = pygame.event.get()
     for event in events:
