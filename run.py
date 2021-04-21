@@ -7,9 +7,7 @@ import time
 import random
 from functions import *
 import warnings
-from move_functions import *
-
-
+from move_functions import Moves_manager, CastleRights
 #from login_register import Login_Register
 #from main_menu import *
 
@@ -42,11 +40,10 @@ Interface.generate_chatbox()
 Interface.generate_message_input_box()
 Interface.generate_other_functionalities()
 
-
 # Parameters -> [game grid created earlier,screen,scale for piece images,piece type]
 Game = game(Interface, screen, None, 3)
 Game.load_pieces()
-Game.moves_manager = Moves_manager()
+Game.moves_manager = Moves_manager(Game)
 Game.init_my_pieces()
 Game.init_opponent_pieces()
 Game.get_axes()
@@ -60,6 +57,7 @@ Game.get_axes()
 
 # main loop of the game
 while running:
+    Game.moves_manager.whiteToMove = Game.whiteToMove
     screen.fill(WHITE)
     events = pygame.event.get()
     pos = pygame.mouse.get_pos()
