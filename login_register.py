@@ -1,6 +1,8 @@
 from tkinter import *
 from PIL import Image,ImageTk
 import sys
+from socket import *
+import pickle
 
 
 class Login_Register:
@@ -17,8 +19,28 @@ class Login_Register:
 		self.label1 = Label(self.window, text="Online chess game", font=("Arial Bold", 25),fg="BLACK")
 		self.label1.place(relx=0.07,rely=0.08)
 		self.load_login_widgets()
+		self.connect_to_server()
 		#self.load_register_widgets()
 
+		self.mandatory = Label(self.window,text="All fields are required !",font=('Consolas',15),fg="RED")
+
+	def connect_to_server(self):
+		self.ip = '65.0.204.13'
+		self.port = 12000
+		try:
+			self.sock = socket(AF_INET, SOCK_STREAM)
+			print("Socket successfully created")
+		except error as err:
+			print("socket creation failed with error %s" % (err))
+		self.sock.connect((self.ip, self.port))
+
+	def receive(self):
+		while True:
+			try:
+				self.data = sock.recv(4096)
+			except:
+				print("Error occured while receiving")
+				self.sock.close()
 
 	def load_login_widgets(self):
 
@@ -26,7 +48,7 @@ class Login_Register:
 		self.label2.place(relx=0.38,rely=0.18)
 		
 		self.username = Entry(self.window,width=21,font=('Impact',15),fg="BLACK",bd=2)
-		self.username.insert(0,"GameID/Email")
+		self.username.insert(0,"GameID")
 		self.username.place(relx=0.15,rely=0.3)
 		self.username.bind("<Button-1>",self.uname_click)
 			
@@ -77,7 +99,7 @@ class Login_Register:
 		self.confirm_reg_password.place(relx=0.15,rely=0.6)
 		self.confirm_reg_password.bind("<Button-1>",self.confirm_reg_pass_click)
 
-		self.reg_button = Button(text="Register",padx=78,font=('Impact',15),bg="GREEN",command=self.load_otp_widgets)
+		self.reg_button = Button(text="Register",padx=78,font=('Impact',15),bg="GREEN",command=self.reg)
 		self.reg_button.place(relx=0.15,rely=0.7)
 
 		self.go_back_button = Button(text="Go Back",padx=78,font=('Impact',15),bg="GREEN",command=self.forget_register_widgets)
@@ -112,6 +134,10 @@ class Login_Register:
 		self.show_pass_check.place_forget()
 		self.remember_me.place_forget()
 		self.forgot_pass.place_forget()
+		try:
+			self.mandatory.place_forget()
+		except:
+			pass
 
 		self.load_register_widgets()
 
@@ -124,6 +150,10 @@ class Login_Register:
 		self.confirm_reg_password.place_forget()
 		self.reg_button.place_forget()
 		self.go_back_button.place_forget()
+		try:
+			self.mandatory.place_forget()
+		except:
+			pass
 
 		self.load_login_widgets()
 
@@ -137,7 +167,14 @@ class Login_Register:
 
 
 	def validate_otp_code(self):
-
+		otp_msg = {'ID':2,'Code':self.otp.get()}
+		self.sock.send(pickle.dumps(otp_msg))
+		data = self.sock.recv(1024)
+		data = pickle.loads(data)
+		print(data)
+		data = self.sock.recv(1024)
+		data = pickle.loads(data)
+		print(data)
 		self.forget_otp_widgets()
 
 	def uname_click(self,*args):
@@ -165,6 +202,15 @@ class Login_Register:
 	def login(self,*args):
 		print(self.username.get())
 		print(self.password.get())
+		if not bool(self.username.get()) or not bool(self.password.get()) or self.username.get()=="GameID" or self.password.get()=="Password":
+			self.mandatory.place(relx=0.1,rely=0.24)
+
+		self.sock.send("Request".encode())
+		self.sock.recv(1024)
+		message = {'ID':5,'UserID':self.username.get(),'Password':self.password.get()}
+		self.sock.send(pickle.dumps(message))
+		reply = self.sock.recv(1024)
+		print(pickle.loads(reply))
 		#self.window.destroy()
 	
 	def register(self,*args):
@@ -172,6 +218,18 @@ class Login_Register:
 
 	def reg(self,*args):
 		print("Registeration online")
+		if not bool(self.Email.get()) or not bool(self.reg_username.get()) or not bool(self.reg_password.get()) or not bool(self.confirm_reg_password.get()) or self.Email.get()=="Email" or self.reg_username.get()=="Username" or self.reg_password.get()=="Password" or self.confirm_reg_password.get() == "Confirm password":
+			self.mandatory.place(relx=0.1,rely=0.24)
+		else:
+			email = self.Email.get()
+			uname = self.reg_username.get()
+			password = self.reg_password.get()
+			message = {'ID':1,'UserID':uname,'Email':email,'Password':password}
+			m = "Register"
+			self.sock.send(m.encode())
+			self.sock.recv(1024)
+			self.sock.send(pickle.dumps(message))
+			self.load_otp_widgets()
 
 	def save_login(self,*args):
 		print(self.remem.get())

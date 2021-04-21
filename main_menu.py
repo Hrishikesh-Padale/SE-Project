@@ -5,10 +5,11 @@ from qplay import *
 from pwfriend import *
 from player_profile import *
 from Settings import *
+from client_network import *
 
 
 pygame.init()
-FONT1 = pygame.font.SysFont('calibri',35,True)
+FONT1 = pygame.font.SysFont('calibri',33,True)
 FONT2 = pygame.font.SysFont('calibri',22,True)
 FONT3 = pygame.font.SysFont('calibri',40,True)
 FONT4 = pygame.font.SysFont('calibri',25,True)
@@ -121,11 +122,12 @@ class Main_menu:
 											,self.settings.d_rect[2].center,(self.settings.d_rect[2].center[0]+7.5,self.settings.d_rect[2].center[1])]
 							}
 
-		self.quit_button = Button('Quit',1350,0)
+		self.quit_button = Button('Logout',1350,0)
 
 
+		self.client = User()
 		self.qp_object = Quickplay(self.screen,self.clock)
-		self.pwf_object = PlayWithFriend(self.screen,self.clock)
+		self.pwf_object = PlayWithFriend(self.screen,self.clock,self.client)
 		self.prof_object = Profile(self.screen,self.clock)
 		self.settings_object = Settings(self.screen,self.clock)
 
