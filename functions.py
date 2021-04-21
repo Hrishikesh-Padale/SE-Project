@@ -315,7 +315,7 @@ class interface:
             self.sock.close()
 
 
-class piece:
+class piece(object):
     def __init__(self, name, position, color):
         self.name = name
         self.position = position
@@ -573,7 +573,7 @@ class game(object):
                         #print('6')
                         selected_square = list()
                         playerclick = list()
-                        print(self.moves_manager.checks, end = " ")
+                        #############################print(self.moves_manager.checks, end = " ")
                         self.whiteToMove = not self.whiteToMove
                     else:
                         selected_square = list()
@@ -666,6 +666,7 @@ class game(object):
         moved_piece = piece
         self.update_castling_rights(moved_piece)
         #print(self.currentCastleRights.wks, self.currentCastleRights.wqs, self.currentCastleRights.bks, self.currentCastleRights.bqs)
+
         # set the current box of grid to empty
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
 
@@ -681,7 +682,6 @@ class game(object):
                         self.moves_manager.pieces[captured_piece.name][i].is_alive = False
                         self.moves_manager.pieces[captured_piece.name][i].position = [-1,-1]
                         break
-
             else:
                 for i in range(len(self.moves_manager.enemy_pieces[captured_piece.name])):
                     if self.moves_manager.enemy_pieces[captured_piece.name][i].position == destination:

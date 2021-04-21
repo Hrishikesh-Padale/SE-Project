@@ -30,87 +30,124 @@ class Moves_manager:
         self.white_pawn_moves = list()
         self.black_pawn_moves = list()
         self.king_moves = list()
-        self.piece_pinned = False
-        self.pin_direction = list()
         self.castle_moves = list()
         self.checkmate = False
         self.stalemate = False
 
-    def is_king_in_check(self, board):
-        if self.whiteToMove:
-            king_coords = self.pieces['king'][0].position
-            self.wking_loc = king_coords
-        else:
-            king_coords = self.enemy_pieces['king'][0].position
-            self.bking_loc = king_coords
-        return self.squareUnderAttack(king_coords, board)
+    def squareUnderAttack(self, coords, my_color, board):
 
-    def squareUnderAttack(self, coords, board):
-        # self.whiteToMove = not self.whiteToMove
-        legal_moves = []
-        if self.whiteToMove:
-            my_color = "white"
-            enemy_color = "black"
-        else:
-            my_color = "black"
-            enemy_color = "white"
+        #self.whiteToMove = not self.whiteToMove
 
+        if my_color == 'white':
+            enemy_color = 'black'
+        else:
+            enemy_color = 'white'
+        #print(board[1][1].piece.name)
         for i in range(8):
             for j in range(8):
                 if board[i][j].is_empty == False:
+                    #print(i, j)
                     Piece = board[i][j].piece
                     if Piece.color == enemy_color:
-                        if Piece.name == "pawn" and Piece.color == "white":
-                            legal_moves = self.get_white_pawn_moves(Piece, board)
-                        elif Piece.name == "pawn" and Piece.color == "black":
-                            legal_moves = self.get_black_pawn_moves(Piece, board)
+                        if Piece.name == "pawn" :
+                            #in case of pawn, no use calling get_pawn_moves. instead, collect pawn.position from moves_manager.pieces
+                            #and putcondition of diagonal attack of pawn
+                            if enemy_color == 'black':
+                                #self.possibleMoves = list()
+                                #self.get_black_pawn_moves(Piece, board)
+                                if len(self.enemy_pieces['pawn']) > 0:
+                                    for pawn in self.enemy_pieces['pawn']:
+                                        self.possibleMoves.append(
+                                            [pawn.position, [pawn.position[0] + 1, pawn.position[1] + 1], pawn, None])
+                                        self.possibleMoves.append(
+                                            [pawn.position, [pawn.position[0] + 1, pawn.position[1] - 1], pawn, None])
+                            else:
+                                #self.possibleMoves = list()
+                                #self.get_white_pawn_moves(Piece, board)
+                                if len(self.pieces['pawn']) > 0:
+                                    for pawn in self.pieces['pawn']:
+                                        self.possibleMoves.append(
+                                            [pawn.position, [pawn.position[0] - 1, pawn.position[1] + 1], pawn, None])
+                                        self.possibleMoves.append(
+                                            [pawn.position, [pawn.position[0] - 1, pawn.position[1] - 1], pawn, None])
                         elif Piece.name == "rook":
-                            legal_moves = self.get_rook_moves(Piece, board)
+                            #self.possibleMoves = list()
+                            self.get_rook_moves(Piece, board)
                         elif Piece.name == "bishop":
-                            legal_moves = self.get_bishop_moves(Piece, board)
+                            #self.possibleMoves = list()
+                            self.get_bishop_moves(Piece, board)
                         elif Piece.name == "knight":
-                            legal_moves = self.get_knight_moves(Piece, board)
+                            #self.possibleMoves = list()
+                            self.get_knight_moves(Piece, board)
                         elif Piece.name == "queen":
-                            legal_moves = self.get_queen_moves(Piece, board)
-                        elif Piece.name == "king":
-                            legal_moves = self.get_king_moves(Piece, board)
+                            #self.possibleMoves = list()
+                            self.get_queen_moves(Piece, board)
 
-                        if coords in [[k.x, k.y] for k in legal_moves]:
-                            #print(True, end=" ")
-                            #print(Piece.name, Piece.position, Piece.color)
-                            return True
+                        moves = self.possibleMoves
+
+                        if len(moves) > 0:
+                            for k in range(len(moves)):
+                                if moves[k][1] == coords:
+                                    return True
         return False
 
-    def get_castling_moves(self, piece, board):
+
+
+    def get_castling_moves(self, board):
         #self.selected_piece = piece
-        self.adjustment_dictionary_name = self.selected_piece.color[0].upper() + self.selected_piece.name[
-            0].upper() + self.selected_piece.name[1:]
-        self.castle_moves = list()
-        if piece.color == 'white':
+        #self.adjustment_dictionary_name = self.selected_piece.color[0].upper() + self.selected_piece.name[0].upper() + self.selected_piece.name[1:]
+        #self.castle_moves = list()
+        if self.whiteToMove:
+            piece = self.pieces['king'][0]
+        else:
+            piece = self.enemy_pieces['king'][0]
+        if self.whiteToMove:
             if self.currentCastleRights.wks == True:
                 # print("1")
+                #print(piece.position, piece.color)
                 if board[piece.position[0]][piece.position[1] + 1].is_empty == True and board[piece.position[0]][
-                    piece.position[1] + 2].is_empty == True:
+                    piece.position[1] + 2].is_empty == True and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] + 1], 'white', board)) and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] + 2], 'white', board)):
                     self.castle_moves.append(board[piece.position[0]][piece.position[1] + 2])
+                    self.possibleMoves.append(
+                        [piece.position, [piece.position[0], piece.position[1] + 2], piece,
+                         None])
             if self.currentCastleRights.wqs == True:
+                #print(piece.position, piece.color)
                 if board[piece.position[0]][piece.position[1] - 1].is_empty == True and board[piece.position[0]][
                     piece.position[1] - 2].is_empty == True and board[piece.position[0]][
-                    piece.position[1] - 3].is_empty == True:
+                    piece.position[1] - 3].is_empty == True and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] - 1], 'white', board)) and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] - 2], 'white', board)):
                     self.castle_moves.append(board[piece.position[0]][piece.position[1] - 2])
+                    self.possibleMoves.append(
+                        [piece.position, [piece.position[0], piece.position[1] - 2], piece,
+                         None])
 
         else:
             if self.currentCastleRights.bks == True:
                 # print("1")
                 if board[piece.position[0]][piece.position[1] + 1].is_empty == True and board[piece.position[0]][
-                    piece.position[1] + 2].is_empty == True:
+                    piece.position[1] + 2].is_empty == True and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] + 1], 'black', board)) and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] + 2], 'black', board)):
                     self.castle_moves.append(board[piece.position[0]][piece.position[1] + 2])
+                    self.possibleMoves.append(
+                        [piece.position, [piece.position[0], piece.position[1] + 2], piece,
+                         None])
             if self.currentCastleRights.bqs == True:
-                if board[piece.position[0]][piece.position[1] - 1].is_empty == True and board[piece.position[0]][
-                    piece.position[1] - 2].is_empty == True and board[piece.position[0]][
-                    piece.position[1] - 3].is_empty == True:
+                if board[piece.position[0]][piece.position[1] - 1].is_empty == True and board[
+                    piece.position[0], piece.position[1] - 2].is_empty == True and board[
+                    piece.position[0], piece.position[1] - 3].is_empty == True and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] - 1], 'black', board)) and (not self.squareUnderAttack([
+                    piece.position[0], piece.position[1] - 2], 'black', board)):
                     self.castle_moves.append(board[piece.position[0]][piece.position[1] - 2])
+                    self.possibleMoves.append(
+                        [piece.position, [piece.position[0], piece.position[1] - 2], piece,
+                         None])
 
-        return self.castle_moves
+        #return self.castle_moves
 
     def check_pins_and_checks(self, board):
         start_row = []
@@ -184,11 +221,6 @@ class Moves_manager:
             0].upper() + self.selected_piece.name[1:]
 
         self.check_pins_and_checks(board)
-        for i in range(len(self.pins)):
-            if piece.position == self.pins[i][0]:
-                self.piece_pinned = True
-                self.pin_direction = self.pins[i][1]
-                break
 
         possible_moves = [[-1, 0], [-1, 1], [0, 1], [1, 1],
                           [1, 0], [1, -1], [0, -1], [-1, -1]]
@@ -196,31 +228,31 @@ class Moves_manager:
         for pos in possible_moves:
             if (0 <= piece.position[0] + pos[0] <= 7) and (0 <= piece.position[1] + pos[1] <= 7):
                 if board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].is_empty == True:
-                    self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
-                    self.possibleMoves.append(
+                    if not self.squareUnderAttack([piece.position[0] + pos[0], piece.position[1] + pos[1]], piece.color, board):
+                        self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                        self.possibleMoves.append(
                         [piece.position, [piece.position[0] + pos[0], piece.position[1] + pos[1]], piece,
                          None])
                 # captures
                 else:
                     captured_piece = board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece
-                    if self.selected_piece.color == 'white':
-                        if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
+                    if self.selected_piece.color == 'white': #white king captures black piece
+                        if  not self.squareUnderAttack([piece.position[0] + pos[0], piece.position[1] + pos[1]], piece.color, board):
+                            if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'black') and (
                                 board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
-                            self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
-                            self.possibleMoves.append(
+                                self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                                self.possibleMoves.append(
+                                [piece.position, [piece.position[0] + pos[0], piece.position[1] + pos[1]], piece, captured_piece])
+                            #self.get_castling_moves(self.king_moves, board, piece)
+                    else: #black king captures white piece
+                        if not self.squareUnderAttack([piece.position[0] + pos[0], piece.position[1] + pos[1]], piece.color, board):
+                            if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'white') and (
+                                board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
+                                self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
+                                self.possibleMoves.append(
                                 [piece.position, [piece.position[0] + pos[0], piece.position[1] + pos[1]], piece,
                                  captured_piece])
-                            #self.get_castling_moves(self.king_moves, board, piece)
-                    else:
-                        if (board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.color == 'white') and (
-                                board[piece.position[0] + pos[0]][piece.position[1] + pos[1]].piece.name != 'king'):
-                            self.king_moves.append(board[piece.position[0] + pos[0]][piece.position[1] + pos[1]])
-                            self.possibleMoves.append(
-                                [piece.position, [piece.position[0] + pos[0], piece.position[1] + pos[1]], piece,
-                                 captured_piece])
-                            #self.get_castling_moves(self.king_moves, board, piece)
-
-
+        #self.get_castling_moves(board)
 
     def get_knight_moves(self, piece, board):
         #self.selected_piece = piece
@@ -386,16 +418,19 @@ class Moves_manager:
         self.adjustment_dictionary_name = self.selected_piece.color[0].upper() + self.selected_piece.name[
             0].upper() + self.selected_piece.name[1:]
 
+        piece_pinned = False
+        pin_direction = []
+
         self.check_pins_and_checks(board)
         for i in range(len(self.pins) - 1, -1, -1):
             if piece.position == self.pins[i][0]:
-                self.piece_pinned = True
-                self.pin_direction = self.pins[i][1]
+                piece_pinned = True
+                pin_direction = self.pins[i][1]
                 self.pins.remove(self.pins[i])
                 break
 
         if piece.position[0] == 6:
-            if not self.piece_pinned or self.pin_direction == [-1, 0]:
+            if not piece_pinned or pin_direction == [-1, 0]:
                 if (board[piece.position[0] - 1][piece.position[1]].is_empty == True):
                     self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1]])
                     self.possibleMoves.append(
@@ -409,7 +444,7 @@ class Moves_manager:
                              None])
             # captures
             if piece.position[0] - 1 >= 0 and piece.position[1] + 1 <= 7:  # captures towards right
-                if not self.piece_pinned or self.pin_direction == [-1, 1]:
+                if not piece_pinned or pin_direction == [-1, 1]:
                     if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
                         captured_piece = board[piece.position[0] - 1][piece.position[1] + 1].piece
                         if (board[piece.position[0] - 1][piece.position[1] + 1].piece.color == 'black'):# and (
@@ -419,7 +454,7 @@ class Moves_manager:
                                     [piece.position, [piece.position[0] - 1, piece.position[1] + 1], piece,
                                      captured_piece])
             if piece.position[0] - 1 >= 0 and piece.position[1] - 1 >= 0:  # captures towards left
-                if not self.piece_pinned or self.pin_direction == [-1, -1]:
+                if not piece_pinned or pin_direction == [-1, -1]:
                     if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
                         captured_piece = board[piece.position[0] - 1][piece.position[1] - 1].piece
                         if (board[piece.position[0] - 1][piece.position[1] - 1].piece.color == 'black'):# and (
@@ -430,7 +465,7 @@ class Moves_manager:
                                      captured_piece])
 
         elif piece.position[0] in [5, 4, 3, 2]:
-            if not self.piece_pinned or self.pin_direction == [-1, 0]:
+            if not piece_pinned or pin_direction == [-1, 0]:
                 if (board[piece.position[0] - 1][piece.position[1]].is_empty == True):
                     self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1]])
                     self.possibleMoves.append(
@@ -439,7 +474,7 @@ class Moves_manager:
 
             # captures
             if piece.position[0] - 1 >= 0 and piece.position[1] + 1 <= 7:  # captures towards right
-                if not self.piece_pinned or self.pin_direction == [-1, 1]:
+                if not piece_pinned or pin_direction == [-1, 1]:
                     if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
                         captured_piece = board[piece.position[0] - 1][piece.position[1] + 1].piece
                         if (board[piece.position[0] - 1][piece.position[1] + 1].piece.color == 'black'):# and (
@@ -450,7 +485,7 @@ class Moves_manager:
                                      captured_piece])
 
             if piece.position[0] - 1 >= 0 and piece.position[1] - 1 >= 0:
-                if not self.piece_pinned or self.pin_direction == [-1, -1]:
+                if not piece_pinned or pin_direction == [-1, -1]:
                     if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
                         captured_piece = board[piece.position[0] - 1][piece.position[1] - 1].piece
                         if (board[piece.position[0] - 1][piece.position[1] - 1].piece.color == 'black'):# and (
@@ -462,11 +497,13 @@ class Moves_manager:
 
         # promotion to be added
         elif piece.position[0] == 1:
-            if (board[piece.position[0] - 1][piece.position[1]].is_empty == True):
-                promotions = ['queen', 'rook', 'bishop', 'knight']
-                for i in promotions:
-                    piece.name = i
+            if not piece_pinned or pin_direction == [-1, 0]:
+                if (board[piece.position[0] - 1][piece.position[1]].is_empty == True):
                     self.white_pawn_moves.append(board[piece.position[0] - 1][piece.position[1]])
+                    self.possibleMoves.append(
+                        [piece.position, [piece.position[0] - 1, piece.position[1]], piece,
+                         None])
+
             # captures and promotes
             if board[piece.position[0] - 1][piece.position[1] + 1].is_empty == False:
                 if (board[piece.position[0] - 1][piece.position[1] + 1].piece.color == 'black') and (
@@ -563,44 +600,58 @@ class Moves_manager:
 
         # promotion to be added
         elif piece.position[0] == 6:
-            if (board[piece.position[0] + 1][piece.position[1]].is_empty == True):
-                promotions = ['queen', 'rook', 'bishop', 'knight']
-                for i in promotions:
-                    piece.name = i
+            if not piece_pinned or pin_direction == [1, 0]:
+                if (board[piece.position[0] + 1][piece.position[1]].is_empty == True):
+                    #promotions = ['queen', 'rook', 'bishop', 'knight']
+                    #for i in promotions:
+                    #    piece.name = i
                     self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1]])
+                    self.possibleMoves.append(
+                        [piece.position, [piece.position[0] + 1, piece.position[1]], piece,
+                         None])
             # captures and promotes
-            if board[piece.position[0] + 1][piece.position[1] + 1].is_empty == False:
-                if (board[piece.position[0] + 1][piece.position[1] + 1].piece.color == 'white'):# and (
-                        #board[piece.position[0] + 1][piece.position[1] + 1].piece.name != 'king'):
-                    promotions = ['queen', 'rook', 'bishop', 'knight']
-                    for i in promotions:
-                        piece.name = i
-                        self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1]])
-            if board[piece.position[0] + 1][piece.position[1] - 1].is_empty == False:
-                if (board[piece.position[0] + 1][piece.position[1] - 1].piece.color == 'white'):# and (
-                        #board[piece.position[0] + 1][piece.position[1] - 1].piece.name != 'king'):
-                    promotions = ['queen', 'rook', 'bishop', 'knight']
-                    for i in promotions:
-                        piece.name = i
-                        self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1]])
+            if piece.position[0] + 1 <= 7 and piece.position[1] + 1 <= 7: # captures towards right
+                if not piece_pinned or pin_direction == [1, 1]:
+                    if board[piece.position[0] + 1][piece.position[1] + 1].is_empty == False:
+                        captured_piece = board[piece.position[0] + 1][piece.position[1] + 1].piece
+                        if (board[piece.position[0] + 1][piece.position[1] + 1].piece.color == 'white'):# and (
+                                #board[piece.position[0] + 1][piece.position[1] + 1].piece.name != 'king'):
+                            promotions = ['queen', 'rook', 'bishop', 'knight']
+                            for i in promotions:
+                                piece.name = i
+                                self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] + 1])
+                                self.possibleMoves.append(
+                                    [piece.position, [piece.position[0] + 1, piece.position[1] + 1], piece,
+                                     captured_piece])
+            if piece.position[0] + 1 <= 7 and piece.position[1] - 1 >= 0:  # captures towards left
+                if board[piece.position[0] + 1][piece.position[1] - 1].is_empty == False:
+                    captured_piece = board[piece.position[0] + 1][piece.position[1] - 1].piece
+                    if (board[piece.position[0] + 1][piece.position[1] - 1].piece.color == 'white'):# and (
+                            #board[piece.position[0] + 1][piece.position[1] - 1].piece.name != 'king'):
+                        #promotion = input()
+                        #for i in promotions:
+                            #piece.name = i
+                        self.black_pawn_moves.append(board[piece.position[0] + 1][piece.position[1] - 1])
+                        self.possibleMoves.append(
+                            [piece.position, [piece.position[0] + 1, piece.position[1] - 1], piece,
+                            captured_piece])
 
     def get_possible_moves(self, board):
         #no of lines can be minimized using eval or locals. do it later.
         self.check_pins_and_checks(board)
         if self.whiteToMove:
+            if len(self.pieces['king']) > 0:
+                for i in self.pieces['king']:
+                    self.get_king_moves(i, board)
             if len(self.pieces['pawn']) > 0:
                 for i in self.pieces['pawn']:
                     self.get_white_pawn_moves(i, board)
-
             if len(self.pieces['bishop']) > 0:
                 for i in self.pieces['bishop']:
                     self.get_bishop_moves(i, board)
             if len(self.pieces['rook']) > 0:
                 for i in self.pieces['rook']:
                     self.get_rook_moves(i, board)
-            if len(self.pieces['king']) > 0:
-                for i in self.pieces['king']:
-                    self.get_king_moves(i, board)
             if len(self.pieces['queen']) > 0:
                 for i in self.pieces['queen']:
                     self.get_queen_moves(i, board)
@@ -608,8 +659,12 @@ class Moves_manager:
                 for i in self.pieces['knight']:
                     #print(i, i.name, i.position, i.color)
                     self.get_knight_moves(i, board)
+            #self.get_castling_moves(self.enemy_pieces['king'][0], board)
 
         else:
+            if len(self.enemy_pieces['king']) > 0:
+                for i in self.enemy_pieces['king']:
+                    self.get_king_moves(i, board)
             if len(self.enemy_pieces['pawn']) > 0:
                 for i in self.enemy_pieces['pawn']:
                     self.get_black_pawn_moves(i, board)
@@ -625,9 +680,8 @@ class Moves_manager:
             if len(self.enemy_pieces['queen']) > 0:
                 for i in self.enemy_pieces['queen']:
                     self.get_queen_moves(i, board)
-            if len(self.enemy_pieces['king']) > 0:
-                for i in self.enemy_pieces['king']:
-                    self.get_king_moves(i, board)
+
+            #self.get_castling_moves(self.enemy_pieces['king'][0], board)
 
     def get_legal_moves(self, piece, board):
         self.selected_piece = piece
@@ -640,6 +694,7 @@ class Moves_manager:
         self.queen_moves = list()
         self.white_pawn_moves = list()
         self.black_pawn_moves = list()
+        self.castle_moves = list()
         self.king_moves = list()
         self.in_check = False
         self.pins = list()
@@ -649,33 +704,40 @@ class Moves_manager:
         self.check_pins_and_checks(board)
         if self.whiteToMove:
             kingsq = self.wking_loc
+            king = self.pieces['king'][0]
         else:
             kingsq = self.bking_loc
-
+            king = self.enemy_pieces['king'][0]
+            # board[kingsq[0]][kingsq[1]].piece
         if self.in_check:
             if len(self.checks) == 1: #single check, hence it can be blocked or king can be moved
                 self.get_possible_moves(board)
                 moves = self.possibleMoves
-                print(self.checks)
+                #print(self.checks)
                 check_row = self.checks[0][0][0]
                 check_col = self.checks[0][0][1]
                 #print(check_row, check_col)
                 piece_checking = board[check_row][check_col].piece
-                valid_squares = [] #squares that pieces can move to
+                valid_squares = [] #squares that pieces can move to (apart from king moves)
                 if piece_checking.name == 'knight':
                     valid_squares = [[check_row, check_col]]
                 else:
                     for i in range(8):
                         valid_square = [kingsq[0] + self.checks[0][1][0] * i,
                                         kingsq[1] + self.checks[0][1][1] * i]
-                        valid_squares.append(valid_square)
+                        valid_squares.append(valid_square) #if piece_checking = bishop, valid_squares will contain all coordinates
+                                                            #between king and bishop(excluding bishop and including king)
                         if valid_square[0] == check_row and valid_square[1] == check_col:
                             break
                 for i in range(len(moves) - 1, -1, -1):
                     if moves[i][2].name != 'king':
-                        if not moves[i][1] in valid_squares:
+                        if not moves[i][1] in valid_squares: #remove those moves whose destination is not in valid squares
                             moves.remove(moves[i])
-
+                        elif moves[i][2].color != king.color: #even piece_checking's color moves were included in moves, so need to remove them.
+                            moves.remove(moves[i])
+                #for move in moves:
+                #    print(move[0], move[1], move[2].name, move[2].color, move[3] , end = " ")
+                #print("\n")
                 if len(moves) > 0:
                     for i in range(len(moves)):
                         if moves[i][2] == piece:
@@ -686,11 +748,13 @@ class Moves_manager:
 
             else: #double check
                 self.get_king_moves(board[kingsq[0]][kingsq[1]].piece, board)
-                if len(self.king_moves) > 0:
-                    for i in range(len(self.king_moves)):
-                        if self.king_moves[i][2] == piece:
-                            self.legal_moves.append(board[self.king_moves[i][1][0]][self.king_moves[i][1][1]])
-                elif len(self.get_king_moves) == 0:
+                moves = self.possibleMoves
+
+                if len(moves) > 0:
+                    for i in range(len(moves)):
+                        if moves[i][2] == piece:
+                            self.legal_moves.append(board[moves[i][1][0]][moves[i][1][1]])
+                elif len(moves) == 0:
                     self.checkmate = True
                     print("CheckMate!!!!!")
 
@@ -701,15 +765,15 @@ class Moves_manager:
             if len(moves) > 0:
                 for i in range(len(moves)):
                     if moves[i][2] == piece:
-                        self.legal_moves.append(board[moves[i][1][0]][moves[i][1][1]])
+                        self.legal_moves.append(board[moves[i][1][0]][moves[i][1][1]]) #appending board[destination[0]][destination[1]]
+            self.possibleMoves = list()
+            self.get_castling_moves(board)
+            castling_moves = self.possibleMoves
+            if len(castling_moves) > 0:
+                for i in range(len(castling_moves)):
+                    if castling_moves[i][2] == piece:
+                        self.legal_moves.append(board[castling_moves[i][1][0]][castling_moves[i][1][1]])
 
             if len(moves) == 0:
                 self.stalemate = True
                 print("Stalemate!!!!")
-            '''
-            Castling was working in previous commit, got some bugs after
-            implementation of checks and pins, needs to be slightly modified
-            '''
-            #tmp = self.get_castling_moves(piece, board)
-            #for i in tmp:
-            #    self.legal_moves.append(i)
