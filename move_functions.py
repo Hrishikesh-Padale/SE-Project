@@ -33,6 +33,7 @@ class Moves_manager:
         self.castle_moves = list()
         self.checkmate = False
         self.stalemate = False
+        self.moves_count = 1
 
     def squareUnderAttack(self, coords, my_color, board):
 

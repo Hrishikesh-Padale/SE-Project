@@ -575,6 +575,8 @@ class game(object):
                         playerclick = list()
                         #############################print(self.moves_manager.checks, end = " ")
                         self.whiteToMove = not self.whiteToMove
+                        if self.whiteToMove:
+                            self.moves_manager.moves_count += 1
                     else:
                         selected_square = list()
                         playerclick = list()
@@ -590,6 +592,8 @@ class game(object):
                     selected_square = list()
                     playerclick = list()
                     self.whiteToMove = not self.whiteToMove
+                    if self.whiteToMove:
+                        self.moves_manager.moves_count += 1
                 else:
                     selected_square = list()
                     playerclick = list()
@@ -622,8 +626,34 @@ class game(object):
                      "e": 4, "f": 5, "g": 6, "h": 7}
     cols_to_files = {v: k for k, v in files_to_cols.items()}
 
-    def chess_notation(self, piece, destination):
-        return self.rank_file(piece.position[0], piece.position[1]) +  self.rank_file(destination[0], destination[1])
+    def chess_notation(self, piece, destination, board):
+        if piece.color == 'white':
+            print(self.moves_manager.moves_count, end=" ")
+        if piece.name == 'pawn':
+            if board[destination[0]][destination[1]].is_empty == True:
+                return self.rank_file(destination[0], destination[1])
+            else:
+                return self.cols_to_files[piece.position[0]] + "x" + self.rank_file(destination[0], destination[1])
+        elif piece.name == 'knight':
+            if board[destination[0]][destination[1]].is_empty == True:
+                return "N" + self.rank_file(destination[0], destination[1])
+            else:
+                return "Nx" + self.rank_file(destination[0], destination[1])
+        elif piece.name == 'king':
+            if board[destination[0]][destination[1]].is_empty == True:
+                if (piece.position == [7, 4] and destination == [7, 6]) or (piece.position == [0, 4] and destination == [0, 6]):
+                    return "0-0"
+                elif (piece.position == [7, 4] and destination == [7, 2]) or (piece.position == [0, 4] and destination == [0, 2]):
+                    return "0-0-0"
+                else:
+                    return piece.name[:1].upper() + self.rank_file(destination[0], destination[1])
+            else:
+                return piece.name[:1].upper() + "x" + self.rank_file(destination[0], destination[1])
+        else:
+            if board[destination[0]][destination[1]].is_empty == True:
+                return piece.name[:1].upper() + self.rank_file(destination[0], destination[1])
+            else:
+                return piece.name[:1].upper() + "x" + self.rank_file(destination[0], destination[1])
 
     def rank_file(self, row, col):
         return self.cols_to_files[col] + self.rows_to_ranks[row]
@@ -662,10 +692,9 @@ class game(object):
         stop = [board[destination[0]][destination[1]].xstart + adjustment[0],
                 board[destination[0]][destination[1]].ystart + adjustment[1] + 1]
 
-        print(self.chess_notation(piece, destination), end = " ")
+        print(self.chess_notation(piece, destination, board), end = " ")
         moved_piece = piece
         self.update_castling_rights(moved_piece)
-        #print(self.currentCastleRights.wks, self.currentCastleRights.wqs, self.currentCastleRights.bks, self.currentCastleRights.bqs)
 
         # set the current box of grid to empty
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
@@ -755,7 +784,7 @@ class game(object):
             self.Interface.print_messages()
             #add animation conditions for different pieces
             if start[1] > stop[1]:
-                start[1] -= 2
+                start[1] -= 5
                 self.screen.blit(piece.image, (start[0], start[1]))
                 pygame.display.flip()
             else:
