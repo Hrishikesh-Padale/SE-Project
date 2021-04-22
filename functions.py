@@ -8,6 +8,7 @@ import time
 import random
 from chat_panel import *
 from move_functions import *
+import pickle
 
 captured_piece = None
 moved_piece = None
@@ -56,10 +57,10 @@ class box:
 
 class interface:
 
-    def __init__(self, width, height, screen=None):
+    def __init__(self, width, height,sock):
         self.width = width
         self.height = height
-        self.screen = screen
+        self.screen = None
         self.grid = []
         self.delay = 500
         self.current_time = pygame.time.get_ticks()
@@ -76,11 +77,11 @@ class interface:
         self.last_msg = 0
         self.server = '65.0.204.13'
         self.port = 12000
-        self.username = "Rutvik"
-
+        self.username = "Hrishi1234"
+        self.sock = sock
         #self.connect_to_server()
-        #self.receive_thread = Thread(target=self.receive_messages)
-        #self.receive_thread.start()
+        self.receive_thread = Thread(target=self.receive_messages)
+        self.receive_thread.start()
 
     def generate_board_coordinates(self):
         self.xstart = self.width * (20 / 100)
@@ -172,7 +173,8 @@ class interface:
                     self.last_message_done = False
                     self.chat_buffer_text.append("Me:" + self.message)
                     msg = self.username + ":" + self.message
-                    #self.send_message(msg)
+                    msg = {'ID':30,'Sender':self.username,'Message':msg}
+                    self.sock.send(pickle.dumps(msg))
                     text = FONT.render(self.message, True, WHITE)
                     rect = text.get_rect()
                     username = FONT.render(self.username+":", True,(0,255,0))

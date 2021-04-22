@@ -9,29 +9,31 @@ from functions import *
 import warnings
 from move_functions import Moves_manager, CastleRights
 #from login_register import Login_Register
-#from main_menu import *
+from main_menu import *
 
 #sign_in = Login()
 #sign_in.window.mainloop()
+
 
 warnings.filterwarnings("ignore")
 
 clock = pygame.time.Clock()
 # WSIZE = (0,0)
 # screen = pygame.display.set_mode((0,0))
-width, height = 1536, 801
+width, height = 1536,801
 
 screen = pygame.display.set_mode((width, height))
-Interface = interface(width, height)
-Interface.screen = screen
 running = True
 
 icon = pygame.image.load('Media/icon_3.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Chess")
 
-#Main_menu = Main_menu(screen)
-#Main_menu.update(clock)  
+main_menu = Main_menu(screen,clock)
+main_menu.update()
+
+Interface = interface(width, height,main_menu.client.sock)
+Interface.screen = screen
 
 Interface.generate_board_coordinates()
 Interface.generate_settings_panel()

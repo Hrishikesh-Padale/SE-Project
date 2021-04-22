@@ -4,8 +4,9 @@ from pygame.locals import *
 from qplay import *
 from pwfriend import *
 from player_profile import *
-from Settings import *
+from settings import *
 from client_network import *
+import pickle
 
 
 pygame.init()
@@ -37,8 +38,8 @@ class Option:
 		self.name = name
 		self.xstart = x
 		self.ystart = y
-		self.width = width*(19.53/100)
-		self.height = height*(62.42/100)
+		self.width = 1536*(19.53/100)
+		self.height = 801*(62.42/100)
 		self.title = FONT1.render(self.name,True,(255,255,255))
 		self.rect = self.title.get_rect()
 		self.description = ""
@@ -130,6 +131,12 @@ class Main_menu:
 		self.pwf_object = PlayWithFriend(self.screen,self.clock,self.client)
 		self.prof_object = Profile(self.screen,self.clock)
 		self.settings_object = Settings(self.screen,self.clock)
+
+	def check_notifications(self):
+		if self.client.main_page_messages:
+			self.notification = self.client.main_page_messages.pop()
+			print(self.notification)
+			#self.notification_text = FONT1.render()
 
 	def update(self):
 		while True:
@@ -376,13 +383,19 @@ class Main_menu:
 			self.screen.blit(self.settings.description[2],self.settings.d_rect[2])
 			
 			self.quit_button.draw(self.screen,pygame.mouse.get_pos())
+
+			#if self.client.main_page_messsages:
+			self.check_notifications()
+
+
+
 			pygame.display.flip()
 			self.clock.tick(60)
 
 
-width,height = 1536,801
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((width,height))
-Main_menu = Main_menu(screen,clock)
-Main_menu.update()
-pygame.quit()
+#width,height = 1536,801
+#clock = pygame.time.Clock()
+#screen = pygame.display.set_mode((width,height))
+#Main_menu = Main_menu(screen,clock)
+#Main_menu.update()
+#pygame.quit()

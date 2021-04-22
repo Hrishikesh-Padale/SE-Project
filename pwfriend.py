@@ -51,6 +51,7 @@ class PlayWithFriend:
 			else:
 				self.status_list.append(False)
 
+		#print(self.status_list)
 		print(self.Friends_list)
 
 	def get_centers(self):
@@ -167,63 +168,87 @@ class PlayWithFriend:
 					elif event.button == 1:
 						if len(self.Friends_list)>0:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 171  and pos[1] >= 146:
-								if self.status_list[self.first_friend_index]=="online":
+								if self.status_list[self.first_friend_index]:
 									self.status_list[self.first_friend_index]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index]}
+									self.client.sock.send(pickle.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index]))
 						if len(self.Friends_list)>1:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 221  and pos[1] >= 196:
-								if self.status_list[self.first_friend_index+1]=="online":
+								if self.status_list[self.first_friend_index+1]:
 									self.status_list[self.first_friend_index+1]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+1]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+1]))
 						if len(self.Friends_list)>2:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 271  and pos[1] >= 246:
-								if self.status_list[self.first_friend_index+2]=="online":
+								if self.status_list[self.first_friend_index+2]:
 									self.status_list[self.first_friend_index+2]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+2]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+2]))
 						if len(self.Friends_list)>3:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 321 and pos[1] >= 296:
-								if self.status_list[self.first_friend_index+3]=="online":
+								if self.status_list[self.first_friend_index+3]:
 									self.status_list[self.first_friend_index+3]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+3]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+3]))
 						if len(self.Friends_list)>4:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 371 and pos[1] >= 346:
-								if self.status_list[self.first_friend_index+4]=="online":
+								if self.status_list[self.first_friend_index+4]:
 									self.status_list[self.first_friend_index+4]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+4]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+4]))
 						if len(self.Friends_list)>5:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 421 and pos[1] >= 396:
-								if self.status_list[self.first_friend_index+5]=="online":
+								if self.status_list[self.first_friend_index+5]:
 									self.status_list[self.first_friend_index+5]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+5]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+5]))
 						if len(self.Friends_list)>6:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 471 and pos[1] >= 446:
-								if self.status_list[self.first_friend_index+6]=="online":
+								if self.status_list[self.first_friend_index+6]:
 									self.status_list[self.first_friend_index+6]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+6]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+6]))
 						if len(self.Friends_list)>7:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 521 and pos[1] >= 496:
-								if self.status_list[self.first_friend_index+7]=="online":
+								if self.status_list[self.first_friend_index+7]:
 									self.status_list[self.first_friend_index+7]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+7]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+7]))
 						if len(self.Friends_list)>8:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 571 and pos[1] >= 546:
-								if self.status_list[self.first_friend_index+8]=="online":
+								if self.status_list[self.first_friend_index+8]:
 									self.status_list[self.first_friend_index+8]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+8]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+8]))
 						if len(self.Friends_list)>9:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 621 and pos[1] >= 596:
-								if self.status_list[self.first_friend_index+9]=="online":
+								if self.status_list[self.first_friend_index+9]:
 									self.status_list[self.first_friend_index+9]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+9]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+9]))
 						if len(self.Friends_list)>10:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 671 and pos[1] >= 646:
-								if self.status_list[self.first_friend_index+10]=="online":
+								if self.status_list[self.first_friend_index+10]:
 									self.status_list[self.first_friend_index+10]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+10]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+10]))
 						if len(self.Friends_list)>11:
 							if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 721 and pos[1] >= 696:
-								if self.status_list[self.first_friend_index+11]=="online":
+								if self.status_list[self.first_friend_index+11]:
 									self.status_list[self.first_friend_index+11]="invited"
+									invite_msg = {'ID':20,'UserID':'Hrishi1234','FriendID':self.Friends_list[self.first_friend_index+11]}
+									self.client.sock.send(picke.dumps(invite_msg))
 									print("Invited {}".format(self.Friends_list[self.first_friend_index+11]))
 
 						if self.search_result:
@@ -248,64 +273,64 @@ class PlayWithFriend:
 								 (self.cursor_coords[1][0],self.cursor_coords[1][1]),2)
 
 			for i in self.buttons_pos:
-				if self.status_list[self.first_friend_index+self.buttons_pos.index(i)]=="online":
+				if self.status_list[self.first_friend_index+self.buttons_pos.index(i)]==True:
 					pygame.draw.rect(self.screen,(255,255,255),[620,i,80,25],2)
 
 			if len(self.Friends_list)>0:
-				if self.status_list[self.first_friend_index]=="online":	
+				if self.status_list[self.first_friend_index] and self.status_list[self.first_friend_index]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 171  and pos[1] >= 146:
 						pygame.draw.rect(self.screen,(255,255,255),[622,148,80,25])
 			if len(self.Friends_list)>1:
-				if self.status_list[self.first_friend_index+1]=="online":	
+				if self.status_list[self.first_friend_index+1] and self.status_list[self.first_friend_index+1]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 221  and pos[1] >= 196:
 						pygame.draw.rect(self.screen,(255,255,255),[622,198,80,25])
 			if len(self.Friends_list)>2:
-				if self.status_list[self.first_friend_index+2]=="online":	
+				if self.status_list[self.first_friend_index+2] and self.status_list[self.first_friend_index+2]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 271  and pos[1] >= 246:
 						pygame.draw.rect(self.screen,(255,255,255),[622,248,80,25])
 			if len(self.Friends_list)>3:
-				if self.status_list[self.first_friend_index+3]=="online":	
+				if self.status_list[self.first_friend_index+3] and self.status_list[self.first_friend_index+3]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 321 and pos[1] >= 296:
 						pygame.draw.rect(self.screen,(255,255,255),[622,298,80,25])
 			if len(self.Friends_list)>4:
-				if self.status_list[self.first_friend_index+4]=="online":	
+				if self.status_list[self.first_friend_index+4] and self.status_list[self.first_friend_index+4]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 371 and pos[1] >= 346:
 						pygame.draw.rect(self.screen,(255,255,255),[622,348,80,25])
 			if len(self.Friends_list)>5:
-				if self.status_list[self.first_friend_index+5]=="online":	
+				if self.status_list[self.first_friend_index+5] and self.status_list[self.first_friend_index+5]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 421 and pos[1] >= 396:
 						pygame.draw.rect(self.screen,(255,255,255),[622,398,80,25])
 			if len(self.Friends_list)>6:
-				if self.status_list[self.first_friend_index+6]=="online":	
+				if self.status_list[self.first_friend_index+6] and self.status_list[self.first_friend_index+6]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 471 and pos[1] >= 446:
 						pygame.draw.rect(self.screen,(255,255,255),[622,448,80,25])
 			if len(self.Friends_list)>7:
-				if self.status_list[self.first_friend_index+7]=="online":	
+				if self.status_list[self.first_friend_index+7] and self.status_list[self.first_friend_index+7]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 521 and pos[1] >= 496:
 						pygame.draw.rect(self.screen,(255,255,255),[622,498,80,25])
 			if len(self.Friends_list)>8:
-				if self.status_list[self.first_friend_index+8]=="online":	
+				if self.status_list[self.first_friend_index+8] and self.status_list[self.first_friend_index+8]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 571 and pos[1] >= 546:
 						pygame.draw.rect(self.screen,(255,255,255),[622,548,80,25])
 			if len(self.Friends_list)>9:
-				if self.status_list[self.first_friend_index+9]=="online":	
+				if self.status_list[self.first_friend_index+9] and self.status_list[self.first_friend_index+9]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 621 and pos[1] >= 596:
 						pygame.draw.rect(self.screen,(255,255,255),[622,598,80,25])
 			if len(self.Friends_list)>10:
-				if self.status_list[self.first_friend_index+10]=="online":	
+				if self.status_list[self.first_friend_index+10] and self.status_list[self.first_friend_index+10]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 671 and pos[1] >= 646:
 						pygame.draw.rect(self.screen,(255,255,255),[622,648,80,25])
 			if len(self.Friends_list)>11:
-				if self.status_list[self.first_friend_index+11]=="online":	
+				if self.status_list[self.first_friend_index+11] and self.status_list[self.first_friend_index+11]!="invited":	
 					if pos[0] <= 700 and pos[0] >= 620 and pos[1] <= 721 and pos[1] >= 696:
 						pygame.draw.rect(self.screen,(255,255,255),[622,698,80,25])
 
 			if self.search_result:
 				if pos[0]<=1350 and pos[0]>=1270 and pos[1]<=235 and pos[1]>=210:
-					pygame.draw.rect(self.screen,(255,255,255),[1272,215,79,23])
+					pygame.draw.rect(self.screen,(255,255,255),[1272,215,80,23])
 
 			for i in self.button_texts_pos:
-				if self.status_list[self.first_friend_index+self.button_texts_pos.index(i)]=="online":
+				if self.status_list[self.first_friend_index+self.button_texts_pos.index(i)]==True:
 					self.screen.blit(self.invite_text,(627,i))
 				elif self.status_list[self.first_friend_index+self.button_texts_pos.index(i)]=="invited":
 					self.screen.blit(self.invited_text,(580,i))
