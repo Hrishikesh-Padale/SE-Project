@@ -80,8 +80,8 @@ class interface:
         self.username = "Hrishi1234"
         self.sock = sock
         #self.connect_to_server()
-        self.receive_thread = Thread(target=self.receive_messages)
-        self.receive_thread.start()
+        #self.receive_thread = Thread(target=self.receive_messages)
+        #self.receive_thread.start()
 
     def generate_board_coordinates(self):
         self.xstart = self.width * (20 / 100)
@@ -546,12 +546,12 @@ class game(object):
 
         if len(playerclick) == 0: #player clicks on first square
             if self.grid[coords[0]][coords[1]].is_empty == False: #if the square selected is not empty
-                if self.grid[coords[0]][coords[1]].piece.color == my_color: #white selects white piece
+                if self.grid[coords[0]][coords[1]].piece.color == my_color: #player selects his piece
                     selected_square = coords
                     playerclick.append(selected_square)
                     #print('1')
                     self.moves_manager.get_legal_moves(self.grid[coords[0]][coords[1]].piece, self.grid)
-                elif (self.grid[coords[0]][coords[1]].piece.color == enemy_color):#white selects empty square or blackpiece
+                elif (self.grid[coords[0]][coords[1]].piece.color == enemy_color):#player selects empty square or opposite piece
                     self.selected_box = None
                     playerclick = list()
                     selected_square = list()
@@ -563,8 +563,8 @@ class game(object):
                 #print('3')
         elif len(playerclick) == 1: #player clicks on second square
             if self.grid[coords[0]][coords[1]].is_empty == False: #if selected square is not empty
-                if self.grid[coords[0]][coords[1]].piece.color == my_color: #if selected square contains white piece
-                    if selected_square == coords: #if white player clicks same square twice ie he's trying to deselect
+                if self.grid[coords[0]][coords[1]].piece.color == my_color: #if selected square contains player's piece
+                    if selected_square == coords: #if player clicks same square twice ie he's trying to deselect
                         selected_square = list()
                         playerclick = list()
                         self.selected_box = None
@@ -721,18 +721,65 @@ class game(object):
 
     def move(self, piece, destination, board, adjustment):
         global moved_piece, captured_piece, captured_piece_num
+        self.moves_manager.enpassant_captured_piece = None
+        #self.moves_manager.enpassant_sq = list()
         # get start and stop positions
         move_type = self.get_move_type(piece.position,destination)
-        print(move_type)
+        #print(move_type)
         start = [board[piece.position[0]][piece.position[1]].xstart + adjustment[0],
                  board[piece.position[0]][piece.position[1]].ystart + adjustment[1]]
 
         stop = [board[destination[0]][destination[1]].xstart + adjustment[0],
                 board[destination[0]][destination[1]].ystart + adjustment[1] + 1]
 
-        print(self.chess_notation(piece, destination, board), end = " ")
+        #print(self.chess_notation(piece, destination, board), end = " ")
         moved_piece = piece
         self.update_castling_rights(moved_piece)
+
+        #enpassant condition generation
+        self.moves_manager.enpassant = False
+        if moved_piece.name == 'pawn' and abs(moved_piece.position[0] - destination[0]) == 2:
+            self.moves_manager.enpassant_sq = list()
+            if moved_piece.position[1] + 1 <= 7:
+                if self.grid[destination[0]][destination[1] + 1].is_empty == False:
+                    pic = self.grid[destination[0]][destination[1] + 1].piece
+                    if pic.name == 'pawn' and pic.color != moved_piece.color:
+                        self.moves_manager.enpassant = True
+                        self.moves_manager.enpassant_sq.append([pic.position, destination, [
+                            moved_piece.position[0] - pic.position[0], moved_piece.position[1] - pic.position[1]]])
+            if moved_piece.position[1] + 1 >= 0:
+                if self.grid[destination[0]][destination[1] - 1].is_empty == False:
+                    pic = self.grid[destination[0]][destination[1] - 1].piece
+                    if pic.name == 'pawn' and pic.color != moved_piece.color:
+                        self.moves_manager.enpassant = True
+                        self.moves_manager.enpassant_sq.append([pic.position, destination, [
+                            moved_piece.position[0] - pic.position[0], moved_piece.position[1] - pic.position[1]]])
+
+        #setting capture in enpassant
+        if piece.name == 'pawn' and self.grid[destination[0]][destination[1]].is_empty == True and [abs(
+            piece.position[0] - destination[0]), abs(piece.position[1] - destination[1])] == [1,1]:
+            self.moves_manager.enpassant_captured_piece = self.grid[self.moves_manager.enpassant_sq[0][1][0]][
+                self.moves_manager.enpassant_sq[0][1][1]].piece
+            captured_piece = self.moves_manager.enpassant_captured_piece
+            #print(captured_piece)
+            if captured_piece.color == 'white':
+                for i in range(len(self.moves_manager.pieces[captured_piece.name])):
+                    if self.moves_manager.pieces[captured_piece.name][i].position == self.moves_manager.enpassant_sq[0][1]:
+                        captured_piece_num = i
+                        # self.moves_manager.pieces[captured_piece.name][i].position = [-1,-1]
+                        break
+
+            else:
+                for i in range(len(self.moves_manager.enemy_pieces[captured_piece.name])):
+                    if self.moves_manager.enemy_pieces[captured_piece.name][i].position == self.moves_manager.enpassant_sq[0][1]:
+                        captured_piece_num = i
+                        # self.moves_manager.enemy_pieces[captured_piece.name][i].position = [-1, -1]
+                        break
+
+            self.captured_pieces[captured_piece.color[:1] + captured_piece.name] += 1
+
+            self.moves_manager.enpassant_sq = list()
+
 
         # set the current box of grid to empty
         self.grid[piece.position[0]][piece.position[1]].is_empty = True
@@ -747,7 +794,6 @@ class game(object):
                 for i in range(len(self.moves_manager.pieces[captured_piece.name])):
                     if self.moves_manager.pieces[captured_piece.name][i].position == destination:
                         captured_piece_num = i
-                        #self.moves_manager.pieces[captured_piece.name][i].is_alive = False
                         #self.moves_manager.pieces[captured_piece.name][i].position = [-1,-1]
                         break
 
@@ -755,14 +801,18 @@ class game(object):
                 for i in range(len(self.moves_manager.enemy_pieces[captured_piece.name])):
                     if self.moves_manager.enemy_pieces[captured_piece.name][i].position == destination:
                         captured_piece_num = i
-                        #self.moves_manager.enemy_pieces[captured_piece.name][i].is_alive = False
                         #self.moves_manager.enemy_pieces[captured_piece.name][i].position = [-1, -1]
                         break
 
             self.captured_pieces[captured_piece.color[:1] + captured_piece.name] += 1
 
         else:
-            captured_piece = None
+            captured_piece = self.moves_manager.enpassant_captured_piece
+        #print(captured_piece)
+        try:
+            print(captured_piece_num)
+        except:
+            print("passed")
         #'''
         self.grid[destination[0]][destination[1]].piece = piece
 
@@ -1015,6 +1065,17 @@ class game(object):
                     piece.locked = True
                     break
 
+        '''
+        if (piece.name == 'pawn' and piece.color == 'white' and piece.position[1] == 1) or (
+                piece.name == 'pawn' and piece.color == 'black' and piece.position[1] == 6):
+            Promoted_Queen = self.moves_manager.promoted_piece
+            Promoted_Queen.pos_adjustment = self.position_adjustment['type3']['WQueen']
+            #print(self.grid[3][1].xstart, self.grid[3][1].ystart)
+            self.moves_manager.promotion = True
+            self.grid[piece.position[0]][piece.position[1]].is_empty = False
+            self.grid[piece.position[0]][piece.position[1]]
+        '''
+
         if captured_piece:
             if captured_piece.color == 'white':
                 self.moves_manager.pieces[captured_piece.name][captured_piece_num].is_alive = False
@@ -1058,7 +1119,7 @@ class game(object):
                     int((stop[1] - self.Interface.ystart) // (self.Interface.boardheight // 8))]
 
 
-            print(dest,captured_piece.position)
+            #print(dest,captured_piece.position)
             if captured_piece.position[0]<dest[1]:
                 move_type = "downright"
             elif captured_piece.position[0]==dest[1]:
@@ -1066,7 +1127,7 @@ class game(object):
             else:
                 move_type = "upright"
 
-            print(move_type)
+            #print(move_type)
             while True:
                 self.screen.fill((255,255,255))
                 self.update(pygame.mouse.get_pos())
@@ -1099,6 +1160,22 @@ class game(object):
                     else:
                         break
 
+            #print(captured_piece)
+        if captured_piece is not None:
+            if captured_piece.color == 'white':
+                for i in range(len(self.moves_manager.pieces[captured_piece.name])):
+                    if captured_piece.position == self.moves_manager.pieces[captured_piece.name][
+                        i].position and self.moves_manager.pieces[captured_piece.name][i].is_alive == False:
+                        self.moves_manager.pieces[captured_piece.name].remove(self.moves_manager.pieces[captured_piece.name][
+                        i])
+                        break
+            elif captured_piece.color == 'black':
+                for i in range(len(self.moves_manager.enemy_pieces[captured_piece.name])):
+                    if captured_piece.position == self.moves_manager.enemy_pieces[captured_piece.name][
+                        i].position and self.moves_manager.enemy_pieces[captured_piece.name][i].is_alive == False:
+                        self.moves_manager.enemy_pieces[captured_piece.name].remove(self.moves_manager.enemy_pieces[captured_piece.name][
+                        i])
+                        break
         self.moves_manager.selected_piece = None
         self.moves_manager.legal_moves = []
         self.selected_box = None

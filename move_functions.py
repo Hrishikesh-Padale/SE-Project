@@ -8,8 +8,9 @@ class CastleRights:
         self.bqs = bqs
 
 class Moves_manager:
-    def __init__(self, game):
+    def __init__(self, game, promoted_piece):
         self.game = game
+        self.promoted_piece = promoted_piece
         self.pieces	 = {}
         self.enemy_pieces = {}
         self.legal_moves = list()
@@ -34,7 +35,22 @@ class Moves_manager:
         self.checkmate = False
         self.stalemate = False
         self.moves_count = 1
+        self.promotion = False
+        self.enpassant = False
+        self.enpassant_sq = []
+        self.enpassant_captured_piece = None
 
+        '''
+        if black plays pawn 2 squares and white pawn is present adjacent to it,
+        set self.wenpassant = True and append to wenpassant as [[attack1, capture, direction]]
+        after white plays, pop the entire wenpassant and set self.wenpassant = False
+        
+        #attacking pawn is white
+        #attacking pawn is black
+        #enpassant_sq[0] = coordinates of attacking pawn
+        #enpassant_sq[1] = coordinates of captured pawn
+        #enpassant_sq[2] = direction # to be modified
+        '''
     def squareUnderAttack(self, coords, my_color, board):
 
         #self.whiteToMove = not self.whiteToMove
@@ -443,6 +459,7 @@ class Moves_manager:
                         self.possibleMoves.append(
                             [piece.position, [piece.position[0] - 2, piece.position[1]], piece,
                              None])
+
             # captures
             if piece.position[0] - 1 >= 0 and piece.position[1] + 1 <= 7:  # captures towards right
                 if not piece_pinned or pin_direction == [-1, 1]:
@@ -485,6 +502,7 @@ class Moves_manager:
                                     [piece.position, [piece.position[0] - 1, piece.position[1] + 1], piece,
                                      captured_piece])
 
+
             if piece.position[0] - 1 >= 0 and piece.position[1] - 1 >= 0:
                 if not piece_pinned or pin_direction == [-1, -1]:
                     if board[piece.position[0] - 1][piece.position[1] - 1].is_empty == False:
@@ -495,6 +513,18 @@ class Moves_manager:
                             self.possibleMoves.append(
                                 [piece.position, [piece.position[0] - 1, piece.position[1] - 1], piece,
                                 captured_piece])
+
+            #Enpassant
+            if self.enpassant:
+                for enpas in self.enpassant_sq:
+                    #print(enpas[1][0], enpas[2][0])
+                    if not piece_pinned or pin_direction == [enpas[1][0] - 1, enpas[1][1]]:
+                        captured_piece = board[enpas[1][0]][enpas[1][1]].piece
+                        self.white_pawn_moves.append(board[enpas[1][0] - 1][enpas[1][1]])
+                        self.possibleMoves.append(
+                            [enpas[0], [enpas[1][0] - 1, enpas[1][1]], piece,
+                             captured_piece])
+
 
         # promotion to be added
         elif piece.position[0] == 1:
@@ -599,6 +629,17 @@ class Moves_manager:
                                     [piece.position, [piece.position[0] + 1, piece.position[1] - 1], piece,
                                      captured_piece])
 
+
+            # Enpassant
+            if self.enpassant:
+                for enpas in self.enpassant_sq:
+                    if not piece_pinned or pin_direction == [enpas[1][0] + 1, enpas[1][1]]:
+                        captured_piece = board[enpas[1][0]][enpas[1][1]].piece
+                        self.black_pawn_moves.append(board[enpas[1][0] + 1][enpas[1][1]])
+                        self.possibleMoves.append(
+                            [enpas[0], [enpas[1][0] + 1, enpas[1][1]], piece,
+                             captured_piece])
+
         # promotion to be added
         elif piece.position[0] == 6:
             if not piece_pinned or pin_direction == [1, 0]:
@@ -640,6 +681,7 @@ class Moves_manager:
     def get_possible_moves(self, board):
         #no of lines can be minimized using eval or locals. do it later.
         self.check_pins_and_checks(board)
+        #print(len(self.pieces['pawn']))
         if self.whiteToMove:
             if len(self.pieces['king']) > 0:
                 for i in self.pieces['king']:
