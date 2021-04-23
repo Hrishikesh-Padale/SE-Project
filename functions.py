@@ -720,7 +720,7 @@ class game(object):
                     self.currentCastleRights.bks = False
 
     def move(self, piece, destination, board, adjustment):
-        global moved_piece, captured_piece
+        global moved_piece, captured_piece, captured_piece_num
         # get start and stop positions
         move_type = self.get_move_type(piece.position,destination)
         print(move_type)
@@ -824,14 +824,12 @@ class game(object):
             self.Interface.print_messages()
             #add animation conditions for different pieces
 
-########################################### Movement of Pawns ########################################################
-
-            #diagonal up right
-            if move_type == 1 and "pawn" == piece.name:
-                if start[0]<=stop[0] and start[1]>=stop[1]:
-                    start[0]+=2
-                    start[1]-=2
-                    self.screen.blit(piece.image,(start[0],start[1]))
+            # diagonal up right
+            if move_type == 1 and piece.name in ['pawn', 'bishop', 'queen', 'king']:
+                if start[0] <= stop[0] and start[1] >= stop[1]:
+                    start[0] += 2
+                    start[1] -= 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
                     piece.position = destination
@@ -841,12 +839,12 @@ class game(object):
                     piece.locked = True
                     break
 
-            #diagonal down right
-            elif move_type == 2 and "pawn" == piece.name:
-                if start[0]<=stop[0] and start[1]<=stop[1]:
-                    start[0]+=2
-                    start[1]+=2
-                    self.screen.blit(piece.image,(start[0],start[1]))
+            # diagonal down right
+            elif move_type == 2 and piece.name in ['pawn', 'bishop', 'queen', 'king']:
+                if start[0] <= stop[0] and start[1] <= stop[1]:
+                    start[0] += 2
+                    start[1] += 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
                     piece.position = destination
@@ -856,12 +854,12 @@ class game(object):
                     piece.locked = True
                     break
 
-            #diagonal up left
-            elif move_type == 3 and "pawn" == piece.name:
-                if start[0]>=stop[0] and start[1]>=stop[1]:
-                    start[0]-=2
-                    start[1]-=2
-                    self.screen.blit(piece.image,(start[0],start[1]))
+            # diagonal up left
+            elif move_type == 3 and piece.name in ['pawn', 'bishop', 'queen', 'king']:
+                if start[0] >= stop[0] and start[1] >= stop[1]:
+                    start[0] -= 2
+                    start[1] -= 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
                     piece.position = destination
@@ -871,12 +869,12 @@ class game(object):
                     piece.locked = True
                     break
 
-            #diagonal down left
-            elif move_type == 4 and "pawn" == piece.name:
-                if start[0]>=stop[0] and start[1]<=stop[1]:
-                    start[0]-=2
-                    start[1]+=2
-                    self.screen.blit(piece.image,(start[0],start[1]))
+            # diagonal down left
+            elif move_type == 4 and piece.name in ['pawn', 'bishop', 'queen', 'king']:
+                if start[0] >= stop[0] and start[1] <= stop[1]:
+                    start[0] -= 2
+                    start[1] += 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
                     piece.position = destination
@@ -886,11 +884,11 @@ class game(object):
                     piece.locked = True
                     break
 
-            #straight upward
-            elif move_type == 6 and "pawn" == piece.name:
-                if start[1]>=stop[1]:
-                    start[1]-=2
-                    self.screen.blit(piece.image,(start[0],start[1]))
+            # straight upward
+            elif move_type == 6 and piece.name in ['king', 'pawn', 'queen', 'rook']:
+                if start[1] >= stop[1]:
+                    start[1] -= 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
                     piece.position = destination
@@ -900,11 +898,11 @@ class game(object):
                     piece.locked = True
                     break
 
-            #straight downward
-            elif move_type == 8 and "pawn" == piece.name:
-                if start[1]<=stop[1]:
-                    start[1]+=2
-                    self.screen.blit(piece.image,(start[0],start[1]))
+            # straight downward
+            elif move_type == 8 and piece.name in ['king', 'pawn', 'queen', 'rook']:
+                if start[1] <= stop[1]:
+                    start[1] += 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
                     piece.position = destination
@@ -913,19 +911,42 @@ class game(object):
                     # print(self.moves_manager.wking_loc, self.moves_manager.bking_loc)
                     piece.locked = True
                     break
-########################################################################################################################
 
+            elif move_type == 5 and piece.name in ['king', 'queen', 'rook']:
+                if start[0] <= stop[0]:
+                    start[0] += 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
+                    pygame.display.flip()
+                else:
+                    piece.position = destination
+                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
+                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
+                    piece.locked = True
+                    break
+
+            elif move_type == 7 and piece.name in ['king', 'queen', 'rook']:
+                if start[0] >= stop[0]:
+                    start[0] -= 2
+                    self.screen.blit(piece.image, (start[0], start[1]))
+                    pygame.display.flip()
+                else:
+                    piece.position = destination
+                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
+                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
+                    piece.locked = True
+                    break
 
 ########################################### Movement of Knights ########################################################
-            #upwards right
-            if move_type == 1 and "knight" == piece.name:
-                if start[0]<=stop[0] and start[1]>=stop[1]:
-                    if abs(piece.position[0]-destination[0])==2 and abs(piece.position[1]-destination[1])==1:
-                        start[0]+=1
-                        start[1]-=2
+            # upwards right
+            elif move_type == 1 and "knight" == piece.name:
+                if start[0] <= stop[0] and start[1] >= stop[1]:
+                    if abs(piece.position[0] - destination[0]) == 2 and abs(
+                            piece.position[1] - destination[1]) == 1:
+                        start[0] += 1
+                        start[1] -= 2
                     else:
-                        start[0]+=2
-                        start[1]-=1
+                        start[0] += 2
+                        start[1] -= 1
                     self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
@@ -936,15 +957,15 @@ class game(object):
                     piece.locked = True
                     break
 
-            #downward right
+                # downward right
             elif move_type == 2 and "knight" == piece.name:
-                if start[0]<=stop[0] and start[1]<=stop[1]:
-                    if abs(piece.position[0]-destination[0])==1 and abs(piece.position[1]-destination[1])==2:
-                        start[0]+=2
-                        start[1]+=1
+                if start[0] <= stop[0] and start[1] <= stop[1]:
+                    if abs(piece.position[0] - destination[0]) == 1 and abs(piece.position[1] - destination[1]) == 2:
+                        start[0] += 2
+                        start[1] += 1
                     else:
-                        start[0]+=1
-                        start[1]+=2
+                        start[0] += 1
+                        start[1] += 2
                     self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
@@ -955,15 +976,15 @@ class game(object):
                     piece.locked = True
                     break
 
-            #upward left
+            # upward left
             elif move_type == 3 and "knight" == piece.name:
-                if start[0]>=stop[0] and start[1]>=stop[1]:
-                    if abs(piece.position[0]-destination[0])==1 and abs(piece.position[1]-destination[1])==2:
-                        start[0]-=2
-                        start[1]-=1
+                if start[0] >= stop[0] and start[1] >= stop[1]:
+                    if abs(piece.position[0] - destination[0]) == 1 and abs(piece.position[1] - destination[1]) == 2:
+                        start[0] -= 2
+                        start[1] -= 1
                     else:
-                        start[0]-=1
-                        start[1]-=2
+                        start[0] -= 1
+                        start[1] -= 2
                     self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
@@ -975,15 +996,15 @@ class game(object):
                     break
 
 
-            #downward left
+            # downward left
             elif move_type == 4 and "knight" == piece.name:
-                if start[0]>=stop[0] and start[1]<=stop[1]:
-                    if abs(piece.position[0]-destination[0])==1 and abs(piece.position[1]-destination[1])==2:
-                        start[0]-=2
-                        start[1]+=1
+                if start[0] >= stop[0] and start[1] <= stop[1]:
+                    if abs(piece.position[0] - destination[0]) == 1 and abs(piece.position[1] - destination[1]) == 2:
+                        start[0] -= 2
+                        start[1] += 1
                     else:
-                        start[0]-=1
-                        start[1]+=2
+                        start[0] -= 1
+                        start[1] += 2
                     self.screen.blit(piece.image, (start[0], start[1]))
                     pygame.display.flip()
                 else:
@@ -993,330 +1014,6 @@ class game(object):
                     # print(self.moves_manager.wking_loc, self.moves_manager.bking_loc)
                     piece.locked = True
                     break
-
-##########################################################################################################################
-
-################################################ Moves of Rooks ########################################################
-
-            #downwarf left
-            elif move_type == 4 and piece.name == 'bishop':
-
-                if start[0] >= stop[0] and start[1] <= stop[1]:
-                    start[0] -= 3
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #upward left
-            elif move_type == 3  and piece.name == 'bishop':
-                if start[0] >= stop[0] and start[1] >= stop[1]:
-                    start[0] -= 3
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #downward right
-            elif move_type == 2  and piece.name == 'bishop':
-                if start[0] <= stop[0] and start[1] <= stop[1]:
-                    start[0] += 3
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #upward right
-            elif move_type == 1  and piece.name == 'bishop':
-                if start[0] <= stop[0] and start[1] >= stop[1]:
-                    start[0] += 3
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-########################################################################################################################
-
-#################################### Moves of Rook #####################################################################
-            elif move_type == 5 and piece.name == 'rook':
-                if start[0] <= stop[0]:
-                    start[0] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 6 and piece.name == 'rook':
-                if start[1] >= stop[1]:
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 7 and piece.name == 'rook':
-                if start[0] >= stop[0]:
-                    start[0] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 8 and piece.name == 'rook':
-                if start[1] <= stop[1]:
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-########################################################################################################################
-
-            #downwarf left
-            elif move_type == 4 and piece.name == 'queen':
-
-                if start[0] >= stop[0] and start[1] <= stop[1]:
-                    start[0] -= 3
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #upward left
-            elif move_type == 3  and piece.name == 'queen':
-                if start[0] >= stop[0] and start[1] >= stop[1]:
-                    start[0] -= 3
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #downward right
-            elif move_type == 2  and piece.name == 'queen':
-                if start[0] <= stop[0] and start[1] <= stop[1]:
-                    start[0] += 3
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #upward right
-            elif move_type == 1  and piece.name == 'queen':
-                if start[0] <= stop[0] and start[1] >= stop[1]:
-                    start[0] += 3
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 5 and piece.name == 'queen':
-                if start[0] <= stop[0]:
-                    start[0] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 6 and piece.name == 'queen':
-                if start[1] >= stop[1]:
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 7 and piece.name == 'queen':
-                if start[0] >= stop[0]:
-                    start[0] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 8 and piece.name == 'queen':
-                if start[1] <= stop[1]:
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #downwarf left
-            elif move_type == 4 and piece.name == 'king':
-
-                if start[0] >= stop[0] and start[1] <= stop[1]:
-                    start[0] -= 3
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #upward left
-            elif move_type == 3  and piece.name == 'king':
-                if start[0] >= stop[0] and start[1] >= stop[1]:
-                    start[0] -= 3
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #downward right
-            elif move_type == 2  and piece.name == 'king':
-                if start[0] <= stop[0] and start[1] <= stop[1]:
-                    start[0] += 3
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            #upward right
-            elif move_type == 1  and piece.name == 'king':
-                if start[0] <= stop[0] and start[1] >= stop[1]:
-                    start[0] += 3
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 5 and piece.name == 'king':
-                if start[0] <= stop[0]:
-                    start[0] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 6 and piece.name == 'king':
-                if start[1] >= stop[1]:
-                    start[1] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 7 and piece.name == 'king':
-                if start[0] >= stop[0]:
-                    start[0] -= 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
-            elif move_type == 8 and piece.name == 'king':
-                if start[1] <= stop[1]:
-                    start[1] += 3
-                    self.screen.blit(piece.image, (start[0], start[1]))
-                    pygame.display.flip()
-                else:
-                    piece.position = destination
-                    self.moves_manager.wking_loc = self.moves_manager.pieces['king'][0].position
-                    self.moves_manager.bking_loc = self.moves_manager.enemy_pieces['king'][0].position
-                    piece.locked = True
-                    break
-
 
         if captured_piece:
             if captured_piece.color == 'white':
@@ -1332,6 +1029,30 @@ class game(object):
 
             elif captured_piece.name == "pawn" and captured_piece.color == "black":
                 stop = [1110,208]
+
+            elif captured_piece.name == "rook" and captured_piece.color == "white":
+                stop = [1190, 109]
+
+            elif captured_piece.name == "rook" and captured_piece.color == "black":
+                stop = [1190, 206]
+
+            elif captured_piece.name == "queen" and captured_piece.color == "white":
+                stop = [1430, 106]
+
+            elif captured_piece.name == "queen" and captured_piece.color == "black":
+                stop = [1430, 201]
+
+            elif captured_piece.name == "bishop" and captured_piece.color == "white":
+                stop = [1275, 107]
+
+            elif captured_piece.name == "bishop" and captured_piece.color == "black":
+                stop = [1275, 203]
+
+            elif captured_piece.name == "knight" and captured_piece.color == "white":
+                stop = [1355, 105]
+
+            elif captured_piece.name == "knight" and captured_piece.color == "black":
+                stop = [1355, 203]
 
             dest = [int((stop[0] - self.Interface.xstart) // (self.Interface.boardwidth // 8)),
                     int((stop[1] - self.Interface.ystart) // (self.Interface.boardheight // 8))]

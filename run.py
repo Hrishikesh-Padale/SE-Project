@@ -29,10 +29,10 @@ icon = pygame.image.load('Media/icon_3.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Chess")
 
-main_menu = Main_menu(screen,clock)
-main_menu.update()
+#main_menu = Main_menu(screen,clock)
+#main_menu.update()
 
-Interface = interface(width, height,main_menu.client.sock)
+Interface = interface(width, height,None)#main_menu.client.sock)
 Interface.screen = screen
 
 Interface.generate_board_coordinates()

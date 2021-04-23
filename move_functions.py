@@ -139,8 +139,8 @@ class Moves_manager:
                          None])
             if self.currentCastleRights.bqs == True:
                 if board[piece.position[0]][piece.position[1] - 1].is_empty == True and board[
-                    piece.position[0], piece.position[1] - 2].is_empty == True and board[
-                    piece.position[0], piece.position[1] - 3].is_empty == True and (not self.squareUnderAttack([
+                    piece.position[0]][piece.position[1] - 2].is_empty == True and board[
+                    piece.position[0]][piece.position[1] - 3].is_empty == True and (not self.squareUnderAttack([
                     piece.position[0], piece.position[1] - 1], 'black', board)) and (not self.squareUnderAttack([
                     piece.position[0], piece.position[1] - 2], 'black', board)):
                     self.castle_moves.append(board[piece.position[0]][piece.position[1] - 2])
