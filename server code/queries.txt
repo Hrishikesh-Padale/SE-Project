@@ -1,0 +1,45 @@
+###################################################################################################################################
+
+DATABASE CREATE TABLE QUERIES
+
+###################################################################################################################################
+
+### **** ###CREATE TABLE Clients (UserID VARCHAR(30) NOT NULL, Email VARCHAR(30) NOT NULL, Username VARCHAR(30) NOT NULL, PASSWD VARCHAR(30) NOT NULL, PRIMARY KEY (UserID));
+
+### **** ###CREATE TABLE Friends (UserID VARCHAR(30) NOT NULL, FriendID VARCHAR(30) NOT NULL, FOREIGN KEY (UserID) REFERENCES Clients(UserID) ON DELETE CASCADE, FOREIGN KEY (FriendID) REFERENCES Clients(UserID) ON DELETE CASCADE, PRIMARY KEY (UserID, FriendID));
+
+CREATE TABLE Profile (UserID VARCHAR(30) NOT NULL, Profile_Image BLOB, File_name varchar(30) NOT NULL, Matches_Played INT, Matches_Won INT, FOREIGN KEY(UserID) REFERENCES Clients(UserID) ON DELETE CASCADE ON UPDATE CASCADE);
+
+create table Games (RoomID varchar(10), Player1 varchar(30), Player2 varchar(30), foreign key (Player1) references Clients(UserID) on delete set default on update cascade, foreign key (Player2) references Clients(UserID) on delete set default on update cascade, primary key (RoomID));
+
+create table History (ID int auto_increment, RoomID varchar(10), currentDate date, Move_Logs BLOB, foreign key(RoomID) references Games(RoomID) on delete set default, primary key (ID));
+
+
+###################################################################################################################################
+
+    New DATABASE QUERIES SET
+
+###################################################################################################################################
+
+CREATE TABLE Clients (UserID VARCHAR(30) NOT NULL, Email VARCHAR(30) NOT NULL, PASSWD VARCHAR(30) NOT NULL, STATUS VARCHAR(20) NOT NULL, PRIMARY KEY (UserID));
+
+CREATE TABLE Friends (UserID VARCHAR(30) NOT NULL, FriendID VARCHAR(30) NOT NULL, STATUS VARCHAR(20) NOT NULL, FOREIGN KEY (UserID) REFERENCES Clients(UserID) ON DELETE CASCADE, FOREIGN KEY (FriendID) REFERENCES Clients(UserID) ON DELETE CASCADE, PRIMARY KEY (UserID, FriendID));
+
+
+
+
+###################################################################################################################################
+
+INSERT QUERIES
+
+###################################################################################################################################
+
+insert into Clients (UserID, Email, PASSWD, STATUS) values ('Akash2918', 'akash@testemail.com', 'Akash@123', 'Verified'), ('Rutvik123', 'rutvik@testmail.com', 'Rutvik@123', 'Verified'), ('Hrishikesh', 'hrishi@testmail.com', 'Hrishi@123', 'Verified');
+
+insert into Friends (UserID, FriendID, STATUS) values ('Akash2918', 'Hrishikesh', 'Accepted'), ('Akash2918', 'Rutvik123', 'Accepted'), ('Hrishikesh', 'Rutvik123', 'Accepted');
+
+insert into Clients (UserID, Email, PASSWD, STATUS) values ('Test321', 'test321@gmail.com', 'Test@321', 'Verified'), ('Test456', 'test456@gmail.com', 'Test@456', 'Verified'),('Test789', 'test789@gmail.com', 'Test@789', 'Verified');
+
+insert into Friends (UserID, FriendID, STATUS) values ('Akash2918', 'Test456', 'Accepted'), ('Akash2918', 'Test789', 'Accepted'), ('Akash2918', 'Test987', 'Accepted'), ('Akash2918', 'Test654', 'Accepted'), ('Akash2918', 'Test321', 'Accepted'), ('Hrishi1234', 'Test456', 'Accepted'), ('Hrishi1234', 'Test789', 'Accepted'), ('Hrishi1234', 'Test987', 'Accepted'), ('Hrishi1234', 'Test654', 'Accepted'), ('Hrishi1234', 'Test321', 'Accepted'),('Rutvik123', 'Test456', 'Accepted'), ('Rutvik123', 'Test789', 'Accepted'), ('Rutvik123', 'Test987', 'Accepted'), ('Rutvik123', 'Test654', 'Accepted'), ('Rutvik123', 'Test321', 'Accepted') ;
+
+
